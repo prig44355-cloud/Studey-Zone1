@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SAD - Lecture 3 | Masterclass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-gradient-light: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --glass-bg-light: rgba(255, 255, 255, 0.95);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #2d3748;
+            --primary-light: #1a365d; 
+            --accent-light: #00b4d8;  
+            --header-bg-light: rgba(255, 255, 255, 0.98);
+            --success: #38a169;
+            --error: #e53e3e;
+
+            --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg-dark: rgba(30, 41, 59, 0.95);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f1f5f9;
+            --primary-dark: #4cc9f0;
+            --accent-dark: #fca311;
+            --header-bg-dark: rgba(15, 23, 42, 0.98);
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0;}
+        .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
+
+        .lang-button.type1 { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button.type1:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .lang-button.type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .lang-button.type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .lang-button.type1:hover::after { transform: translateY(0) scale(1.2); }
+        .lang-button.type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
+        .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
+        .search-input-styled:focus { border-color: var(--primary); }
+        [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        
+        .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+
+        main { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+        .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(0, 180, 216, 0.15); color: var(--accent); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
+        .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
+        ul, ol { padding-inline-start: 20px; margin-bottom: 15px; } li { margin-bottom: 10px; }
+        
+        .method-box { background: rgba(26, 54, 93, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        [data-theme="dark"] .method-box { background: rgba(255, 255, 255, 0.05); }
+
+        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .practice-q { font-weight: bold; font-size: 1.2rem; direction: rtl; text-align: right; color: var(--primary); }
+        [dir="ltr"] .practice-q { direction: ltr; text-align: left; }
+        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-start; }
+        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: 'Cairo'; outline: none; width: 100%; max-width: 400px; background: var(--glass); color: var(--text); }
+        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
+        .feedback.correct { display: inline-block; background: rgba(56, 161, 105, 0.2); color: var(--success); }
+        .feedback.wrong { display: inline-block; background: rgba(229, 62, 62, 0.2); color: var(--error); }
+
+        .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
+        .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
+        .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
+
+        .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(39, 97, 195, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; } .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { --color: var(--accent); box-shadow: inset 0px 0px 32px var(--accent); }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; }
+
+        /* تنسيق الجداول والرسومات داخل الشرح (مضبوطة لتعمل دائماً LTR لأن الـ UML بالإنجليزية) */
+        .uml-class-table { width: 100%; max-width: 300px; border-collapse: collapse; margin: 15px auto; border: 2px solid var(--primary); background: var(--glass); text-align: left; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+        .uml-class-table th { background: var(--primary); color: white; padding: 10px; text-align: center; border-bottom: 2px solid var(--primary); }
+        .uml-class-table td { padding: 8px 15px; border-bottom: 1px solid var(--border); color: var(--text); }
+        
+        @media (max-width: 900px) {
+            header { padding: 0 15px; }
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; }
+            [dir="ltr"] .header-title-container { text-align: left; }
+            .header-title { font-size: 1rem; }
+            .controls { gap: 10px; }
+            .bb8-toggle { --toggle-size: 3px; }
+            .lang-button.type1 { width: 90px; height: 40px;}
+            .lang-button.type1::after, .lang-button.type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
+            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 80px); top: 80px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
+            aside.open { right: 0; left: auto; }
+            [dir="ltr"] aside { right: auto; left: -320px; }
+            [dir="ltr"] aside.open { right: auto; left: 0; }
+            .menu-btn { display: block; }
+            .cta-back { display: none; }
+            main { padding: 10px; }
+            .card { padding: 20px; margin-bottom: 20px; }
+            .nav-actions { gap: 15px; }
+            .styled-btn { width: 110px; font-size: 12px; }
+            .practice-controls { justify-content: center; }
+            .practice-q { text-align: center; }
+        }
+    </style>
+</head><body>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <button class="cta-back" onclick="window.location.href='../index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-solid fa-project-diagram" style="font-size: 1.8rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">تحليل وتصميم النظم (UML) 📐</div>
+                <div class="header-subtitle" id="pageSubTitle">Lec 3: Unified Modeling Language</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="Toggle Theme">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                  <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                  </div>
+                  <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                  </div>
+                  <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div style="position: relative; width: 100%;">
+                    <input placeholder="ابحث في الشرح..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                    <span id="searchIcon" style="position: absolute; right: 15px; top: 12px; opacity: 0.5;">🔍</span>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">شريحة</span>
+                <h1 id="slideHeader">العنوان</h1>
+                <div class="content" id="slideHtml"></div>
+                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span style="position:relative; z-index:2;">السابق</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span style="position:relative; z-index:2;">التالي</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // ==========================================
+    // 1. DATA: Bilingual Slides Data (Lec 3: UML)
+    // ==========================================
+    const slides = [
+        {
+            title: "1. مقدمة عن لغة (UML)",
+            title_en: "1. Intro to UML",
+            badge: "مفاهيم أساسية",
+            badge_en: "Core Concepts",
+            content: `
+                <p><strong>ما هي الـ UML؟</strong> (Unified Modeling Language)</p>
+                <ul>
+                    <li><strong>لغة (Language):</strong> هي لغة للتعبير عن الأفكار وليست منهجية (Not a methodology).</li>
+                    <li><strong>النمذجة (Modeling):</strong> وصف نظام البرمجيات بمستوى عالٍ من التجريد (Abstraction).</li>
+                    <li><strong>الموحدة (Unified):</strong> أصبحت معياراً عالمياً في الصناعة.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>لماذا نستخدم UML؟</strong><br>
+                    1. تستخدم <strong>رموزاً رسومية (Graphical Notation)</strong> مما يجعلها أوضح من اللغة العادية (غير الدقيقة) وأسهل من قراءة الكود (المليء بالتفاصيل).<br>
+                    2. تساعد في أخذ نظرة عامة (Overall view) على النظام.<br>
+                    3. غير مرتبطة بلغة برمجة معينة أو تكنولوجيا محددة.<br>
+                    4. تنقلنا من التشتت إلى التوحيد القياسي (Standardization).
+                </div>
+            `,
+            content_en: `
+                <p><strong>What is UML?</strong> (Unified Modeling Language)</p>
+                <ul>
+                    <li><strong>Language:</strong> Used to express ideas, not a methodology.</li>
+                    <li><strong>Modeling:</strong> Describing a software system at a high level of abstraction.</li>
+                    <li><strong>Unified:</strong> UML has become a world standard.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>Why we use UML?</strong><br>
+                    1. Uses <strong>graphical notation</strong>: more clear than natural language (imprecise) and code (too detailed).<br>
+                    2. Helps acquire an overall view of a system.<br>
+                    3. Not dependent on any one language or technology.<br>
+                    4. Moves us from fragmentation to standardization.
+                </div>
+            `
+        },
+        {
+            title: "2. أنواع مخططات UML",
+            title_en: "2. Types of UML Diagrams",
+            badge: "مخططات",
+            badge_en: "Diagrams",
+            content: `
+                <p>هناك العديد من مخططات UML، ولكن هذه هي الأكثر استخداماً في تصميم النظم البرمجية:</p>
+                <ol>
+                    <li><strong>مخطط حالات الاستخدام (Use-Case Diagram):</strong> يوضح تفاعل المستخدم مع النظام.</li>
+                    <li><strong>مخطط الفئات (Class Diagram):</strong> يوضح الهيكل الثابت والعلاقات بين الفئات.</li>
+                    <li><strong>مخطط التتابع (Sequence Diagram):</strong> يوضح تفاعل الكائنات مع بعضها عبر الزمن.</li>
+                    <li><strong>مخطط التعاون (Collaboration Diagram):</strong> يوضح تفاعل الكائنات مع التركيز على الروابط بينها.</li>
+                    <li><strong>مخطط الحالة (State Diagram):</strong> يوضح الحالات المختلفة التي يمر بها الكائن.</li>
+                </ol>
+            `,
+            content_en: `
+                <p>There are many UML diagrams, but these are the most widely used:</p>
+                <ol>
+                    <li><strong>Use-Case Diagram:</strong> Interaction between actors and software.</li>
+                    <li><strong>Class Diagram:</strong> Static structure and relationships among classes.</li>
+                    <li><strong>Sequence Diagram:</strong> How objects interact via messages over time.</li>
+                    <li><strong>Collaboration Diagram:</strong> Object interaction concentrating on classes.</li>
+                    <li><strong>State Diagram:</strong> States and events causing transitions.</li>
+                </ol>
+            `
+        },
+        {
+            title: "3. مخطط حالات الاستخدام (Use-Case)",
+            title_en: "3. Use-Case Diagram",
+            badge: "Use-Case",
+            badge_en: "Use-Case",
+            content: `
+                <p>مخطط Use-Case هو نموذج يصف التفاعل بين المستخدمين الخارجيين (Actors) والنظام.</p>
+                <div class="method-box">
+                    <strong>مكوناته الأساسية:</strong>
+                    <ul>
+                        <li><strong>الفاعل (Actor): 🧍‍♂️</strong> يمثل دور المستخدم (قد يكون إنساناً، روبوت، أو نظاماً خارجياً).</li>
+                        <li><strong>حالة الاستخدام (Use Case):  oval </strong> مجموعة من السيناريوهات تصف التفاعل بين الفاعل والنظام.</li>
+                        <li><strong>حدود النظام (System Boundary): 🔲</strong> المستطيل الذي يفصل بين الفاعلين (خارج النظام) وحالات الاستخدام (داخل النظام).</li>
+                    </ul>
+                </div>
+                <p><strong>أهميته:</strong> يعمل كعقد (Contract) بين العميل والمطورين لتحديد متطلبات النظام.</p>
+            `,
+            content_en: `
+                <p>A Use-Case diagram models the interaction between external users (Actors) and the software product.</p>
+                <div class="method-box">
+                    <strong>Core Components:</strong>
+                    <ul>
+                        <li><strong>Actor: 🧍‍♂️</strong> A role played by a user (can be human, robot, or external system).</li>
+                        <li><strong>Use Case:  oval </strong> A set of scenarios describing interaction between user and system.</li>
+                        <li><strong>System Boundary: 🔲</strong> Rectangle separating actors (outside) and use cases (inside).</li>
+                    </ul>
+                </div>
+                <p><strong>Importance:</strong> Acts as a contract between end user and software developers capturing requirements.</p>
+            `
+        },
+        {
+            title: "4. العلاقات في الـ Use-Case",
+            title_en: "4. Use-Case Relationships",
+            badge: "علاقات",
+            badge_en: "Relations",
+            content: `
+                <p>هناك عدة طرق لربط الـ Use Cases ببعضها:</p>
+                <ul>
+                    <li><strong>الارتباط (Association):</strong> خط متصل يربط بين الفاعل (Actor) وحالة الاستخدام (Use Case).</li>
+                    <li><strong>التضمين (Include <code>&lt;&lt;include&gt;&gt;</code>):</strong> خط منقط يتجه نحو السلوك "المشترك". نستخدمه بدلاً من نسخ نفس الخطوات في أكثر من Use Case. (مثال: حجز موعد وطلب دواء كلاهما يتضمن "التحقق من سجل المريض").</li>
+                    <li><strong>التوسيع (Extend <code>&lt;&lt;extend&gt;&gt;</code>):</strong> خط منقط يتجه نحو الـ Use Case الأساسي. يضيف سلوكاً إضافياً اختيارياً عند "نقطة توسيع" معينة. (مثال: تأجيل الدفع هو امتداد لعملية دفع الفاتورة).</li>
+                    <li><strong>الوراثة / التعميم (Generalization):</strong> سهم مثلث يتجه للـ Use Case الأب. (مثال: الدفع عبر التأمين هو ابن لعملية "دفع الفاتورة" العامة).</li>
+                </ul>
+            `,
+            content_en: `
+                <p>Relationships among Use Cases:</p>
+                <ul>
+                    <li><strong>Association:</strong> Solid line connecting an actor and a use case.</li>
+                    <li><strong>Include <code>&lt;&lt;include&gt;&gt;</code>):</strong> Dotted line pointing to the included use case. Used when behavior is common across use cases to avoid copying. (e.g., Make Appt & Request Meds both include Check Patient Record).</li>
+                    <li><strong>Extend <code>&lt;&lt;extend&gt;&gt;</code>):</strong> Dotted line pointing to the base use case. Adds optional behavior at an "extension point". (e.g., Defer Payment extends Pay Bill).</li>
+                    <li><strong>Generalization:</strong> Triangular arrow pointing to parent use case. (e.g., Bill Insurance is a child of Pay Bill).</li>
+                </ul>
+            `
+        },
+        {
+            title: "5. مخطط الفئات (Class Diagram)",
+            title_en: "5. Class Diagram",
+            badge: "الفئات",
+            badge_en: "Classes",
+            content: `
+                <p>يعرض الهيكل الثابت (Static structure) للنظام والفئات والعلاقات بينها. يُرسم الكلاس كمستطيل مقسم لـ 3 أجزاء:</p>
+                
+                <table class="uml-class-table" dir="ltr">
+                    <tr><th>Account (Name)</th></tr>
+                    <tr><td>- Customer_Name<br>- Balance (Attributes)</td></tr>
+                    <tr><td>+ addFunds()<br>+ withDraw()<br>+ transfer() (Operations)</td></tr>
+                </table>
+
+                <div class="method-box">
+                    <strong>معدلات الرؤية (Visibility Modifiers):</strong><br>
+                    • <strong>( + ) Public :</strong> مرئي للجميع.<br>
+                    • <strong>( # ) Protected :</strong> مرئي للكلاس نفسه والأبناء (Derived).<br>
+                    • <strong>( - ) Private :</strong> مخفي عن الجميع (Private).<br>
+                    <em>* افتراضياً: السمات (Attributes) تكون Private والعمليات (Operations) تكون Public.</em>
+                </div>
+            `,
+            content_en: `
+                <p>Depicts classes and their interrelationships (Static model). A class is a rectangle with 3 compartments:</p>
+                
+                <table class="uml-class-table" dir="ltr">
+                    <tr><th>Account (Name)</th></tr>
+                    <tr><td>- Customer_Name<br>- Balance (Attributes)</td></tr>
+                    <tr><td>+ addFunds()<br>+ withDraw()<br>+ transfer() (Operations)</td></tr>
+                </table>
+
+                <div class="method-box">
+                    <strong>Visibility Modifiers:</strong><br>
+                    • <strong>( + ) Public :</strong> Visible to everyone.<br>
+                    • <strong>( # ) Protected :</strong> Visible to friends and derived classes.<br>
+                    • <strong>( - ) Private :</strong> Visible to no one else.<br>
+                    <em>* By default, attributes are hidden (-) and operations are visible (+).</em>
+                </div>
+            `
+        },
+        {
+            title: "6. العلاقات بين الفئات (OO Relationships)",
+            title_en: "6. OO Relationships",
+            badge: "الفئات",
+            badge_en: "Classes",
+            content: `
+                <p><strong>1. التعميم / الوراثة (Generalization):</strong></p>
+                <p>علاقة أب-ابن (Parent-Child). مثال: كلاس <code>Customer</code> هو أب لكلاس <code>Regular Customer</code> و <code>Loyalty Customer</code>. يُرمز له بسهم مفرغ يتجه للأب.</p>
+                
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                
+                <p><strong>2. الارتباط (Association):</strong></p>
+                <p>يمثل العلاقة بين كائنات (Instances). مثال: "الطالب يُسجل في الكورس". له خاصيتان:</p>
+                <ul>
+                    <li><strong>تعددية (Multiplicity):</strong> (مثال: <code>1</code> يعني واحد فقط، <code>0..1</code> صفر أو واحد، <code>*</code> صفر أو أكثر، <code>1..*</code> واحد أو أكثر).</li>
+                    <li><strong>أسماء الأدوار (Role names):</strong> تعبر عن دور الكائن في العلاقة.</li>
+                </ul>
+            `,
+            content_en: `
+                <p><strong>1. Generalization:</strong></p>
+                <p>Parent-Child relationship (Inheritance). Example: <code>Customer</code> is parent to <code>Regular Customer</code> and <code>Loyalty Customer</code>. Represented by an empty triangle pointing to parent.</p>
+                
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                
+                <p><strong>2. Association:</strong></p>
+                <p>Represents relationship between instances. Example: "Student enrolls in a course". Features include:</p>
+                <ul>
+                    <li><strong>Multiplicity:</strong> (e.g., <code>1</code> One and only one, <code>0..1</code> Zero or one, <code>*</code> Zero or many, <code>1..*</code> One or many).</li>
+                    <li><strong>Role names:</strong> Describes the role of the object in the association.</li>
+                </ul>
+            `
+        },
+        {
+            title: "7. التجميع والتكوين (Aggregation vs Composition)",
+            title_en: "7. Aggregation vs Composition",
+            badge: "مقارنة هامة",
+            badge_en: "Comparison",
+            content: `
+                <p>كلاهما يمثل علاقة "جزء من كل" (Part-Whole)، ولكن بقوة مختلفة:</p>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>التكوين (Composition): (علاقة قوية جداً) 🔹</strong><br>
+                    • الأجزاء لا يمكن أن تعيش بدون الكيان الأساسي (Live or die with owner).<br>
+                    • إذا تم حذف الأساس، تُحذف الأجزاء.<br>
+                    • مثال: <strong>رقعة الشطرنج والمربعات.</strong> إذا رميت الرقعة، اختفت الـ 64 مربعاً. محرك السيارة لا يُشارك مع سيارة أخرى.
+                </div>
+                <div class="method-box" style="border-inline-start-color: var(--success);">
+                    <strong>التجميع (Aggregation): (علاقة ضعيفة/غير رسمية) ♢</strong><br>
+                    • الأجزاء يمكن أن تعيش بشكل مستقل عن الكيان الأساسي.<br>
+                    • مثال: <strong>الحقيبة والتفاح.</strong> التفاح جزء من الحقيبة حالياً، لكن لو رميت الحقيبة، التفاح يمكن أن يبقى موجوداً.
+                </div>
+            `,
+            content_en: `
+                <p>Both model the "Part-Whole" relationship, but with different strengths:</p>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>Composition: (Strong Association) 🔹</strong><br>
+                    • Components live or die with their owner. Cannot exist independently.<br>
+                    • If the whole is deleted, so are the parts.<br>
+                    • Example: <strong>Chess board and squares.</strong> If the board is thrown away, all 64 squares go too. A car's engine.
+                </div>
+                <div class="method-box" style="border-inline-start-color: var(--success);">
+                    <strong>Aggregation: (Informal Relationship) ♢</strong><br>
+                    • Containees can exist independent of the aggregate.<br>
+                    • Example: <strong>Bag and Apples.</strong> Apples form part of the bag now, but can exist independently without the bag.
+                </div>
+            `
+        },
+        {
+            title: "8. مخططات التفاعل (Interaction Diagrams)",
+            title_en: "8. Interaction Diagrams",
+            badge: "مخططات",
+            badge_en: "Diagrams",
+            content: `
+                <p>توضح كيف تتفاعل الكائنات مع بعضها. وهما نوعان متكافئان:</p>
+                <ol>
+                    <li><strong>مخطط التتابع (Sequence Diagram):</strong><br>
+                        • البعد الأفقي يمثل الكائنات، والبعد الرأسي يمثل الزمن (Order of messages).<br>
+                        • يحتوي على "خط الحياة" (Lifeline) وشريط التفعيل (Activation bar).<br>
+                        • <strong>متى نستخدمه؟</strong> عندما يكون التركيز على <em>نقل المعلومات وترتيبها الزمني</em>.
+                    </li>
+                    <br>
+                    <li><strong>مخطط التعاون (Collaboration Diagram):</strong><br>
+                        • يعادل مخطط التتابع تماماً، ولكن بدون خط زمني رأسي.<br>
+                        • <strong>متى نستخدمه؟</strong> عندما يكون التركيز على <em>الفئات (Classes) والروابط بينها</em> بدلاً من الزمن.
+                    </li>
+                </ol>
+            `,
+            content_en: `
+                <p>Show how objects interact with one another. Two equivalent types:</p>
+                <ol>
+                    <li><strong>Sequence Diagram:</strong><br>
+                        • Horizontal dimension = objects. Vertical dimension = time/order of messages.<br>
+                        • Has Lifeline and Activation bars.<br>
+                        • <strong>When to use?</strong> When the transfer of information (time order) is the focus of attention.
+                    </li>
+                    <br>
+                    <li><strong>Collaboration Diagram:</strong><br>
+                        • Equivalent to Sequence diagrams but organized differently.<br>
+                        • <strong>When to use?</strong> When concentrating on the classes and links between them rather than time.
+                    </li>
+                </ol>
+            `
+        },
+        {
+            title: "9. مخطط الحالة (State Diagram)",
+            title_en: "9. State Diagram",
+            badge: "مخططات",
+            badge_en: "Diagrams",
+            content: `
+                <p><strong>مخطط الحالة (State Diagram):</strong></p>
+                <ul>
+                    <li>يوضح تسلسل الحالات التي يمر بها الكائن (Object) خلال دورة حياته استجابةً للأحداث (Events).</li>
+                    <li>يعتبر نموذجاً ديناميكياً (Dynamic model) يعكس سلوك الكائنات وكيفية تفاعلها مع التحفيز الخارجي.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>مثال إشارة المرور (Traffic Light):</strong><br>
+                    • الحالة (State): أحمر (Red).<br>
+                    • الحدث (Event): سيارة تقف على حساس الطريق (Car trips sensor).<br>
+                    • الانتقال (Transition): يتحول إلى أصفر ثم أخضر.
+                </div>
+            `,
+            content_en: `
+                <p><strong>State Diagram:</strong></p>
+                <ul>
+                    <li>Shows the sequences of states an object goes through during its life cycle in response to stimuli/events.</li>
+                    <li>A dynamic model reflecting the behavior of objects and how they react to specific events.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>Traffic Light Example:</strong><br>
+                    • State: Red.<br>
+                    • Event: Car trips sensor.<br>
+                    • Transition: Changes to Yellow, then Green.
+                </div>
+            `
+        },
+        {
+            title: "10. أدوات تصميم UML",
+            title_en: "10. UML Modeling Tools",
+            badge: "أدوات",
+            badge_en: "Tools",
+            content: `
+                <p>هناك العديد من البرامج والأدوات المستخدمة لرسم مخططات الـ UML في سوق العمل:</p>
+                <ul>
+                    <li><strong>ArgoUML</strong></li>
+                    <li><strong>Rational Rose</strong> (مقدم من شركة IBM)</li>
+                    <li><strong>UML Studio 7.1</strong> (مقدم من Pragsoft Corporation، قادر على التعامل مع نماذج ضخمة جداً تصل لعشرات الآلاف من الكلاسات).</li>
+                    <li><strong>TogetherSoft Control Center / Solo</strong> (مقدم من Borland).</li>
+                </ul>
+            `,
+            content_en: `
+                <p>There are several UML tools available in the industry:</p>
+                <ul>
+                    <li><strong>ArgoUML</strong></li>
+                    <li><strong>Rational Rose</strong> (by IBM)</li>
+                    <li><strong>UML Studio 7.1</strong> (by Pragsoft Corporation: Capable of handling very large models - tens of thousands of classes).</li>
+                    <li><strong>TogetherSoft Control Center / Solo</strong> (by Borland).</li>
+                </ul>
+            `
+        },
+        {
+            title: "11. ساحة التدريب والمحاكاة ⚔️",
+            title_en: "11. Practice Arena ⚔️",
+            badge: "تطبيق عملي",
+            badge_en: "Practice",
+            isPracticeSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر معلوماتك في لغة الـ UML! (أجب بالإنجليزية).</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your knowledge on UML! (Answer in English).</p>`
+        },
+        {
+            title: "12. بنك الأسئلة الشامل 🎓",
+            title_en: "12. Comprehensive Quiz Bank 🎓",
+            badge: "مراجعة شاملة",
+            badge_en: "Review",
+            isQuizSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">تجميعة لأسئلة الامتحان المتوقعة. اضغط على السؤال لإظهار الإجابة الدقيقة.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Collection of expected exam questions. Click to reveal the precise answer.</p>`
+        }
+    ];
+
+    const practiceQuestions = [
+        { q: "العلاقة القوية جداً التي يموت فيها الجزء إذا مات الكل (مثل رقعة الشطرنج) تسمى؟", ans: "composition" },
+        { q: "خط منقط يضيف سلوكاً إضافياً (اختيارياً) للـ Use Case الأساسي، يسمى؟", ans: "extend" },
+        { q: "في الكلاس دياجرام، الرمز (-) يشير إلى أن الرؤية (Visibility) هي؟", ans: "private" },
+        { q: "المخطط الذي يركز على ترتيب الزمن ونقل المعلومات بين الكائنات يسمى؟", ans: "sequence" },
+        { q: "العلاقة الضعيفة التي يمكن أن يعيش فيها الجزء مستقلاً عن الكل (مثل الحقيبة والتفاح) تسمى؟", ans: "aggregation" }
+    ];
+
+    const solvedQuizData = [
+        { q_en: "What is the difference between Include and Extend in Use-Case Diagrams?", a_ar: "الحل: Include تُستخدم لسلوك مشترك مطلوب يتكرر في أكثر من مكان لمنع التكرار (إجباري). Extend تُستخدم لإضافة سلوك إضافي لخطوة معينة (اختياري).", a_en: "Answer: Include is used for shared mandatory behavior across use cases. Extend adds optional behavior to a base use case." },
+        { q_en: "By default, what are the visibility modifiers for Attributes and Operations in a Class Diagram?", a_ar: "الحل: السمات (Attributes) تكون افتراضياً مخفية (Private) ويرمز لها بـ (-). العمليات (Operations) تكون مرئية (Public) ويرمز لها بـ (+).", a_en: "Answer: By default, attributes are hidden (Private -) and operations are visible (Public +)." },
+        { q_en: "Compare Aggregation and Composition with examples.", a_ar: "الحل: الـ Composition علاقة قوية حيث الجزء لا يعيش بدون الكل (رقعة الشطرنج والمربعات). الـ Aggregation علاقة أضعف حيث يمكن للجزء العيش مستقلاً (الحقيبة والتفاح).", a_en: "Answer: Composition is strong (parts die with owner, e.g., Chessboard). Aggregation is informal (parts can exist independently, e.g., Bag and apples)." },
+        { q_en: "When should you use a Sequence Diagram vs a Collaboration Diagram?", a_ar: "الحل: نستخدم Sequence Diagram عندما يكون التركيز على نقل المعلومات والترتيب الزمني. نستخدم Collaboration Diagram للتركيز على الفئات (Classes) والروابط بينها.", a_en: "Answer: Use Sequence when focus is on time/order of messages. Use Collaboration when focus is on classes and links." },
+        { q_en: "What does Multiplicity mean in Association? Give examples.", a_ar: "الحل: تحدد عدد الكائنات المشاركة في العلاقة. مثال: (1) تعني واحد فقط، (0..1) صفر أو واحد، (*) صفر أو أكثر، (1..*) واحد أو أكثر.", a_en: "Answer: It defines how many instances participate. Examples: (1) one only, (0..1) zero or one, (*) zero or many, (1..*) one or many." }
+    ];
+
+    let idx = 0;
+    let uiLang = localStorage.getItem('globalLang') || 'ar'; 
+
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.querySelector('#prevBtn span:first-child'),
+        next: document.querySelector('#nextBtn span:first-child'),
+        sidebar: document.getElementById('sidebar'),
+        pracContainer: document.getElementById('practiceContainer'),
+        quizContainer: document.getElementById('quizContainer'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn')
+    };
+
+    function init() { renderList(); loadSlide(0); }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            let icon = s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (i+1));
+            let shortTitle = (isAr ? s.title : s.title_en).split(':')[0].substring(0, 30);
+            li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
+            li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? s.badge : s.badge_en;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.pracContainer.style.display = 'none';
+        dom.quizContainer.style.display = 'none';
+        if (s.isPracticeSlide) { dom.pracContainer.style.display = 'block'; renderPractice(); }
+        if (s.isQuizSlide) { dom.quizContainer.style.display = 'block'; renderQuiz(); }
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').disabled = index === slides.length - 1;
+        updateActiveItem(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => { if(i === index) item.classList.add('active'); else item.classList.remove('active'); });
+    }
+
+    function renderPractice() {
+        dom.pracContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        practiceQuestions.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'practice-item';
+            let btnText = isAr ? "تحقق" : "Check";
+            let plcHolder = isAr ? "اكتب الإجابة (إنجليزي)..." : "Type answer here...";
+            div.innerHTML = `<div class="practice-q">${isAr ? 'س' : 'Q'}${i+1}: ${item.q}</div>
+                <div class="practice-controls">
+                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off" dir="ltr" style="text-align: left;">
+                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
+                    <span class="feedback" id="prac_fb_${i}"></span>
+                </div>`;
+            dom.pracContainer.appendChild(div);
+        });
+    }
+
+    function renderQuiz() {
+        dom.quizContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        solvedQuizData.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'quiz-item';
+            let ansText = isAr ? item.a_ar : item.a_en;
+            let qPrefix = isAr ? `س${i+1}: ` : `Q${i+1}: `;
+            
+            div.innerHTML = `<div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: ${isAr ? 'rtl' : 'ltr'}; display: inline-block;">${qPrefix}${item.q_en}</span>
+                    <span style="font-size:1.2rem;">▼</span>
+                </div>
+                <div class="quiz-a">${ansText}</div>`;
+            dom.quizContainer.appendChild(div);
+        });
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let t = isAr ? s.title.toLowerCase() : s.title_en.toLowerCase();
+            let b = isAr ? s.badge.toLowerCase() : s.badge_en.toLowerCase();
+            if(t.includes(q) || b.includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    // تم توحيد دالة الترجمة هنا
+    function applyLangUpdates() {
+        const isAr = uiLang === 'ar';
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+        document.getElementById('pageTitle').innerText = isAr ? "تحليل وتصميم النظم (UML) 📐" : "SAD (UML) 📐";
+        document.getElementById('pageSubTitle').innerText = isAr ? "المحاضرة 3: لغة النمذجة الموحدة" : "Lec 3: Unified Modeling Language";
+        
+        const backBtnSpan = document.querySelector('.cta-back .span');
+        if (backBtnSpan) backBtnSpan.innerText = isAr ? "الرجوع" : "Back";
+
+        dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
+        document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
+        document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+        dom.prev.innerText = isAr ? "السابق" : "Prev";
+        dom.next.innerText = isAr ? "التالي" : "Next";
+        
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        localStorage.setItem('globalLang', uiLang);
+        applyLangUpdates();
+    }
+
+    window.checkAns = function(index, correctAns) {
+        const inputEl = document.getElementById(`prac_inp_${index}`);
+        const fbEl = document.getElementById(`prac_fb_${index}`);
+        if(!inputEl || !fbEl) return;
+        const isAr = uiLang === 'ar';
+        let userAns = inputEl.value.trim().toLowerCase();
+        let targetAns = correctAns.trim().toLowerCase();
+        if (userAns === "") {
+            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
+            fbEl.className = "feedback wrong"; return;
+        }
+        if (userAns.includes(targetAns) || targetAns.includes(userAns)) {
+            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
+            fbEl.className = "feedback correct";
+        } else {
+            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
+            fbEl.className = "feedback wrong";
+        }
+    };
+
+    window.move = function(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    window.toggleSidebar = function() { dom.sidebar.classList.toggle('open'); }
+
+    window.toggleTheme = function() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('globalTheme', newTheme);
+        const headerToggle = document.getElementById('themeCheckbox');
+        if(headerToggle) headerToggle.checked = (newTheme === 'dark');
+    }
+
+    function initGlobalSettings() {
+        const savedTheme = localStorage.getItem('globalTheme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        const headerToggle = document.getElementById('themeCheckbox');
+        if(headerToggle) headerToggle.checked = (savedTheme === 'dark');
+        
+        uiLang = localStorage.getItem('globalLang') || 'ar';
+        applyLangUpdates();
+    }
+
+    window.onload = function() {
+        initGlobalSettings();
+        init();
+    };
+</script>
+</body>
+</html>

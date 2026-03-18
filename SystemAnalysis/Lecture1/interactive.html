@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>System Analysis & Design | SDLC Masterclass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* هوية مادة تحليل النظم */
+            --bg-gradient-light: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --glass-bg-light: rgba(255, 255, 255, 0.95);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #2d3748;
+            --primary-light: #1a365d; 
+            --accent-light: #00b4d8;  
+            --header-bg-light: rgba(255, 255, 255, 0.98);
+            --success: #38a169;
+            --error: #e53e3e;
+
+            --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg-dark: rgba(30, 41, 59, 0.95);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f1f5f9;
+            --primary-dark: #4cc9f0;
+            --accent-dark: #fca311;
+            --header-bg-dark: rgba(15, 23, 42, 0.98);
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0;}
+        .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
+
+        .lang-button.type1 { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button.type1:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .lang-button.type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .lang-button.type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .lang-button.type1:hover::after { transform: translateY(0) scale(1.2); }
+        .lang-button.type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
+        .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
+        .search-input-styled:focus { border-color: var(--primary); }
+        [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        
+        .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+
+        main { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+        .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(0, 180, 216, 0.15); color: var(--accent); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
+        .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
+        ul, ol { padding-inline-start: 20px; margin-bottom: 15px; } li { margin-bottom: 10px; }
+        
+        .method-box { background: rgba(26, 54, 93, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        [data-theme="dark"] .method-box { background: rgba(255, 255, 255, 0.05); }
+
+        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .practice-q { font-weight: bold; font-size: 1.2rem; direction: rtl; text-align: right; color: var(--primary); }
+        [dir="ltr"] .practice-q { direction: ltr; text-align: left; }
+        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-start; }
+        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: 'Cairo'; outline: none; width: 100%; max-width: 400px; background: var(--glass); color: var(--text); }
+        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
+        .feedback.correct { display: inline-block; background: rgba(56, 161, 105, 0.2); color: var(--success); }
+        .feedback.wrong { display: inline-block; background: rgba(229, 62, 62, 0.2); color: var(--error); }
+
+        .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
+        .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
+        .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
+
+        .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(39, 97, 195, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; } .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { --color: var(--accent); box-shadow: inset 0px 0px 32px var(--accent); }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; }
+        
+        @media (max-width: 900px) {
+            header { padding: 0 15px; }
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; }
+            [dir="ltr"] .header-title-container { text-align: left; }
+            .header-title { font-size: 1rem; }
+            .controls { gap: 10px; }
+            .bb8-toggle { --toggle-size: 3px; }
+            .lang-button.type1 { width: 90px; height: 40px;}
+            .lang-button.type1::after, .lang-button.type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
+            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 80px); top: 80px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
+            aside.open { right: 0; left: auto; }
+            [dir="ltr"] aside { right: auto; left: -320px; }
+            [dir="ltr"] aside.open { right: auto; left: 0; }
+            .menu-btn { display: block; }
+            .cta-back { display: none; }
+            main { padding: 10px; }
+            .card { padding: 20px; margin-bottom: 20px; }
+            .nav-actions { gap: 15px; }
+            .styled-btn { width: 110px; font-size: 12px; }
+            .practice-controls { justify-content: center; }
+            .practice-q { text-align: center; }
+        }
+    </style>
+</head><body>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <button class="cta-back" onclick="window.location.href='../index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-solid fa-sitemap" style="font-size: 1.8rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">تحليل وتصميم النظم 📊</div>
+                <div class="header-subtitle" id="pageSubTitle">System Analysis & Design</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="Toggle Theme">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                  <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                  </div>
+                  <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                  </div>
+                  <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div style="position: relative; width: 100%;">
+                    <input placeholder="ابحث في الشرح..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                    <span id="searchIcon" style="position: absolute; right: 15px; top: 12px; opacity: 0.5;">🔍</span>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">شريحة</span>
+                <h1 id="slideHeader">العنوان</h1>
+                <div class="content" id="slideHtml"></div>
+                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span style="position:relative; z-index:2;">السابق</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span style="position:relative; z-index:2;">التالي</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    const slides = [
+        {
+            title: "1. مقدمة: ما هو نظام المعلومات؟",
+            title_en: "1. Intro: What is an Information System?",
+            badge: "المفاهيم الأساسية",
+            badge_en: "Core Concepts",
+            content: `
+                <p>قبل أن نتحدث عن تصميم النظم، يجب أن نعرف ما هو النظام أصلاً:</p>
+                <ul>
+                    <li><strong>النظام (System):</strong> مجموعة من المكونات التي تتفاعل مع بعضها لتحقيق هدف مشترك.</li>
+                    <li><strong>نظام المعلومات (Information System - IS):</strong> هو مزيج من: أجهزة (Hardware)، برمجيات (Software)، بيانات (Data)، أفراد (People)، وإجراءات (Procedures) تعمل معاً لإنتاج معلومات دقيقة ومفيدة.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 مثال من الحياة:</strong> نظام تسجيل المواد في الجامعة. يتكون من: السيرفرات (أجهزة)، موقع التسجيل (برمجيات)، بيانات الطلاب والمواد (بيانات)، الموظفين والطلاب (أفراد)، وخطوات الدفع والتسجيل (إجراءات).
+                </div>
+            `,
+            content_en: `
+                <p>Before designing systems, we must define what a system is:</p>
+                <ul>
+                    <li><strong>System:</strong> A set of components that interact to achieve a common goal.</li>
+                    <li><strong>Information System (IS):</strong> Hardware, software, data, people, and procedures that work together to produce quality information.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 Real-life Example:</strong> University Registration System. It consists of: Servers (Hardware), Website (Software), Student records (Data), Staff & Students (People), and registration steps (Procedures).
+                </div>
+            `
+        },
+        {
+            title: "2. دورة حياة تطوير النظم (SDLC)",
+            title_en: "2. System Development Life Cycle (SDLC)",
+            badge: "دورة حياة النظام",
+            badge_en: "Life Cycle",
+            content: `
+                <p>لتطوير أي نظام باحترافية، نمر بدورة تسمى <strong>SDLC</strong> تتكون من 5 مراحل متسلسلة:</p>
+                <ol>
+                    <li><strong>التخطيط (Planning):</strong> مراجعة الطلبات وتخصيص الموارد.</li>
+                    <li><strong>التحليل (Analysis):</strong> دراسة النظام الحالي وتحديد متطلبات المستخدم.</li>
+                    <li><strong>التصميم (Design):</strong> تصميم تفاصيل النظام وشراء الأجهزة/البرامج.</li>
+                    <li><strong>التنفيذ (Implementation):</strong> البرمجة، الاختبار، والتدريب.</li>
+                    <li><strong>الدعم (Support):</strong> الصيانة المستمرة والمراقبة بعد التشغيل.</li>
+                </ol>
+                <div class="method-box">
+                    <strong>📌 القواعد الذهبية:</strong> رتب المهام في مراحل، أشرك المستخدمين دائماً (Involve users)، وضع معايير واضحة للعمل.
+                </div>
+            `,
+            content_en: `
+                <p>To develop any system professionally, we use the <strong>SDLC</strong> which consists of 5 phases:</p>
+                <ol>
+                    <li><strong>Planning:</strong> Review requests and allocate resources.</li>
+                    <li><strong>Analysis:</strong> Study the current system and determine user requirements.</li>
+                    <li><strong>Design:</strong> Acquire hardware/software and develop system details.</li>
+                    <li><strong>Implementation:</strong> Develop programs, test, and train users.</li>
+                    <li><strong>Support:</strong> Ongoing assistance and monitoring.</li>
+                </ol>
+                <div class="method-box">
+                    <strong>📌 Golden Rules:</strong> Arrange tasks into phases, always involve users, and develop clearly defined standards.
+                </div>
+            `
+        },
+        {
+            title: "3. فريق المشروع ومحلل النظم",
+            title_en: "3. Project Team & Systems Analyst",
+            badge: "الأفراد",
+            badge_en: "People",
+            content: `
+                <p>يشارك في دورة حياة النظام العديد من الأشخاص: المستخدمون، الإدارة، المبرمجون، والموردون (Vendors).</p>
+                <ul>
+                    <li><strong>محلل النظم (Systems Analyst):</strong> هو النجم الأساسي! مسؤول عن تصميم وتطوير النظام، وهو <strong>حلقة الوصل (Liaison)</strong> بين المستخدمين وخبراء التكنولوجيا (IT).</li>
+                    <li><strong>فريق المشروع (Project Team):</strong> يتم تشكيله للعمل على المشروع من البداية للنهاية.</li>
+                    <li><strong>قائد المشروع (Project Leader):</strong> عضو في الفريق يدير الميزانية (Budget) والجدول الزمني (Schedule).</li>
+                </ul>
+            `,
+            content_en: `
+                <p>Many people participate in the SDLC: Users, management, programmers, and vendors.</p>
+                <ul>
+                    <li><strong>Systems Analyst:</strong> The core player! Responsible for designing and developing the system, acting as a <strong>Liaison</strong> between users and IT professionals.</li>
+                    <li><strong>Project Team:</strong> Formed to work on the project from beginning to end.</li>
+                    <li><strong>Project Leader:</strong> A team member who manages and controls the project budget and schedule.</li>
+                </ul>
+            `
+        },
+        {
+            title: "4. دراسة الجدوى (Feasibility)",
+            title_en: "4. Feasibility Tests",
+            badge: "مرحلة التخطيط",
+            badge_en: "Planning Phase",
+            content: `
+                <p>الجدوى هي مقياس لمدى ملاءمة وفائدة النظام الجديد للشركة. وهناك 4 اختبارات للجدوى:</p>
+                <ol>
+                    <li><strong>الجدوى التشغيلية (Operational):</strong> هل النظام مناسب وسيتم استخدامه فعلاً من قبل الموظفين؟</li>
+                    <li><strong>الجدوى الزمنية (Schedule):</strong> هل يمكن إنهاء المشروع في الوقت المحدد؟</li>
+                    <li><strong>الجدوى الاقتصادية (Economic):</strong> وتسمى Cost/Benefit. هل العائد والفوائد من النظام أكبر من تكلفة بنائه؟</li>
+                    <li><strong>الجدوى الفنية (Technical):</strong> هل تمتلك الشركة الأجهزة والبرامج (التكنولوجيا) اللازمة لبناء هذا النظام؟</li>
+                </ol>
+            `,
+            content_en: `
+                <p>Feasibility is a measure of how suitable the system will be to the company. There are 4 tests:</p>
+                <ol>
+                    <li><strong>Operational Feasibility:</strong> Will the system actually be used by the employees?</li>
+                    <li><strong>Schedule Feasibility:</strong> Can the project be completed on time?</li>
+                    <li><strong>Economic Feasibility:</strong> (Cost/Benefit) Do the benefits outweigh the costs?</li>
+                    <li><strong>Technical Feasibility:</strong> Does the company have the necessary hardware and software to build it?</li>
+                </ol>
+            `
+        },
+        {
+            title: "5. تقنيات جمع البيانات (Data Gathering)",
+            title_en: "5. Data Gathering Techniques",
+            badge: "مرحلة التحليل",
+            badge_en: "Analysis Phase",
+            content: `
+                <p>لكي يصمم محلل النظم نظاماً جديداً، يجب أن يجمع معلومات عن النظام الحالي لتحديد المشاكل والاحتياجات. يتم ذلك عبر 6 تقنيات:</p>
+                <div class="method-box">
+                    1. <strong>مراجعة المستندات (Review documentation):</strong> قراءة التقارير والأوراق الحالية.<br>
+                    2. <strong>الملاحظة (Observe):</strong> مراقبة الموظفين أثناء عملهم لترى المشاكل بعينك.<br>
+                    3. <strong>الاستبيانات (Questionnaire):</strong> لتوزيعها على عدد كبير من المستخدمين.<br>
+                    4. <strong>المقابلات (Interview):</strong> أسئلة مباشرة وجهاً لوجه مع المديرين والموظفين.<br>
+                    5. <strong>جلسات التصميم المشترك (JAD):</strong> ورش عمل تجمع المبرمجين والمستخدمين معاً.<br>
+                    6. <strong>البحث (Research):</strong> البحث في الإنترنت أو المنافسين عن حلول مشابهة.
+                </div>
+            `,
+            content_en: `
+                <p>To design a new system, the analyst must gather data about the current one using 6 techniques:</p>
+                <div class="method-box">
+                    1. <strong>Review documentation:</strong> Reading current reports and manuals.<br>
+                    2. <strong>Observe:</strong> Watching employees work to identify bottlenecks.<br>
+                    3. <strong>Questionnaire:</strong> Surveys for a large number of users.<br>
+                    4. <strong>Interview:</strong> Face-to-face questions with management/staff.<br>
+                    5. <strong>JAD (Joint-application design):</strong> Workshops combining IT and users.<br>
+                    6. <strong>Research:</strong> Looking online or at competitors for similar solutions.
+                </div>
+            `
+        },
+        {
+            title: "6. المرحلة الأولى والثانية: التخطيط والتحليل",
+            title_en: "6. Phase 1 & 2: Planning & Analysis",
+            badge: "مراحل الـ SDLC",
+            badge_en: "SDLC Phases",
+            content: `
+                <p><strong>المرحلة 1: التخطيط (Planning)</strong></p>
+                <p>تبدأ عندما تتلقى "اللجنة التوجيهية - Steering Committee" طلب المشروع. دورها: مراجعة الطلبات، تحديد الأولويات، تخصيص الموارد، وتشكيل فريق العمل.</p>
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                <p><strong>المرحلة 2: التحليل (Analysis)</strong></p>
+                <ul>
+                    <li><strong>التحليل المبدئي (Preliminary Investigation):</strong> يسمى دراسة الجدوى، لمعرفة طبيعة المشكلة وهل تستحق الحل أم لا.</li>
+                    <li><strong>التحليل التفصيلي (Detailed Analysis):</strong> دراسة كيفية عمل النظام الحالي، تحديد متطلبات المستخدم، ثم كتابة "توصية بالحل" (System Proposal).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>الحلول الممكنة (Solutions):</strong> إما شراء برنامج جاهز (Packaged Software)، أو كتابة برنامج مخصص (Custom Software)، أو التعهيد لشركة خارجية (Outsource).
+                </div>
+            `,
+            content_en: `
+                <p><strong>Phase 1: Planning</strong></p>
+                <p>Begins when the Steering Committee receives a project request. Their role: Review requests, prioritize, allocate resources, and form the team.</p>
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                <p><strong>Phase 2: Analysis</strong></p>
+                <ul>
+                    <li><strong>Preliminary Investigation:</strong> Also called feasibility study, to determine the exact nature of the problem and if it's worth pursuing.</li>
+                    <li><strong>Detailed Analysis:</strong> Study the current system, determine user requirements, and recommend a solution (System Proposal).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>Possible Solutions:</strong> Buy packaged software, write custom software, or outsource to an external company.
+                </div>
+            `
+        },
+        {
+            title: "7. المرحلة الثالثة: التصميم (Design)",
+            title_en: "7. Phase 3: Design",
+            badge: "مراحل الـ SDLC",
+            badge_en: "SDLC Phases",
+            content: `
+                <p>هنا نقوم بالحصول على الأجهزة والبرامج المطلوبة، وتطوير تفاصيل النظام. كيف نشتري المنتجات التقنية؟ باستخدام 3 وثائق أساسية:</p>
+                <ul>
+                    <li><strong>RFQ (طلب عرض سعر):</strong> أنت تعرف اسم المنتج بالضبط، وتطلب من البائع تحديد السعر فقط.</li>
+                    <li><strong>RFP (طلب مقترح):</strong> أنت تخبر البائع بمتطلباتك، وتترك له حرية "اختيار المنتج المناسب" واقتراح سعره.</li>
+                    <li><strong>RFI (طلب معلومات):</strong> طريقة غير رسمية لطلب معلومات عامة عن منتج أو خدمة.</li>
+                </ul>
+            `,
+            content_en: `
+                <p>Here we acquire hardware/software and develop details. How do we buy tech? Using 3 main documents:</p>
+                <ul>
+                    <li><strong>RFQ (Request for Quotation):</strong> You identify the product you want, the vendor just quotes the price.</li>
+                    <li><strong>RFP (Request for Proposal):</strong> You state requirements, the vendor selects the product and quotes the price.</li>
+                    <li><strong>RFI (Request for Information):</strong> A less formal method to request info about a product or service.</li>
+                </ul>
+            `
+        },
+        {
+            title: "8. التصميم التفصيلي (Detailed Design)",
+            title_en: "8. Detailed Design & Prototypes",
+            badge: "مراحل الـ SDLC",
+            badge_en: "SDLC Phases",
+            content: `
+                <p>التصميم التفصيلي (الذي يُسمى أحياناً التصميم المنطقي) يشمل: تصميم قاعدة البيانات، تصميم المدخلات والمخرجات، وتصميم البرامج.</p>
+                <div class="method-box">
+                    <strong>النماذج المستخدمة:</strong><br>
+                    1. <strong>النموذج الشكلي (Mockup):</strong> عينة شكلية للمخرجات تحتوي على بيانات حقيقية ليرى المستخدم كيف ستبدو (مثل صورة لشاشة).<br>
+                    2. <strong>النموذج الأولي (Prototype):</strong> نموذج "مبدئي يعمل فعلياً" (Working model) من النظام ليجربه المستخدم. البدء فيه مبكراً جداً قد يؤدي لمشاكل.<br>
+                    3. <strong>أدوات (CASE):</strong> برمجيات متخصصة (Computer-aided software engineering) تساعد محلل النظم في رسم المخططات وأتمتة خطوات التطوير.
+                </div>
+            `,
+            content_en: `
+                <p>Detailed design includes: Database design, Input/Output design, and Program design.</p>
+                <div class="method-box">
+                    <strong>Used Models:</strong><br>
+                    1. <strong>Mockup:</strong> A sample of input/output containing actual data (like a static UI screenshot).<br>
+                    2. <strong>Prototype:</strong> A "working model" of the proposed system. Beginning it too early may lead to problems.<br>
+                    3. <strong>CASE Tools:</strong> Computer-aided software engineering tools that support and automate SDLC activities.
+                </div>
+            `
+        },
+        {
+            title: "9. المرحلة الرابعة: التنفيذ (Implementation)",
+            title_en: "9. Phase 4: Implementation",
+            badge: "مراحل الـ SDLC",
+            badge_en: "SDLC Phases",
+            content: `
+                <p>الهدف هنا هو بناء النظام وتقديم للمستخدمين. وتشمل: تطوير البرامج، تركيب النظام، اختبار النظام، وتدريب المستخدمين.</p>
+                <p><strong>أنواع الاختبارات (Testing):</strong></p>
+                <ol>
+                    <li><strong>اختبار الوحدة (Unit Test):</strong> التحقق من أن كل "برنامج أو كود صغير" يعمل بمفرده بشكل صحيح.</li>
+                    <li><strong>اختبار التكامل (Integration Test):</strong> التحقق من أن التطبيق يعمل بشكل سليم عندما يتم ربطه مع تطبيقات أخرى.</li>
+                    <li><strong>اختبار النظام (Systems Test):</strong> التحقق من أن "كل البرامج" في المنظومة تعمل معاً بنجاح ككيان واحد.</li>
+                </ol>
+            `,
+            content_en: `
+                <p>The purpose is to build the system and deliver it. Includes: Develop programs, install, test, and train users.</p>
+                <p><strong>Types of Tests:</strong></p>
+                <ol>
+                    <li><strong>Unit Test:</strong> Verifies each individual program works by itself.</li>
+                    <li><strong>Integration Test:</strong> Verifies the application works with other applications.</li>
+                    <li><strong>Systems Test:</strong> Verifies all programs in the application work together successfully.</li>
+                </ol>
+            `
+        },
+        {
+            title: "10. المرحلة الخامسة: الدعم (Support Phase)",
+            title_en: "10. Phase 5: Support Phase",
+            badge: "مراحل الـ SDLC",
+            badge_en: "SDLC Phases",
+            content: `
+                <p>المرحلة الأخيرة والمستمرة! توفر المساعدة الدائمة بعد بدء تشغيل النظام (Post-implementation).</p>
+                <ul>
+                    <li>إجراء اجتماع مراجعة ما بعد التنفيذ (Review Meeting) للتأكد من أن النظام حقق التوقعات.</li>
+                    <li>تحديد وإصلاح الأخطاء (Identify errors).</li>
+                    <li>تحديد وإضافة تحسينات جديدة (Identify enhancements).</li>
+                    <li>مراقبة أداء النظام لضمان استقراره (Monitor system performance).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>مبروك! 🎉</strong> لقد أنهيت فهم دورة حياة تطوير النظم كاملة. يمكنك الآن تجربة التدريب وبنك الأسئلة في الشرائح القادمة.
+                </div>
+            `,
+            content_en: `
+                <p>The final, ongoing phase! Provides assistance after the system is implemented.</p>
+                <ul>
+                    <li>Conduct a post-implementation review meeting to check if it met expectations.</li>
+                    <li>Identify and fix errors.</li>
+                    <li>Identify and add enhancements.</li>
+                    <li>Monitor system performance for stability.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>Congratulations! 🎉</strong> You have completed the SDLC. Now test yourself in the Practice and Quiz slides next.
+                </div>
+            `
+        },
+        {
+            title: "11. ساحة التدريب والمحاكاة ⚔️",
+            title_en: "11. Practice Arena ⚔️",
+            badge: "تطبيق عملي",
+            badge_en: "Practice",
+            isPracticeSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر فهمك لمراحل تحليل وتصميم النظم! اكتب الإجابة (بالإنجليزي) في الفراغ.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your understanding of System Analysis & Design! Type the answer (in English) below.</p>`
+        },
+        {
+            title: "12. بنك الأسئلة الشامل 🎓",
+            title_en: "12. Comprehensive Quiz Bank 🎓",
+            badge: "مراجعة شاملة",
+            badge_en: "Review",
+            isQuizSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">تجميعة لأسئلة الامتحان المتوقعة. اضغط على السؤال لإظهار الإجابة الدقيقة.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Collection of expected exam questions. Click to reveal the precise answer.</p>`
+        }
+    ];
+
+    const practiceQuestions = [
+        { q: "المرحلة الأولى التي نقوم فيها بمراجعة الطلبات وتخصيص الموارد هي؟", ans: "planning" },
+        { q: "الشخص الذي يعمل كحلقة وصل (Liaison) بين المستخدمين وخبراء الـ IT هو؟", ans: "systems analyst" },
+        { q: "اختبار يضمن أن كل كود صغير يعمل بمفرده بنجاح يسمى ____ Test؟", ans: "unit" },
+        { q: "اختبار الجدوى الذي يقيس ما إذا كانت الفوائد تفوق التكاليف هو الـ ____ feasibility؟", ans: "economic" },
+        { q: "عينة شكلية لشاشة النظام تحتوي على بيانات حقيقية، تسمى؟", ans: "mockup" }
+    ];
+
+    const solvedQuizData = [
+        { q_en: "What is an Information System (IS)?", a_ar: "الحل: هو مجموعة من الأجهزة، البرمجيات، البيانات، الأفراد، والإجراءات تعمل معاً لإنتاج معلومات عالية الجودة.", a_en: "Answer: Hardware, software, data, people, and procedures that work together to produce quality info." },
+        { q_en: "What is the difference between RFQ and RFP?", a_ar: "الحل: في الـ RFQ أنت تحدد المنتج وتطلب سعره فقط. أما في الـ RFP أنت تضع متطلباتك، والبائع هو من يختار المنتج ويقترح سعره.", a_en: "Answer: In RFQ you identify the product and ask for a price. In RFP you state requirements, and the vendor selects the product and quotes." },
+        { q_en: "What is the Preliminary Investigation in the Analysis Phase?", a_ar: "الحل: يُسمى دراسة الجدوى (Feasibility Study). هدفه تحديد طبيعة المشكلة بالضبط وهل تستحق أن نبدأ المشروع لحلها أم لا.", a_en: "Answer: Also called a feasibility study. Determines the exact nature of the problem and whether it is worth pursuing." },
+        { q_en: "What are the three types of testing in the Implementation phase?", a_ar: "الحل: 1. Unit Test (للبرنامج الواحد) - 2. Integration Test (عمل التطبيق مع تطبيقات أخرى) - 3. Systems Test (عمل النظام بالكامل معاً كمنظومة).", a_en: "Answer: 1. Unit Test (individual program) - 2. Integration Test (application with others) - 3. Systems Test (all programs together)." },
+        { q_en: "What is the role of the Steering Committee in the Planning phase?", a_ar: "الحل: هي الجهة صانعة القرار. تقوم بمراجعة طلبات المشاريع، تحديد أولوياتها، تخصيص الموارد، وتشكيل فريق العمل.", a_en: "Answer: Decision-making body. Reviews requests, prioritizes them, allocates resources, and forms the project team." }
+    ];
+
+    let idx = 0;
+    let uiLang = localStorage.getItem('globalLang') || 'ar'; 
+
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.querySelector('#prevBtn span:first-child'),
+        next: document.querySelector('#nextBtn span:first-child'),
+        sidebar: document.getElementById('sidebar'),
+        pracContainer: document.getElementById('practiceContainer'),
+        quizContainer: document.getElementById('quizContainer'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn')
+    };
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            let icon = s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (i+1));
+            let shortTitle = (isAr ? s.title : s.title_en).split(':')[0];
+            li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
+            li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? s.badge : s.badge_en;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.pracContainer.style.display = 'none';
+        dom.quizContainer.style.display = 'none';
+        if (s.isPracticeSlide) { dom.pracContainer.style.display = 'block'; renderPractice(); }
+        if (s.isQuizSlide) { dom.quizContainer.style.display = 'block'; renderQuiz(); }
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').disabled = index === slides.length - 1;
+        updateActiveItem(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => { if(i === index) item.classList.add('active'); else item.classList.remove('active'); });
+    }
+
+    function renderPractice() {
+        dom.pracContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        practiceQuestions.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'practice-item';
+            let btnText = isAr ? "تحقق" : "Check";
+            let plcHolder = isAr ? "اكتب الإجابة (إنجليزي)..." : "Type answer here...";
+            div.innerHTML = `<div class="practice-q">${isAr ? 'س' : 'Q'}${i+1}: ${item.q}</div>
+                <div class="practice-controls">
+                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off" dir="ltr" style="text-align: left;">
+                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
+                    <span class="feedback" id="prac_fb_${i}"></span>
+                </div>`;
+            dom.pracContainer.appendChild(div);
+        });
+    }
+
+    function renderQuiz() {
+        dom.quizContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        solvedQuizData.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'quiz-item';
+            let ansText = isAr ? item.a_ar : item.a_en;
+            let qPrefix = isAr ? `س${i+1}: ` : `Q${i+1}: `;
+            
+            div.innerHTML = `<div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: ${isAr ? 'rtl' : 'ltr'}; display: inline-block;">${qPrefix}${item.q_en}</span>
+                    <span style="font-size:1.2rem;">▼</span>
+                </div>
+                <div class="quiz-a">${ansText}</div>`;
+            dom.quizContainer.appendChild(div);
+        });
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let t = isAr ? s.title.toLowerCase() : s.title_en.toLowerCase();
+            let b = isAr ? s.badge.toLowerCase() : s.badge_en.toLowerCase();
+            if(t.includes(q) || b.includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    function applyLangUpdates() {
+        const isAr = uiLang === 'ar';
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+        document.getElementById('pageTitle').innerText = isAr ? "تحليل وتصميم النظم 📊" : "System Analysis 📊";
+        document.getElementById('pageSubTitle').innerText = isAr ? "System Analysis & Design" : "SDLC Masterclass";
+        
+        // تعديل نص زر الرجوع بناءً على اللغة
+        const backBtnSpan = document.querySelector('.cta-back .span');
+        if (backBtnSpan) backBtnSpan.innerText = isAr ? "الرجوع" : "Back";
+
+        dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
+        document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
+        document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+        dom.prev.innerText = isAr ? "السابق" : "Prev";
+        dom.next.innerText = isAr ? "التالي" : "Next";
+        
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        localStorage.setItem('globalLang', uiLang);
+        applyLangUpdates();
+    }
+
+    window.checkAns = function(index, correctAns) {
+        const inputEl = document.getElementById(`prac_inp_${index}`);
+        const fbEl = document.getElementById(`prac_fb_${index}`);
+        if(!inputEl || !fbEl) return;
+        const isAr = uiLang === 'ar';
+        let userAns = inputEl.value.trim().toLowerCase();
+        let targetAns = correctAns.trim().toLowerCase();
+        
+        if (userAns === "") {
+            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
+            fbEl.className = "feedback wrong"; return;
+        }
+        if (userAns.includes(targetAns) || targetAns.includes(userAns)) {
+            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
+            fbEl.className = "feedback correct";
+        } else {
+            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
+            fbEl.className = "feedback wrong";
+        }
+    };
+
+    window.move = function(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    window.toggleSidebar = function() { dom.sidebar.classList.toggle('open'); }
+
+    window.toggleTheme = function() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('globalTheme', newTheme);
+        const headerToggle = document.getElementById('themeCheckbox');
+        if(headerToggle) headerToggle.checked = (newTheme === 'dark');
+    }
+
+    function initGlobalSettings() {
+        const savedTheme = localStorage.getItem('globalTheme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        const headerToggle = document.getElementById('themeCheckbox');
+        if(headerToggle) headerToggle.checked = (savedTheme === 'dark');
+        
+        uiLang = localStorage.getItem('globalLang') || 'ar';
+        // تطبيق الترجمة بمجرد بدء الصفحة لمنع تكرار الكود
+        applyLangUpdates();
+    }
+
+    // تشغيل الإعدادات الأساسية
+    window.onload = initGlobalSettings;
+</script>
+</body>
+</html>

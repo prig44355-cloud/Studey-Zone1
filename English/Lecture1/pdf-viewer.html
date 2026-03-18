@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الـ PDF | المحاضرة الرابعة</title>
+    <style>
+        /* تم استخدام Flexbox لتقسيم الشاشة بشكل متجاوب */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            overflow: hidden; 
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header { 
+            background: #fff; 
+            padding: 15px 30px; 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 2px solid #f59e0b; 
+            flex-shrink: 0; /* منع الهيدر من الانكماش */
+        }
+
+        .header h3 {
+            margin: 0; /* إزالة الهوامش الافتراضية لضبط الارتفاع */
+            font-size: 1.2rem;
+        }
+
+        .back-btn { 
+            background: #f59e0b; 
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-left: 20px;
+            white-space: nowrap; /* منع النص من الانقسام على سطرين */
+        }
+
+        .container { 
+            width: 100%; 
+            flex-grow: 1; /* جعل الحاوية تأخذ باقي مساحة الشاشة تلقائياً */
+            background: #333; 
+            position: relative;
+            -webkit-overflow-scrolling: touch; /* لتحسين التمرير على أجهزة iOS */
+        }
+
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
+
+        /* التجاوب مع شاشات الموبايل */
+        @media (max-width: 600px) {
+            .header {
+                padding: 12px 15px; /* تقليل الحواف الجانبية */
+            }
+            .back-btn {
+                padding: 8px 15px; /* تصغير الزر */
+                font-size: 14px;
+                margin-left: 15px;
+            }
+            .header h3 {
+                font-size: 1rem; /* تصغير الخط قليلاً */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">رجوع</a>
+        <h3>ماتيريال المحاضرة </h3>
+    </div>
+    <div class="container">
+        <iframe src="word,phrase and clause(1).pdf"></iframe>
+    </div>
+</body>
+</html>

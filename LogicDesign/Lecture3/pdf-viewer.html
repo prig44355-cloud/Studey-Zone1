@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الـ PDF | المحاضرة الثالثة</title>
+    <style>
+        /* استخدام Flexbox لتقسيم الشاشة بشكل متجاوب */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            overflow: hidden; 
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header { 
+            background: #ffffff; 
+            padding: 15px 30px; 
+            display: flex; 
+            align-items: center; 
+            /* اللون النيلي الخاص بثيم المحاضرة الثالثة */
+            border-bottom: 2px solid #4c51bf; 
+            flex-shrink: 0; 
+        }
+
+        .header h3 {
+            margin: 0; 
+            font-size: 1.2rem;
+            color: #2d3748;
+        }
+
+        .back-btn { 
+            background: #4c51bf; /* اللون النيلي */
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-left: 20px;
+            white-space: nowrap; 
+            transition: 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #ed8936; /* اللون البرتقالي عند مرور الماوس */
+            color: white;
+        }
+
+        .container { 
+            width: 100%; 
+            flex-grow: 1; /* جعل الحاوية تأخذ باقي مساحة الشاشة تلقائياً */
+            background: #333; 
+            position: relative;
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
+
+        /* التجاوب مع شاشات الموبايل */
+        @media (max-width: 600px) {
+            .header {
+                padding: 12px 15px; 
+            }
+            .back-btn {
+                padding: 8px 15px; 
+                font-size: 14px;
+                margin-left: 15px;
+            }
+            .header h3 {
+                font-size: 1rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">رجوع</a>
+        <h3>ماتيريال المحاضرة الثالثة</h3>
+    </div>
+    <div class="container">
+        <iframe src="Lec 3 - Simplifications.pdf"></iframe>
+    </div>
+</body>
+</html>

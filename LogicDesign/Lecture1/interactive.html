@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Number Systems | Ultimate Masterclass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- ألوان مادة الدوائر الرقمية (أزرق وسماوي) متوافقة مع المنصة --- */
+        :root {
+            --bg-gradient-light: #f0f4f8;
+            --glass-bg-light: rgba(255, 255, 255, 0.95);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #1e293b;
+            --primary-light: #0284c7; /* أزرق داكن للقراءة */
+            --accent-light: #0ea5e9; /* سماوي */
+            --header-bg-light: #ffffff;
+            --success: #38a169;
+            --error: #e53e3e;
+
+            /* الوضع الداكن */
+            --bg-gradient-dark: #05071b;
+            --glass-bg-dark: rgba(15, 23, 42, 0.95);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f8fafc;
+            --primary-dark: #38bdf8;
+            --accent-dark: #7dd3fc;
+            --header-bg-dark: #05071b;
+
+            /* المتغيرات النشطة */
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* --- Header --- */
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0; }
+        .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        
+        /* زر الرجوع للمنصة */
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
+
+        /* --- Language Button Animation (Type 1) --- */
+        .lang-button { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        /* --- Layout --- */
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
+        .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
+        .search-input-styled:focus { border-color: var(--primary); }
+        [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        
+        .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+
+        main { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+        .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Content Elements --- */
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(2, 132, 199, 0.15); color: var(--primary); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
+        .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
+        ul, ol { padding-inline-start: 20px; } li { margin-bottom: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.02); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: center; }
+        th { background: var(--primary); color: white; font-weight: bold; }
+        tr:nth-child(even) { background: rgba(0,0,0,0.04); }
+        [data-theme="dark"] tr:nth-child(even) { background: rgba(255,255,255,0.04); }
+
+        .method-box { background: rgba(2, 132, 199, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .example-box { background: rgba(14, 165, 233, 0.05); border: 1px solid var(--accent); padding: 20px; margin: 15px 0; border-radius: 8px; font-family: monospace; font-size: 1.2rem; text-align: left; direction: ltr; }
+
+        /* --- Converter & Practice --- */
+        .converter-box { background: rgba(2, 132, 199, 0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-top: 15px; }
+        .input-group { margin-bottom: 15px; text-align: left; direction: ltr;}
+        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--primary); }
+        .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 1.1rem; font-family: monospace; background: var(--glass); color: var(--text); outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--accent); box-shadow: 0 0 5px rgba(14, 165, 233, 0.5); }
+
+        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .practice-q { font-weight: bold; font-size: 1.2rem; direction: ltr; text-align: left; color: var(--primary); }
+        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; direction: ltr; justify-content: flex-start; }
+        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: monospace; outline: none; width: 200px; background: var(--glass); color: var(--text); }
+        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
+        .feedback.correct { display: inline-block; background: rgba(56, 161, 105, 0.2); color: var(--success); }
+        .feedback.wrong { display: inline-block; background: rgba(229, 62, 62, 0.2); color: var(--error); }
+
+        /* --- Quiz Area --- */
+        .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
+        .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
+        .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
+
+        /* --- BB8 Toggle CSS --- */
+        .bb8-toggle { --toggle-size: 5px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+
+        /* --- Nav Buttons Styled --- */
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(39, 97, 195, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; } .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { --color: var(--accent); box-shadow: inset 0px 0px 32px var(--accent); }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+
+        /* Responsive Logic */
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; margin-left:10px;}
+        
+        @media (max-width: 900px) {
+            header { padding: 0 15px; }
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; justify-content: flex-start; }
+            [dir="ltr"] .header-title-container { text-align: left; }
+            .header-title { font-size: 1rem; }
+            .controls { gap: 10px; }
+            .bb8-toggle { --toggle-size: 3px; }
+            .lang-button { width: 90px; height: 40px;}
+            .type1::after, .type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
+            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 80px); top: 80px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
+            aside.open { right: 0; left: auto; }
+            [dir="ltr"] aside { right: auto; left: -320px; }
+            [dir="ltr"] aside.open { right: auto; left: 0; }
+            .menu-btn { display: block; }
+            .cta-back { display: none; } /* إخفاء زر الرجوع في الموبايل لتوفير مساحة */
+            main { padding: 10px; }
+            .card { padding: 20px; margin-bottom: 20px; }
+            .nav-actions { gap: 15px; }
+            .styled-btn { width: 110px; font-size: 12px; }
+            .practice-controls { justify-content: center; }
+            .practice-q { text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-solid fa-microchip" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">الأنظمة الرقمية الشاملة 👑</div>
+                <div class="header-subtitle" id="pageSubTitle">د. سيون عزت | Dr. Sion Ezzat</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="Toggle Theme">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                  <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                  </div>
+                  <div class="bb8">
+                    <div class="bb8__head-container">
+                      <div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div>
+                    </div>
+                    <div class="bb8__body"></div>
+                  </div>
+                  <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div style="position: relative; width: 100%;">
+                    <input placeholder="ابحث في الشرح..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                    <span id="searchIcon" style="position: absolute; right: 15px; top: 12px; opacity: 0.5;">🔍</span>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">شريحة</span>
+                <h1 id="slideHeader">العنوان</h1>
+                
+                <div class="content" id="slideHtml"></div>
+
+                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span style="position:relative; z-index:2;">السابق</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span style="position:relative; z-index:2;">التالي</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // ==========================================
+    // 1. DATA: Bilingual Slides Data
+    // ==========================================
+    const slides = [
+        {
+            title: "1. القصة من البداية (مقدمة)",
+            title_en: "1. The Story Begins (Intro)",
+            badge: "مفاهيم أساسية",
+            badge_en: "Basic Concepts",
+            content: `
+                <p>ليه عندنا أنظمة أرقام مختلفة؟</p>
+                <ul>
+                    <li><strong>بالنسبة لنا كبشر:</strong> إحنا متعودين نعد على أصابع إيدينا الـ 10، عشان كده من زمان جداً وإحنا بنستخدم <strong>النظام العشري (Decimal)</strong>.</li>
+                    <li><strong>بالنسبة للكمبيوتر:</strong> الكمبيوتر عبارة عن آلة إلكترونية، مفيش جواه صوابع يعد عليها، جواه "دوائر كهربائية" مفاتيحها يا إما <strong>شغالة (On)</strong> يا إما <strong>مطفية (Off)</strong>.</li>
+                </ul>
+                <p>عشان كده الكمبيوتر مبيفهمش غير رقمين: <strong>1</strong> (شغال) و <strong>0</strong> (مطفي)، وده اللي بنسميه <strong>النظام الثنائي (Binary)</strong>.</p>
+                <div class="method-box">
+                    <strong>💡 الخلاصة:</strong> الأصفار والوحايد الكثيرة تُربك المبرمجين، لذلك تم ابتكار أنظمة أخرى (كالثماني والسداسي عشر) لاختصار هذه الأرقام الطويلة.
+                </div>
+            `,
+            content_en: `
+                <p>Why do we have different number systems?</p>
+                <ul>
+                    <li><strong>For Humans:</strong> We count on our 10 fingers, hence the <strong>Decimal</strong> system.</li>
+                    <li><strong>For Computers:</strong> Computers rely on electrical circuits which are either <strong>On (1)</strong> or <strong>Off (0)</strong>, forming the <strong>Binary</strong> system.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 Summary:</strong> Long strings of 1s and 0s confuse programmers. Other systems (Octal, Hexadecimal) were invented to shorten binary numbers.
+                </div>
+            `
+        },
+        {
+            title: "2. الأنظمة الأربعة بالتفصيل",
+            title_en: "2. The Four Systems in Detail",
+            badge: "مفاهيم أساسية",
+            badge_en: "Basic Concepts",
+            content: `
+                <p>إليك الأنظمة الأربعة الرئيسية التي نستخدمها في علوم الحاسب:</p>
+                <ol>
+                    <li><strong>النظام العشري (Decimal - Base 10):</strong>
+                        <ul><li>الأساس 10. الرموز: من <code>0</code> إلى <code>9</code>. بيستخدمه البشر.</li></ul>
+                    </li>
+                    <li><strong>النظام الثنائي (Binary - Base 2):</strong>
+                        <ul><li>الأساس 2. الرموز: <code>0</code> و <code>1</code> فقط. بيستخدمه الكمبيوتر.</li></ul>
+                    </li>
+                    <li><strong>النظام الثماني (Octal - Base 8):</strong>
+                        <ul><li>الأساس 8. الرموز: من <code>0</code> إلى <code>7</code> فقط (لا يوجد 8 ولا 9).</li></ul>
+                    </li>
+                    <li><strong>النظام السداسي عشر (Hexadecimal - Base 16):</strong>
+                        <ul><li>الأساس 16. الرموز: من <code>0</code> إلى <code>9</code>، ثم الحروف <code>A, B, C, D, E, F</code> (حيث A=10 و F=15).</li></ul>
+                    </li>
+                </ol>
+            `,
+            content_en: `
+                <p>Here are the four main systems used in Computer Science:</p>
+                <ol>
+                    <li><strong>Decimal (Base 10):</strong> Symbols 0-9. Used by humans.</li>
+                    <li><strong>Binary (Base 2):</strong> Symbols 0 and 1. Used by computers.</li>
+                    <li><strong>Octal (Base 8):</strong> Symbols 0-7.</li>
+                    <li><strong>Hexadecimal (Base 16):</strong> Symbols 0-9 and A-F (where A=10, F=15). Used to abbreviate binary.</li>
+                </ol>
+            `
+        },
+        {
+            title: "3. إزاي بنعد في الأنظمة دي؟",
+            title_en: "3. How Do We Count?",
+            badge: "مفاهيم أساسية",
+            badge_en: "Basic Concepts",
+            content: `
+                <p>القاعدة الذهبية للعد: <strong>"عندما تنتهي الرموز المتاحة في الخانة الحالية، نُصفرها ونضيف 1 للخانة التي تليها"</strong>.</p>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <tr><th>العشري (10)</th><th>الثنائي (2)</th><th>الثماني (8)</th><th>السداسي عشر (16)</th></tr>
+                        <tr><td>7</td><td>0111</td><td>7</td><td>7</td></tr>
+                        <tr style="background:rgba(2, 132, 199, 0.1);"><td>8</td><td>1000</td><td><strong>10</strong> (نفدت الأرقام)</td><td>8</td></tr>
+                        <tr><td>9</td><td>1001</td><td>11</td><td>9</td></tr>
+                        <tr><td>10</td><td>1010</td><td>12</td><td><strong>A</strong></td></tr>
+                        <tr><td>15</td><td>1111</td><td>17</td><td>F</td></tr>
+                        <tr style="background:rgba(2, 132, 199, 0.1);"><td>16</td><td>10000</td><td>20</td><td><strong>10</strong> (نفدت الحروف)</td></tr>
+                    </table>
+                </div>
+            `,
+            content_en: `
+                <p>The golden rule of counting: <strong>"When you run out of available symbols in a column, reset it to zero and add 1 to the next column."</strong></p>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <tr><th>Decimal (10)</th><th>Binary (2)</th><th>Octal (8)</th><th>Hexadecimal (16)</th></tr>
+                        <tr><td>7</td><td>0111</td><td>7</td><td>7</td></tr>
+                        <tr style="background:rgba(2, 132, 199, 0.1);"><td>8</td><td>1000</td><td><strong>10</strong> (Out of numbers)</td><td>8</td></tr>
+                        <tr><td>10</td><td>1010</td><td>12</td><td><strong>A</strong></td></tr>
+                        <tr><td>15</td><td>1111</td><td>17</td><td>F</td></tr>
+                        <tr style="background:rgba(2, 132, 199, 0.1);"><td>16</td><td>10000</td><td>20</td><td><strong>10</strong> (Out of letters)</td></tr>
+                    </table>
+                </div>
+            `
+        },
+        {
+            title: "4. أوزان الخانات والكسور",
+            title_en: "4. Column Weights & Fractions",
+            badge: "مفاهيم أساسية",
+            badge_en: "Basic Concepts",
+            content: `
+                <p>أي نظام رقمي "موزون" (Weighted) تعتمد قيمة الرقم فيه على مكانه. مثال في النظام العشري:</p>
+                <ul>
+                    <li><strong>الأرقام الصحيحة:</strong> الآحاد 10<sup>0</sup>، العشرات 10<sup>1</sup>، المئات 10<sup>2</sup></li>
+                    <li><strong>الكسور:</strong> الجزء من عشرة 10<sup>-1</sup>، الجزء من مية 10<sup>-2</sup></li>
+                </ul>
+                <p><strong>مثال:</strong> الرقم 9240 قيمته الحقيقية تُحسب هكذا:</p>
+                <code dir="ltr" style="display:block; padding:10px; background:rgba(0,0,0,0.05); border-radius:8px; margin-top:5px; font-size:1.1rem; text-align:left;">
+                (9 × 10³) + (2 × 10²) + (4 × 10¹) + (0 × 10⁰)
+                </code>
+            `,
+            content_en: `
+                <p>In a Weighted system, a digit's value depends on its position:</p>
+                <ul>
+                    <li><strong>Whole Numbers:</strong> Units 10<sup>0</sup>, Tens 10<sup>1</sup>, Hundreds 10<sup>2</sup></li>
+                    <li><strong>Fractions:</strong> Tenths 10<sup>-1</sup>, Hundredths 10<sup>-2</sup></li>
+                </ul>
+                <p><strong>Example:</strong> The value of 9240 is calculated as:</p>
+                <code dir="ltr" style="display:block; padding:10px; background:rgba(0,0,0,0.05); border-radius:8px; margin-top:5px; font-size:1.1rem; text-align:left;">
+                (9 × 10³) + (2 × 10²) + (4 × 10¹) + (0 × 10⁰)
+                </code>
+            `
+        },
+        {
+            title: "5. الأسس (مضاعفات الأرقام)",
+            title_en: "5. Common Powers",
+            badge: "مفاهيم متقدمة",
+            badge_en: "Advanced",
+            content: `
+                <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
+                    <div style="flex:1; min-width:250px; border:1px solid var(--border); padding:15px; border-radius:10px; background:rgba(0,0,0,0.02);">
+                        <h3 style="color:var(--primary); text-align:center;">النظام العشري (Base 10)</h3>
+                        <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
+                            <li>Kilo (k) = 10³ = 1,000</li>
+                            <li>Mega (M) = 10⁶ = 1,000,000</li>
+                        </ul>
+                    </div>
+                    <div style="flex:1; min-width:250px; border:1px solid var(--accent); padding:15px; border-radius:10px; background:rgba(14, 165, 233, 0.05);">
+                        <h3 style="color:var(--accent); text-align:center;">النظام الثنائي (Base 2)</h3>
+                        <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
+                            <li>Kilo (K) = 2¹⁰ = 1,024</li>
+                            <li>Mega (M) = 2²⁰ ≈ 1,048,576</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="method-box">
+                    <strong>💡 ملحوظة:</strong> الكيلو بايت في الكمبيوتر يساوي 1024 وليس 1000، وهذا ما يفسر نقصان مساحة التخزين الفعلية للفلاشات.
+                </div>
+            `,
+            content_en: `
+                <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
+                    <div style="flex:1; min-width:250px; border:1px solid var(--border); padding:15px; border-radius:10px; background:rgba(0,0,0,0.02);">
+                        <h3 style="color:var(--primary); text-align:center;">Base 10 (Humans)</h3>
+                        <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
+                            <li>Kilo (k) = 10³ = 1,000</li>
+                            <li>Mega (M) = 10⁶ = 1,000,000</li>
+                        </ul>
+                    </div>
+                    <div style="flex:1; min-width:250px; border:1px solid var(--accent); padding:15px; border-radius:10px; background:rgba(14, 165, 233, 0.05);">
+                        <h3 style="color:var(--accent); text-align:center;">Base 2 (Computers)</h3>
+                        <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
+                            <li>Kilo (K) = 2¹⁰ = 1,024</li>
+                            <li>Mega (M) = 2²⁰ ≈ 1,048,576</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="method-box">
+                    <strong>💡 Note:</strong> A computer's Kilo is 1024, not 1000. This is why flash drives show less space than advertised.
+                </div>
+            `
+        },
+        {
+            title: "6. بت الإشارة والـ Overflow",
+            title_en: "6. Sign Bit & Overflow",
+            badge: "مفاهيم متقدمة",
+            badge_en: "Advanced",
+            content: `
+                <ul>
+                    <li>الكمبيوتر يخصص <strong>آخر بت على اليسار (MSB)</strong> لتحديد الإشارة (Sign Bit).</li>
+                    <li>إذا كان Sign Bit = <strong>0</strong> ➔ <strong>موجب (Positive)</strong>.</li>
+                    <li>إذا كان Sign Bit = <strong>1</strong> ➔ <strong>سالب (Negative)</strong>.</li>
+                </ul>
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                <p><strong>التدفق الزائد (Overflow):</strong></p>
+                <p>إذا قمنا بجمع رقمين موجبين كبيرين جداً، قد يتجاوز الناتج المساحة المخصصة، فيدخل الرقم الزائد في خانة الـ Sign bit ويجعلها 1.</p>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>⚠️ علامة الخطر:</strong> نعرف أنه حدث Overflow عندما نلاحظ <strong>تغيراً غير منطقي في بت الإشارة</strong>.
+                </div>
+            `,
+            content_en: `
+                <ul>
+                    <li>Computers use the <strong>leftmost bit (MSB)</strong> as the Sign Bit.</li>
+                    <li>If Sign Bit = <strong>0</strong> ➔ <strong>Positive</strong>.</li>
+                    <li>If Sign Bit = <strong>1</strong> ➔ <strong>Negative</strong>.</li>
+                </ul>
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                <p><strong>Overflow:</strong></p>
+                <p>Adding two large positive numbers might exceed the allocated space, spilling into the sign bit and changing it to 1.</p>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>⚠️ Indicator:</strong> Overflow is indicated by an unexpected <strong>change in the sign bit</strong>.
+                </div>
+            `
+        },
+        {
+            title: "7. شفرة BCD",
+            title_en: "7. BCD Code",
+            badge: "شفرات وأكواد",
+            badge_en: "Codes",
+            content: `
+                <p>شفرة <strong>BCD (Binary Coded Decimal)</strong> هي طريقة لترجمة الأرقام العشرية لأصفار ووحايد. <strong>القاعدة:</strong> نأخذ <strong>كل رقم عشري بمفرده</strong>، ونحوله إلى <strong>4 بت ثنائي</strong>.</p>
+                <div class="example-box">
+                    تحويل الرقم (84) إلى BCD:<br>
+                    الرقم 4 = 0100<br>
+                    الرقم 8 = 1000<br>
+                    إذن 84 بالـ BCD = 1000 0100
+                </div>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>⛔ قاعدة صارمة للامتحان:</strong><br>
+                    شفرة BCD تتعامل فقط مع الأرقام المفردة من <strong>0 إلى 9</strong>. أي كود يعبر عن 10 فما فوق (مثل <code>1010</code>) يُعتبر <strong>غير صالح (Invalid)</strong>.
+                </div>
+            `,
+            content_en: `
+                <p><strong>BCD (Binary Coded Decimal)</strong> translates decimal digits directly. <strong>Rule:</strong> Convert <strong>each decimal digit</strong> separately into <strong>4 binary bits</strong>.</p>
+                <div class="example-box">
+                    Convert (84) to BCD:<br>
+                    Digit 4 = 0100<br>
+                    Digit 8 = 1000<br>
+                    Result = 1000 0100
+                </div>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>⛔ Exam Rule:</strong><br>
+                    BCD only handles digits <strong>0 to 9</strong>. Any code representing 10 or above (like <code>1010</code>) is <strong>Invalid</strong>.
+                </div>
+            `
+        },
+        {
+            title: "8. الشفرات غير الموزونة والأبجدية",
+            title_en: "8. Unweighted & Alpha Codes",
+            badge: "شفرات وأكواد",
+            badge_en: "Codes",
+            content: `
+                <p><strong>1. الشفرات غير الموزونة (Unweighted Codes):</strong></p>
+                <ul>
+                    <li>أنظمة لا تمتلك فيها الخانات "أوزان" ثابتة (مثل 1, 2, 4, 8).</li>
+                    <li><strong>أشهر مثال:</strong> كود جراي <strong>(Gray Code)</strong>. يتغير فيه <strong>"بت واحد فقط"</strong> بين كل رقمين، مما يقلل احتمالية الأخطاء.</li>
+                </ul>
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                <p><strong>2. الشفرات الأبجدية الرقمية (Alphanumeric Codes):</strong></p>
+                <ul>
+                    <li>شفرات صُممت ليفهم الكمبيوتر الحروف (A, B) والرموز (@, $) بجانب الأرقام.</li>
+                    <li><strong>أشهر مثال:</strong> شفرة الآسكي <strong>(ASCII)</strong>.</li>
+                </ul>
+            `,
+            content_en: `
+                <p><strong>1. Unweighted Codes:</strong></p>
+                <ul>
+                    <li>Positions do not have fixed weights (like 1, 2, 4, 8).</li>
+                    <li><strong>Example:</strong> <strong>Gray Code</strong>. Only <strong>one bit changes</strong> between successive numbers, reducing hardware errors.</li>
+                </ul>
+                <hr style="margin: 15px 0; border-color: var(--border);">
+                <p><strong>2. Alphanumeric Codes:</strong></p>
+                <ul>
+                    <li>Designed to represent letters (A, B) and symbols (@, $) inside a computer.</li>
+                    <li><strong>Example:</strong> <strong>ASCII</strong> code.</li>
+                </ul>
+            `
+        },
+        {
+            title: "9. اكتشاف الأخطاء (Error Detection)",
+            title_en: "9. Error Detection",
+            badge: "مفاهيم متقدمة",
+            badge_en: "Advanced",
+            content: `
+                <p>عند نقل البيانات عبر الشبكات، قد يحدث تشويش. كيف نكتشف التلف؟</p>
+                <div class="method-box">
+                    <strong>1. فحص التطابق (Parity Check):</strong><br>
+                    إضافة بت إضافي (Parity bit) لجعل إجمالي عدد "الوحايد (1s)" إما دائماً زوجي (Even) أو دائماً فردي (Odd).
+                </div>
+                <div class="method-box">
+                    <strong>2. فحص التكرار الدائري (CRC):</strong><br>
+                    خوارزمية رياضية متقدمة تُضاف في نهاية كتل البيانات لاكتشاف الأخطاء بدقة عالية.
+                </div>
+            `,
+            content_en: `
+                <p>Data transmission can cause errors. How do we detect them?</p>
+                <div class="method-box">
+                    <strong>1. Parity Check:</strong><br>
+                    Adding an extra bit to make the total count of 1s always Even or Odd. If the count mismatches upon arrival, an error occurred.
+                </div>
+                <div class="method-box">
+                    <strong>2. CRC (Cyclic Redundancy Check):</strong><br>
+                    An advanced mathematical algorithm added at the end of data blocks to detect complex errors.
+                </div>
+            `
+        },
+        {
+            title: "10. التحويل من عشري لأي نظام",
+            title_en: "10. Dec to Any System",
+            badge: "التحويلات 🔄",
+            badge_en: "Conversions 🔄",
+            content: `
+                <p>للتحويل <strong>من</strong> العشري لأي نظام، نستخدم <strong>القسمة المطولة</strong> على أساس النظام الجديد ونأخذ الباقي.</p>
+                <p><strong>مثال: من عشري إلى ثنائي (13)</strong></p>
+                <table style="max-width:400px; direction:ltr; margin: 10px auto;">
+                    <tr><th>Num / 2</th><th>Quotient</th><th>Remainder</th></tr>
+                    <tr><td>13 / 2</td><td>6</td><td><strong>1</strong> (First/LSB)</td></tr>
+                    <tr><td>6 / 2</td><td>3</td><td><strong>0</strong></td></tr>
+                    <tr><td>3 / 2</td><td>1</td><td><strong>1</strong></td></tr>
+                    <tr><td>1 / 2</td><td>0</td><td><strong>1</strong> (Last/MSB)</td></tr>
+                </table>
+                <p dir="ltr" style="text-align:center; font-family:monospace; font-size:1.2rem; font-weight:bold;">13<sub>10</sub> = 1101<sub>2</sub></p>
+            `,
+            content_en: `
+                <p>To convert <strong>from</strong> Decimal, use <strong>Long Division</strong> by the new base and take the Remainders.</p>
+                <p><strong>Example: Dec to Bin (13)</strong></p>
+                <table style="max-width:400px; direction:ltr; margin: 10px auto;">
+                    <tr><th>Num / 2</th><th>Quotient</th><th>Remainder</th></tr>
+                    <tr><td>13 / 2</td><td>6</td><td><strong>1</strong> (First/LSB)</td></tr>
+                    <tr><td>6 / 2</td><td>3</td><td><strong>0</strong></td></tr>
+                    <tr><td>3 / 2</td><td>1</td><td><strong>1</strong></td></tr>
+                    <tr><td>1 / 2</td><td>0</td><td><strong>1</strong> (Last/MSB)</td></tr>
+                </table>
+                <p dir="ltr" style="text-align:center; font-family:monospace; font-size:1.2rem; font-weight:bold;">13<sub>10</sub> = 1101<sub>2</sub></p>
+            `
+        },
+        {
+            title: "11. التحويل من أي نظام لعشري",
+            title_en: "11. Any to Dec System",
+            badge: "التحويلات 🔄",
+            badge_en: "Conversions 🔄",
+            content: `
+                <p>للتحويل <strong>إلى</strong> النظام العشري، نستخدم طريقة <strong>الضرب في الأوزان</strong> (Sum of Weights).</p>
+                <div class="example-box">
+                    <strong>من ثنائي إلى عشري: تحويل 1101</strong><br>
+                    Weights: &nbsp; 2³(8) &nbsp; 2²(4) &nbsp; 2¹(2) &nbsp; 2⁰(1) <br>
+                    Binary: &nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 <br>
+                    = (1×8) + (1×4) + (0×2) + (1×1)<br>
+                    = 8 + 4 + 0 + 1 = <strong>13<sub>10</sub></strong>
+                </div>
+            `,
+            content_en: `
+                <p>To convert <strong>to</strong> Decimal, multiply each digit by its <strong>Column Weight</strong>.</p>
+                <div class="example-box">
+                    <strong>Bin to Dec: Convert 1101</strong><br>
+                    Weights: &nbsp; 2³(8) &nbsp; 2²(4) &nbsp; 2¹(2) &nbsp; 2⁰(1) <br>
+                    Binary: &nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 <br>
+                    = (1×8) + (1×4) + (0×2) + (1×1)<br>
+                    = 8 + 4 + 0 + 1 = <strong>13<sub>10</sub></strong>
+                </div>
+            `
+        },
+        {
+            title: "12. التحويل المباشر (Shortcuts)",
+            title_en: "12. Direct Shortcuts",
+            badge: "التحويلات 🔄",
+            badge_en: "Conversions 🔄",
+            content: `
+                <p>لأن 8 هي 2³، و 16 هي 2⁴، يمكننا التحويل المباشر بمجرد تجميع البتات!</p>
+                <div class="method-box">
+                    <strong>ثنائي ⟷ ثماني (مجموعات 3 بت):</strong><br>
+                    لتحويل <span dir="ltr">110101<sub>2</sub></span>:<br>
+                    نقسمها لثلاثات: <span dir="ltr">(101) (110)</span><br>
+                    نترجم: <span dir="ltr">5 &nbsp;&nbsp; 6</span> ➔ <span dir="ltr">65<sub>8</sub></span>
+                </div>
+                <div class="method-box">
+                    <strong>ثنائي ⟷ سداسي عشر (مجموعات 4 بت):</strong><br>
+                    لتحويل <span dir="ltr">10101111<sub>2</sub></span>:<br>
+                    نقسمها لأربعات: <span dir="ltr">(1111) (1010)</span><br>
+                    نترجم: <span dir="ltr">F &nbsp;&nbsp;&nbsp;&nbsp; A</span> ➔ <span dir="ltr">AF<sub>16</sub></span>
+                </div>
+            `,
+            content_en: `
+                <p>Since 8 is 2³, and 16 is 2⁴, we can group bits for direct conversion!</p>
+                <div class="method-box">
+                    <strong>Bin ⟷ Oct (Groups of 3 Bits):</strong><br>
+                    Convert <span dir="ltr">110101<sub>2</sub></span>:<br>
+                    Group by 3: <span dir="ltr">(101) (110)</span><br>
+                    Translate: <span dir="ltr">5 &nbsp;&nbsp; 6</span> ➔ <span dir="ltr">65<sub>8</sub></span>
+                </div>
+                <div class="method-box">
+                    <strong>Bin ⟷ Hex (Groups of 4 Bits):</strong><br>
+                    Convert <span dir="ltr">10101111<sub>2</sub></span>:<br>
+                    Group by 4: <span dir="ltr">(1111) (1010)</span><br>
+                    Translate: <span dir="ltr">F &nbsp;&nbsp;&nbsp;&nbsp; A</span> ➔ <span dir="ltr">AF<sub>16</sub></span>
+                </div>
+            `
+        },
+        {
+            title: "13. محول الأنظمة التفاعلي 🧮",
+            title_en: "13. Interactive Converter 🧮",
+            badge: "أداة ذكية",
+            badge_en: "Smart Tool",
+            isConverterSlide: true,
+            content: `
+                <p id="convIntro">اكتب أي رقم في أي صندوق وسيتم تحديث باقي الأنظمة فوراً، عشان تفهم طريقة التحويل عملياً!</p>
+                <div class="converter-box">
+                    <div class="input-group">
+                        <label>Decimal (عشري - Base 10)</label>
+                        <input type="text" id="convDec" placeholder="e.g. 13" onkeyup="window.convertSys('dec')">
+                    </div>
+                    <div class="input-group">
+                        <label>Binary (ثنائي - Base 2)</label>
+                        <input type="text" id="convBin" placeholder="e.g. 1101" onkeyup="window.convertSys('bin')">
+                    </div>
+                    <div class="input-group">
+                        <label>Octal (ثماني - Base 8)</label>
+                        <input type="text" id="convOct" placeholder="e.g. 15" onkeyup="window.convertSys('oct')">
+                    </div>
+                    <div class="input-group">
+                        <label>Hexadecimal (سداسي عشر - Base 16)</label>
+                        <input type="text" id="convHex" placeholder="e.g. D" onkeyup="window.convertSys('hex')">
+                    </div>
+                    <p id="convError" style="color:var(--error); font-weight:bold; font-size:1rem; display:none; text-align:center;">إدخال خاطئ لهذا النظام! راجع الأرقام.</p>
+                </div>
+            `,
+            content_en: `
+                <p id="convIntro">Type a number in any box and the others will update instantly!</p>
+                <div class="converter-box">
+                    <div class="input-group">
+                        <label>Decimal (Base 10)</label>
+                        <input type="text" id="convDec" placeholder="e.g. 13" onkeyup="window.convertSys('dec')">
+                    </div>
+                    <div class="input-group">
+                        <label>Binary (Base 2)</label>
+                        <input type="text" id="convBin" placeholder="e.g. 1101" onkeyup="window.convertSys('bin')">
+                    </div>
+                    <div class="input-group">
+                        <label>Octal (Base 8)</label>
+                        <input type="text" id="convOct" placeholder="e.g. 15" onkeyup="window.convertSys('oct')">
+                    </div>
+                    <div class="input-group">
+                        <label>Hexadecimal (Base 16)</label>
+                        <input type="text" id="convHex" placeholder="e.g. D" onkeyup="window.convertSys('hex')">
+                    </div>
+                    <p id="convError" style="color:var(--error); font-weight:bold; font-size:1rem; display:none; text-align:center;">Invalid input for this system!</p>
+                </div>
+            `
+        },
+        {
+            title: "14. ساحة التدريب (Practice) ⚔️",
+            title_en: "14. Practice Arena ⚔️",
+            badge: "تطبيق عملي",
+            badge_en: "Practice",
+            isPracticeSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">استخدم الورقة والقلم لحل هذه التحويلات، ثم ادخل إجابتك للتحقق منها.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Use pen and paper to solve these conversions, then check your answers.</p>`
+        }
+    ];
+
+    // ==========================================
+    // 2. DATA: Practice & Quiz (Bilingual)
+    // ==========================================
+    const practiceQuestions = [
+        { q: "Convert  25<sub>10</sub>  to Binary", ans: "11001" },
+        { q: "Convert  1011<sub>2</sub>  to Decimal", ans: "11" },
+        { q: "Convert  45<sub>8</sub>  to Decimal", ans: "37" },
+        { q: "Convert  F2<sub>16</sub>  to Binary", ans: "11110010" },
+        { q: "Convert  100<sub>10</sub>  to Hexadecimal", ans: "64" }
+    ];
+
+    // مصفوفة فارغة عشان دالة الـ Quiz متبوظش لو مفيش أسئلة
+    const solvedQuizData = [];
+
+    // ==========================================
+    // 3. LOGIC & CONTROLLERS
+    // ==========================================
+    let idx = 0;
+    let uiLang = 'ar'; 
+
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.querySelector('#prevBtn span:first-child'),
+        next: document.querySelector('#nextBtn span:first-child'),
+        sidebar: document.getElementById('sidebar'),
+        pracContainer: document.getElementById('practiceContainer'),
+        quizContainer: document.getElementById('quizContainer'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn')
+    };
+
+    function init() {
+        // سحب اللغة والثيم من المنصة الرئيسية (localStorage)
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; // عشان الدالة تعكسه لـ en صح
+            window.toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            let icon = s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (s.isConverterSlide ? '🧮' : (i+1)));
+            let titleText = isAr ? s.title : s.title_en;
+            let shortTitle = titleText.split('(')[0].split(':')[0]; 
+            li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
+            li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? s.badge : s.badge_en;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+
+        dom.pracContainer.style.display = 'none';
+        dom.quizContainer.style.display = 'none';
+
+        if (s.isPracticeSlide) {
+            dom.pracContainer.style.display = 'block';
+            renderPractice();
+        }
+        
+        if (s.isQuizSlide) {
+            dom.quizContainer.style.display = 'block';
+            renderQuiz();
+        }
+
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function renderPractice() {
+        dom.pracContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        practiceQuestions.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'practice-item';
+            let btnText = isAr ? "تحقق" : "Check";
+            let plcHolder = isAr ? "إجابتك..." : "Your Answer...";
+            div.innerHTML = `
+                <div class="practice-q">Q${i+1}: ${item.q}</div>
+                <div class="practice-controls">
+                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off">
+                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
+                    <span class="feedback" id="prac_fb_${i}"></span>
+                </div>
+            `;
+            dom.pracContainer.appendChild(div);
+        });
+    }
+
+    function renderQuiz() {
+        dom.quizContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        if(solvedQuizData.length === 0) return;
+        solvedQuizData.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'quiz-item';
+            let ansText = isAr ? item.a_ar : item.a_en;
+            div.innerHTML = `
+                <div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: ltr; display: inline-block;">Q${i+1}: ${item.q_en}</span>
+                    <span style="font-size:1.2rem;">▼</span>
+                </div>
+                <div class="quiz-a">${ansText}</div>
+            `;
+            dom.quizContainer.appendChild(div);
+        });
+    }
+
+    // --- Search Logic ---
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let t = isAr ? s.title.toLowerCase() : s.title_en.toLowerCase();
+            let b = isAr ? s.badge.toLowerCase() : s.badge_en.toLowerCase();
+            if(t.includes(q) || b.includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    // --- Language Toggle ---
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        // حفظ اللغة في المنصة
+        localStorage.setItem('globalLang', uiLang);
+        
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        document.getElementById('pageTitle').innerText = isAr ? "الأنظمة الرقمية الشاملة 👑" : "Number Systems Masterclass 👑";
+        document.getElementById('pageSubTitle').innerText = isAr ? "د. سيون عزت | Dr. Sion Ezzat" : "Dr. Sion Ezzat | د. سيون عزت";
+        
+        dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
+        document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
+        document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+
+        dom.prev.innerText = isAr ? "السابق" : "Prev";
+        dom.next.innerText = isAr ? "التالي" : "Next";
+        
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    // --- Converter Logic ---
+    window.convertSys = function(source) {
+        const errorMsg = document.getElementById('convError');
+        if(!errorMsg) return;
+        errorMsg.style.display = 'none';
+        let val, decVal;
+        try {
+            if (source === 'dec') {
+                val = document.getElementById('convDec').value;
+                if(val==='') { window.clearConv(); return; }
+                if(!/^[0-9]+$/.test(val)) throw new Error();
+                decVal = parseInt(val, 10);
+            } else if (source === 'bin') {
+                val = document.getElementById('convBin').value;
+                if(val==='') { window.clearConv(); return; }
+                if(!/^[01]+$/.test(val)) throw new Error();
+                decVal = parseInt(val, 2);
+            } else if (source === 'oct') {
+                val = document.getElementById('convOct').value;
+                if(val==='') { window.clearConv(); return; }
+                if(!/^[0-7]+$/.test(val)) throw new Error();
+                decVal = parseInt(val, 8);
+            } else if (source === 'hex') {
+                val = document.getElementById('convHex').value.toLowerCase();
+                if(val==='') { window.clearConv(); return; }
+                if(!/^[0-9a-f]+$/.test(val)) throw new Error();
+                decVal = parseInt(val, 16);
+            }
+            if(isNaN(decVal)) throw new Error();
+            if(source !== 'dec') document.getElementById('convDec').value = decVal.toString(10);
+            if(source !== 'bin') document.getElementById('convBin').value = decVal.toString(2);
+            if(source !== 'oct') document.getElementById('convOct').value = decVal.toString(8);
+            if(source !== 'hex') document.getElementById('convHex').value = decVal.toString(16).toUpperCase();
+        } catch (e) { 
+            errorMsg.innerText = uiLang === 'ar' ? "إدخال خاطئ لهذا النظام! راجع الأرقام." : "Invalid input for this system!";
+            errorMsg.style.display = 'block'; 
+        }
+    };
+
+    window.clearConv = function() {
+        document.getElementById('convDec').value = '';
+        document.getElementById('convBin').value = '';
+        document.getElementById('convOct').value = '';
+        document.getElementById('convHex').value = '';
+    };
+
+    // --- Practice Logic ---
+    window.checkAns = function(index, correctAns) {
+        const inputEl = document.getElementById(`prac_inp_${index}`);
+        const fbEl = document.getElementById(`prac_fb_${index}`);
+        if(!inputEl || !fbEl) return;
+        
+        const isAr = uiLang === 'ar';
+        let userAns = inputEl.value.trim().toUpperCase();
+        let targetAns = correctAns.trim().toUpperCase();
+
+        if (userAns === "") {
+            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
+            fbEl.className = "feedback wrong";
+            return;
+        }
+
+        if (userAns === targetAns) {
+            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
+            fbEl.className = "feedback correct";
+        } else {
+            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
+            fbEl.className = "feedback wrong";
+        }
+    };
+
+    window.move = function(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    window.toggleSidebar = function() { dom.sidebar.classList.toggle('open'); }
+
+    window.toggleTheme = function() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        
+        // حفظ الثيم في المنصة
+        localStorage.setItem('globalTheme', newTheme);
+    }
+
+    // Start App
+    window.onload = init;
+
+</script>
+
+</body>
+</html>

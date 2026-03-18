@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Logic Gates | Masterclass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* الألوان الأساسية: كحلي وذهبي */
+            --bg-gradient-light: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --glass-bg-light: rgba(255, 255, 255, 0.95);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #2d3748;
+            --primary-light: #1a365d; 
+            --accent-light: #d69e2e;  
+            --header-bg-light: rgba(255, 255, 255, 0.98);
+            --success: #38a169;
+            --error: #e53e3e;
+
+            /* الوضع الداكن */
+            --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg-dark: rgba(30, 41, 59, 0.95);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f1f5f9;
+            --primary-dark: #63b3ed;
+            --accent-dark: #fca311;
+            --header-bg-dark: rgba(15, 23, 42, 0.98);
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        header { height: 75px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; }
+        .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        
+        /* ================= زرار الرجوع (Back Button) ================= */
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+        /* =========================================================== */
+
+        .header-title-container { text-align: center; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; display: flex; flex-direction: column; align-items: center;}
+        .header-title { font-weight: 900; font-size: 1.1rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.8rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
+
+        .lang-button { border: 1px solid var(--primary); background: transparent; color: var(--primary); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s;}
+        .lang-button:hover { background: var(--primary); color: white; }
+        [data-theme="dark"] .lang-button { border-color: var(--accent); color: var(--accent); }
+        [data-theme="dark"] .lang-button:hover { background: var(--accent); color: #000; }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
+        .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
+        .search-input-styled:focus { border-color: var(--primary); }
+        [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+
+        main { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+        .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(214, 158, 46, 0.15); color: var(--accent); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
+        .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
+        ul, ol { padding-inline-start: 20px; margin-bottom: 15px; } li { margin-bottom: 10px; }
+        
+        .method-box { background: rgba(26, 54, 93, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        [data-theme="dark"] .method-box { background: rgba(255, 255, 255, 0.05); }
+
+        table { width: 100%; max-width: 400px; margin: 15px auto; border-collapse: collapse; background: rgba(0,0,0,0.02); border-radius: 10px; overflow: hidden; border: 2px solid var(--primary);}
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: center; font-family: monospace; font-size: 1.1rem; }
+        th { background: var(--primary); color: white; font-weight: bold; }
+        tr:nth-child(even) { background: rgba(0,0,0,0.04); }
+        [data-theme="dark"] tr:nth-child(even) { background: rgba(255,255,255,0.04); }
+
+        /* ==================== Simulator CSS ==================== */
+        .simulator-box { background: rgba(0,0,0,0.03); border: 2px dashed var(--primary); border-radius: 15px; padding: 20px; text-align: center; margin-top: 20px; position: relative; }
+        [data-theme="dark"] .simulator-box { background: rgba(255,255,255,0.03); }
+        .sim-gate-select { padding: 10px; font-size: 1.2rem; border-radius: 8px; border: 2px solid var(--primary); font-family: 'Cairo'; background: var(--glass); color: var(--text); margin-bottom: 20px; outline: none; cursor: pointer; }
+        .sim-controls { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .switch-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .switch-label { font-size: 1.2rem; font-weight: bold; color: var(--text); }
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        input:disabled + .slider { opacity: 0.3; cursor: not-allowed; }
+        .output-container { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; border: 2px solid var(--border); border-radius: 15px; background: var(--header-bg); }
+        .bulb { width: 60px; height: 60px; border-radius: 50%; background: #4a5568; transition: all 0.3s ease; box-shadow: inset 0 -10px 15px rgba(0,0,0,0.5); position: relative; }
+        .bulb::after { content: ''; position: absolute; bottom: -15px; left: 15px; width: 30px; height: 15px; background: #718096; border-radius: 0 0 5px 5px; }
+        .bulb.on { background: var(--accent); box-shadow: 0 0 40px var(--accent), inset 0 -10px 15px rgba(255,255,255,0.5); }
+        .sim-result-text { font-size: 2rem; font-weight: 900; color: var(--text); }
+
+        /* ==================== Practice & Quiz ==================== */
+        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .practice-q { font-weight: bold; font-size: 1.2rem; direction: rtl; text-align: right; color: var(--primary); }
+        [dir="ltr"] .practice-q { direction: ltr; text-align: left; }
+        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-start; }
+        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: 'Cairo'; outline: none; width: 100%; max-width: 400px; background: var(--glass); color: var(--text); }
+        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
+        .feedback.correct { display: inline-block; background: rgba(56, 161, 105, 0.2); color: var(--success); }
+        .feedback.wrong { display: inline-block; background: rgba(229, 62, 62, 0.2); color: var(--error); }
+
+        .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
+        .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
+        .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
+
+        .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent-bb8: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent-bb8) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent-bb8) 0.125em, transparent 0.125em 0.188em, var(--accent-bb8) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent-bb8) 0.375em 0.938em, transparent 0.938em 1em, var(--accent-bb8) 1em 1.125em, transparent 1.125em 1.875em, var(--accent-bb8) 1.875em 2em, transparent 2em 2.063em, var(--accent-bb8) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent-bb8) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent-bb8) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent-bb8) 4% 10%, transparent 10% 90%, var(--accent-bb8) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent-bb8) 4% 10%, transparent 10% 90%, var(--accent-bb8) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent-bb8); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent-bb8) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent-bb8) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(26, 54, 93, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; } .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { --color: var(--accent); box-shadow: inset 0px 0px 32px var(--accent); }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; }
+        
+        @media (max-width: 900px) {
+            header { padding: 0 10px; }
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: center; margin: 0; }
+            .header-title { font-size: 1rem; }
+            .controls { gap: 10px; }
+            .bb8-toggle { --toggle-size: 3px; }
+            .cta-back { padding: 6px 10px; margin-right: 5px;}
+            .cta-back .span { display: none; }
+            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 75px); top: 75px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
+            aside.open { right: 0; left: auto; }
+            [dir="ltr"] aside { right: auto; left: -320px; }
+            [dir="ltr"] aside.open { right: auto; left: 0; }
+            .menu-btn { display: block; }
+            main { padding: 10px; }
+            .card { padding: 20px; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <button class="cta-back" onclick="window.location.href='../index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span" id="backBtnText">الرجوع</span>
+            </button>
+        </div>
+        
+        <div class="header-title-container">
+            <div class="header-title" id="pageTitle">البوابات المنطقية 🔌</div>
+            <div class="header-subtitle" id="pageSubTitle">Lec 2: Logic Gates</div>
+        </div>
+
+        <div class="controls">
+            <button class="lang-button" onclick="toggleLang()" id="langBtn">🇺🇸 EN</button>
+            <label class="bb8-toggle" title="Toggle Theme">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                  <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                  </div>
+                  <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                  </div>
+                  <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div style="position: relative; width: 100%;">
+                    <input placeholder="ابحث في الشرح..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                    <span id="searchIcon" style="position: absolute; right: 15px; top: 12px; opacity: 0.5;">🔍</span>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">شريحة</span>
+                <h1 id="slideHeader">العنوان</h1>
+                <div class="content" id="slideHtml"></div>
+                <div id="simulatorContainer" style="display: none;"></div>
+                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span style="position:relative; z-index:2;" id="prevText">السابق</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span style="position:relative; z-index:2;" id="nextText">التالي</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // ==========================================
+    // 1. DATA: Bilingual Slides Data (Logic Gates)
+    // ==========================================
+    const slides = [
+        {
+            title: "1. مقدمة: البوابات المنطقية",
+            title_en: "1. Intro: Logic Gates",
+            badge: "المفاهيم الأساسية",
+            badge_en: "Core Concepts",
+            content: `
+                <p><strong>البوابات المنطقية (Logic Gates):</strong></p>
+                <p>هي اللبنات الأساسية لبناء أي نظام رقمي (Digital System). تعتمد على العمليات المنطقية الأساسية (Boolean Operations) للتحكم في مرور الإشارات الكهربائية.</p>
+                <div class="method-box">
+                    <strong>💡 ملحوظة:</strong> في الأنظمة الرقمية، نتعامل مع حالتين فقط:
+                    <ul>
+                        <li><strong>HIGH (1)</strong>: وتعني وجود تيار أو إشارة صحيحة (True).</li>
+                        <li><strong>LOW (0)</strong>: وتعني عدم وجود تيار أو إشارة خاطئة (False).</li>
+                    </ul>
+                </div>
+            `,
+            content_en: `
+                <p><strong>Logic Gates:</strong></p>
+                <p>They are the basic building blocks of any digital system. They rely on Boolean operations to control the flow of electrical signals.</p>
+                <div class="method-box">
+                    <strong>💡 Note:</strong> In digital systems, we deal with only two states:
+                    <ul>
+                        <li><strong>HIGH (1)</strong>: Represents True or current ON.</li>
+                        <li><strong>LOW (0)</strong>: Represents False or current OFF.</li>
+                    </ul>
+                </div>
+            `
+        },
+        {
+            title: "2. البوابة العاكسة (NOT Gate / Inverter)",
+            title_en: "2. The Inverter (NOT Gate)",
+            badge: "البوابات الأساسية",
+            badge_en: "Basic Gates",
+            content: `
+                <p><strong>بوابة العاكس (NOT Gate):</strong> تقوم بإجراء عملية العكس (Complement). إذا كان الدخل (LOW)، يكون الخرج (HIGH)، والعكس صحيح.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">المعادلة المنطقية: X = A̅</p>
+                <table>
+                    <tr><th>الدخل (Input A)</th><th>الخرج (Output X)</th></tr>
+                    <tr><td>0 (LOW)</td><td>1 (HIGH)</td></tr>
+                    <tr><td>1 (HIGH)</td><td>0 (LOW)</td></tr>
+                </table>
+            `,
+            content_en: `
+                <p><strong>The Inverter (NOT Gate):</strong> Performs the Boolean NOT operation. When the input is LOW, the output is HIGH; when the input is HIGH, the output is LOW.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">Boolean Expression: X = A̅</p>
+                <table>
+                    <tr><th>Input A</th><th>Output X</th></tr>
+                    <tr><td>0 (LOW)</td><td>1 (HIGH)</td></tr>
+                    <tr><td>1 (HIGH)</td><td>0 (LOW)</td></tr>
+                </table>
+            `
+        },
+        {
+            title: "3. بوابة الضرب المنطقي (AND Gate)",
+            title_en: "3. The AND Gate",
+            badge: "البوابات الأساسية",
+            badge_en: "Basic Gates",
+            content: `
+                <p><strong>بوابة (AND):</strong> تُنتج مخرجاً <strong>HIGH (1)</strong> <u>فقط</u> إذا كانت <strong>جميع المداخل HIGH (1)</strong>.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">المعادلة المنطقية: X = A • B (أو X = AB)</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>X (الخرج)</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            `,
+            content_en: `
+                <p><strong>The AND Gate:</strong> Produces a <strong>HIGH</strong> output <u>only</u> when <strong>all inputs are HIGH</strong>.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">Boolean Expression: X = A • B (or X = AB)</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>Output X</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            `
+        },
+        {
+            title: "4. بوابة الجمع المنطقي (OR Gate)",
+            title_en: "4. The OR Gate",
+            badge: "البوابات الأساسية",
+            badge_en: "Basic Gates",
+            content: `
+                <p><strong>بوابة (OR):</strong> تُنتج مخرجاً <strong>HIGH (1)</strong> إذا كان <strong>أي مدخل من المداخل HIGH (1)</strong>.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">المعادلة المنطقية: X = A + B</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>X (الخرج)</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            `,
+            content_en: `
+                <p><strong>The OR Gate:</strong> Produces a <strong>HIGH</strong> output if <strong>any input is HIGH</strong>. It only produces LOW if all inputs are LOW.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">Boolean Expression: X = A + B</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>Output X</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            `
+        },
+        {
+            title: "5. بوابة العكس المدمجة (NAND Gate)",
+            title_en: "5. The NAND Gate",
+            badge: "البوابات المشتقة",
+            badge_en: "Derived Gates",
+            content: `
+                <p><strong>بوابة (NAND):</strong> هي عبارة عن بوابة AND متبوعة بـ NOT. تُنتج مخرجاً <strong>LOW (0)</strong> فقط إذا كانت <strong>جميع المداخل HIGH (1)</strong>.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">المعادلة المنطقية: X = A̅B̅ (متمم الـ AND)</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>X (الخرج)</th></tr>
+                    <tr><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td></tr>
+                </table>
+            `,
+            content_en: `
+                <p><strong>The NAND Gate:</strong> It is an AND gate followed by a NOT. Produces a <strong>LOW</strong> output only when <strong>all inputs are HIGH</strong>.</p>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--primary);">Boolean Expression: X = A̅B̅ (Complement of AND)</p>
+                <table>
+                    <tr><th>A</th><th>B</th><th>Output X</th></tr>
+                    <tr><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td></tr>
+                </table>
+            `
+        },
+        {
+            title: "6. معمل المحاكاة التفاعلي 🔬",
+            title_en: "6. Interactive Logic Simulator 🔬",
+            badge: "تطبيق عملي",
+            badge_en: "Live Coding",
+            isSimulator: true,
+            content: `
+                <p style="text-align:center; font-weight:bold; color:var(--primary);">
+                    اختر البوابة المنطقية، ثم قم بتغيير قيم المدخلات (A و B) لتشاهد كيف يتأثر المخرج (اللمبة) برمجياً في الوقت الفعلي!
+                </p>
+            `,
+            content_en: `
+                <p style="text-align:center; font-weight:bold; color:var(--primary);">
+                    Select a logic gate, then toggle the inputs (A and B) to see how the output (the bulb) reacts in real-time!
+                </p>
+            `
+        },
+        {
+            title: "7. ساحة التدريب السريعة ⚔️",
+            title_en: "7. Quick Practice Arena ⚔️",
+            badge: "تدريب عملي",
+            badge_en: "Practice",
+            isPracticeSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر معلوماتك السريعة! (أجب باسم البوابة بالإنجليزية).</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your quick knowledge! (Answer with the gate name).</p>`
+        },
+        {
+            title: "8. بنك الأسئلة الشامل 🎓",
+            title_en: "8. Comprehensive Quiz Bank 🎓",
+            badge: "مراجعة شاملة",
+            badge_en: "Review",
+            isQuizSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">تجميعة لأسئلة الامتحان المتوقعة. اضغط على السؤال لإظهار الإجابة الدقيقة.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Collection of expected exam questions. Click to reveal the precise answer.</p>`
+        }
+    ];
+
+    // ==========================================
+    // 2. DATA: Practice & Quiz (Bilingual Update)
+    // ==========================================
+    const practiceQuestions = [
+        { q_ar: "بوابة تُعطي مخرج (HIGH) فقط عندما تكون جميع المداخل (HIGH)؟", q_en: "A gate that outputs HIGH ONLY when all inputs are HIGH?", ans: "and" },
+        { q_ar: "المعادلة (X = A + B) تُمثل بوابة الـ ____؟", q_en: "The expression (X = A + B) represents the ____ gate?", ans: "or" },
+        { q_ar: "المعادلة المنطقية (X = A̅) تمثل بوابة الـ ____؟", q_en: "The expression (X = A̅) represents the ____ gate?", ans: "not" },
+        { q_ar: "بوابة تُعطي مخرج (LOW) فقط عندما تكون جميع المداخل (HIGH)؟", q_en: "A gate that outputs LOW ONLY when all inputs are HIGH?", ans: "nand" },
+        { q_ar: "بوابة تُعطي مخرج (HIGH) فقط إذا اتفقت (تطابقت) المداخل مع بعضها؟", q_en: "A gate that outputs HIGH ONLY if the inputs are identical?", ans: "xnor" }
+    ];
+
+    const solvedQuizData = [
+        { q_ar: "ماذا تعني المعادلة X = A+B؟", 
+          q_en: "The expression X = A+B means?", 
+          a_ar: "الحل: A OR B (تعبر عن الجمع المنطقي وهو عملية الـ OR).", 
+          a_en: "Answer: A OR B. The plus sign represents the OR operation." },
+        { q_ar: "بوابة ذات مدخلين تعطي خرج (HIGH) فقط عندما تكون جميع مداخلها (HIGH). ما هي؟", 
+          q_en: "A 2-input gate produces a HIGH output only when all of its inputs are HIGH. This is a(n)?", 
+          a_ar: "الحل: AND gate (بوابة الضرب المنطقي).", 
+          a_en: "Answer: AND gate. It requires all inputs to be True to output True." },
+        { q_ar: "بوابة ذات مدخلين تعطي خرج (HIGH) فقط عندما تكون مداخلها متطابقة. ما هي؟", 
+          q_en: "A 2-input gate produces a HIGH output only when the inputs agree. This type of gate is a(n)?", 
+          a_ar: "الحل: XNOR gate (بوابة التوافق، وتعطي 1 إذا كان الدخلين 0,0 أو 1,1).", 
+          a_en: "Answer: XNOR gate. It outputs HIGH only if inputs are identical." },
+        { q_ar: "الرمز (≥1) يُستخدم للتعبير عن بوابة الـ...؟", 
+          q_en: "The symbol (≥1) is for a(n)?", 
+          a_ar: "الحل: OR gate (حيث تعطي 1 إذا كان مدخل واحد أو أكثر قيمته 1).", 
+          a_en: "Answer: OR gate (Meaning 1 or more inputs are HIGH)." },
+        { q_ar: "الرمز (&) يُستخدم للتعبير عن بوابة الـ...؟", 
+          q_en: "The symbol (&) is for a(n)?", 
+          a_ar: "الحل: AND gate (بوابة التوافق الحرفي).", 
+          a_en: "Answer: AND gate." }
+    ];
+
+    // ==========================================
+    // 3. LOGIC & CONTROLLERS
+    // ==========================================
+    let idx = 0;
+    let uiLang = localStorage.getItem('globalLang') || 'ar'; 
+
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.getElementById('prevText'),
+        next: document.getElementById('nextText'),
+        sidebar: document.getElementById('sidebar'),
+        pracContainer: document.getElementById('practiceContainer'),
+        quizContainer: document.getElementById('quizContainer'),
+        simContainer: document.getElementById('simulatorContainer'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn')
+    };
+
+    function init() {
+        initGlobalSettings();
+        renderList();
+        loadSlide(0);
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            let icon = s.isSimulator ? '🔬' : (s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (i+1)));
+            let titleText = isAr ? s.title : s.title_en;
+            let shortTitle = titleText.split(':')[0].substring(0, 30); 
+            li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:1rem;">${icon}</span>`;
+            li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? s.badge : s.badge_en;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+
+        dom.pracContainer.style.display = 'none';
+        dom.quizContainer.style.display = 'none';
+        dom.simContainer.style.display = 'none';
+
+        if (s.isSimulator) {
+            dom.simContainer.style.display = 'block';
+            renderSimulator();
+        }
+        if (s.isPracticeSlide) {
+            dom.pracContainer.style.display = 'block';
+            renderPractice();
+        }
+        if (s.isQuizSlide) {
+            dom.quizContainer.style.display = 'block';
+            renderQuiz();
+        }
+
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    // ================== Simulator Logic ==================
+    function renderSimulator() {
+        const isAr = uiLang === 'ar';
+        const lblA = isAr ? "المدخل A" : "Input A";
+        const lblB = isAr ? "المدخل B" : "Input B";
+        const lblOut = isAr ? "المخرج X" : "Output X";
+        
+        dom.simContainer.innerHTML = `
+            <div class="simulator-box" dir="ltr">
+                <select id="gateSelect" class="sim-gate-select" onchange="runSim()">
+                    <option value="AND">AND Gate (A · B)</option>
+                    <option value="OR">OR Gate (A + B)</option>
+                    <option value="NOT">NOT Gate (A') - Single Input</option>
+                    <option value="NAND">NAND Gate (A · B)'</option>
+                    <option value="NOR">NOR Gate (A + B)'</option>
+                    <option value="XOR">XOR Gate (A ⊕ B)</option>
+                    <option value="XNOR">XNOR Gate (A ⊕ B)'</option>
+                </select>
+                <div class="sim-controls">
+                    <div class="switch-container">
+                        <span class="switch-label">${lblA}</span>
+                        <label class="switch"><input type="checkbox" id="simA" onchange="runSim()"><span class="slider"></span></label>
+                        <span id="valA" style="font-weight:bold; font-size:1.2rem;">0</span>
+                    </div>
+                    <div class="switch-container">
+                        <span class="switch-label">${lblB}</span>
+                        <label class="switch"><input type="checkbox" id="simB" onchange="runSim()"><span class="slider"></span></label>
+                        <span id="valB" style="font-weight:bold; font-size:1.2rem;">0</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="font-size:2rem; color:var(--primary);"></i>
+                    <div class="output-container">
+                        <span class="switch-label">${lblOut}</span>
+                        <div id="simBulb" class="bulb"></div>
+                        <span id="simOutText" class="sim-result-text">0</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        runSim();
+    }
+
+    window.runSim = function() {
+        const gate = document.getElementById('gateSelect').value;
+        const inputA = document.getElementById('simA').checked;
+        const inputB = document.getElementById('simB').checked;
+        const elB = document.getElementById('simB');
+        let output = false;
+
+        if (gate === 'NOT') {
+            elB.disabled = true; elB.checked = false; output = !inputA;
+        } else {
+            elB.disabled = false;
+            if (gate === 'AND') output = (inputA && inputB);
+            else if (gate === 'OR') output = (inputA || inputB);
+            else if (gate === 'NAND') output = !(inputA && inputB);
+            else if (gate === 'NOR') output = !(inputA || inputB);
+            else if (gate === 'XOR') output = (inputA !== inputB);
+            else if (gate === 'XNOR') output = (inputA === inputB);
+        }
+
+        document.getElementById('valA').innerText = inputA ? '1' : '0';
+        document.getElementById('valB').innerText = (gate === 'NOT') ? '-' : (inputB ? '1' : '0');
+        document.getElementById('simOutText').innerText = output ? '1' : '0';
+        
+        const bulb = document.getElementById('simBulb');
+        if (output) bulb.classList.add('on');
+        else bulb.classList.remove('on');
+    }
+
+    function renderPractice() {
+        dom.pracContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        practiceQuestions.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'practice-item';
+            let btnText = isAr ? "تحقق" : "Check";
+            let plcHolder = isAr ? "اكتب الإجابة (إنجليزي)..." : "Type answer here...";
+            let qText = isAr ? item.q_ar : item.q_en;
+            div.innerHTML = `
+                <div class="practice-q">${isAr ? 'س'+(i+1) : 'Q'+(i+1)}: ${qText}</div>
+                <div class="practice-controls">
+                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off" dir="ltr" style="text-align: left;">
+                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
+                    <span class="feedback" id="prac_fb_${i}"></span>
+                </div>
+            `;
+            dom.pracContainer.appendChild(div);
+        });
+    }
+
+    function renderQuiz() {
+        dom.quizContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        solvedQuizData.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'quiz-item';
+            let ansText = isAr ? item.a_ar : item.a_en;
+            let qText = isAr ? item.q_ar : item.q_en;
+            div.innerHTML = `
+                <div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: ${isAr ? 'rtl' : 'ltr'}; display: inline-block;">${qText}</span>
+                    <span style="font-size:1.2rem;">▼</span>
+                </div>
+                <div class="quiz-a">${ansText}</div>
+            `;
+            dom.quizContainer.appendChild(div);
+        });
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let t = isAr ? s.title.toLowerCase() : s.title_en.toLowerCase();
+            let b = isAr ? s.badge.toLowerCase() : s.badge_en.toLowerCase();
+            if(t.includes(q) || b.includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        localStorage.setItem('globalLang', uiLang);
+        applyLangStrings();
+        renderList();
+        loadSlide(idx);
+    }
+
+    function applyLangStrings() {
+        const isAr = uiLang === 'ar';
+        
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+
+        dom.langBtn.innerText = isAr ? "🇺🇸 EN" : "🇪🇬 AR";
+        document.getElementById('pageTitle').innerText = isAr ? "البوابات المنطقية 🔌" : "Logic Gates 🔌";
+        document.getElementById('pageSubTitle').innerText = isAr ? "Lec 2: Logic Gates" : "Chapter 3: Logic Gates";
+        document.getElementById('backBtnText').innerText = isAr ? "الرجوع" : "Back"; 
+        
+        dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
+        document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
+        document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+
+        dom.prev.innerText = isAr ? "السابق" : "Prev";
+        dom.next.innerText = isAr ? "التالي" : "Next";
+    }
+
+    window.checkAns = function(index, correctAns) {
+        const inputEl = document.getElementById(`prac_inp_${index}`);
+        const fbEl = document.getElementById(`prac_fb_${index}`);
+        if(!inputEl || !fbEl) return;
+        
+        const isAr = uiLang === 'ar';
+        let userAns = inputEl.value.trim().toLowerCase();
+        let targetAns = correctAns.trim().toLowerCase();
+
+        if (userAns === "") {
+            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
+            fbEl.className = "feedback wrong";
+            return;
+        }
+
+        if (userAns.includes(targetAns) || targetAns.includes(userAns)) {
+            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
+            fbEl.className = "feedback correct";
+        } else {
+            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
+            fbEl.className = "feedback wrong";
+        }
+    };
+
+    window.move = function(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    window.toggleSidebar = function() { dom.sidebar.classList.toggle('open'); }
+
+    window.toggleTheme = function() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('globalTheme', newTheme);
+        
+        const headerToggle = document.getElementById('themeCheckbox');
+        if(headerToggle) headerToggle.checked = (newTheme === 'dark');
+    }
+
+    function initGlobalSettings() {
+        const savedTheme = localStorage.getItem('globalTheme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        const headerToggle = document.getElementById('themeCheckbox');
+        if(headerToggle) headerToggle.checked = (savedTheme === 'dark');
+
+        uiLang = localStorage.getItem('globalLang') || 'ar';
+        applyLangStrings();
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>

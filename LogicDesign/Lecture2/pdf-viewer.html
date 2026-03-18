@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الـ PDF | المحاضرة الثانية</title>
+    <style>
+        /* استخدام Flexbox لتقسيم الشاشة بشكل متجاوب */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            overflow: hidden; 
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header { 
+            background: #ffffff; 
+            padding: 15px 30px; 
+            display: flex; 
+            align-items: center; 
+            /* اللون الكحلي الخاص بثيم البوابات المنطقية */
+            border-bottom: 2px solid #1a365d; 
+            flex-shrink: 0; 
+        }
+
+        .header h3 {
+            margin: 0; 
+            font-size: 1.2rem;
+            color: #2d3748;
+        }
+
+        .back-btn { 
+            background: #1a365d; /* اللون الكحلي */
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-left: 20px;
+            white-space: nowrap; 
+            transition: 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #d69e2e; /* اللون الذهبي عند مرور الماوس */
+            color: #1a365d;
+        }
+
+        .container { 
+            width: 100%; 
+            flex-grow: 1; /* جعل الحاوية تأخذ باقي مساحة الشاشة تلقائياً */
+            background: #333; 
+            position: relative;
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
+
+        /* التجاوب مع شاشات الموبايل */
+        @media (max-width: 600px) {
+            .header {
+                padding: 12px 15px; 
+            }
+            .back-btn {
+                padding: 8px 15px; 
+                font-size: 14px;
+                margin-left: 15px;
+            }
+            .header h3 {
+                font-size: 1rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">رجوع</a>
+        <h3>ماتيريال المحاضرة الثانية</h3>
+    </div>
+    <div class="container">
+        <iframe src="Lec 2 - A- Gates.pdf"></iframe>
+    </div>
+</body>
+</html>

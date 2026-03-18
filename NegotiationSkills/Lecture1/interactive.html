@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مهارات التفاوض | Negotiation Skills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- ألوان مادة مهارات التفاوض (كحلي وذهبي - Corporate Theme) --- */
+        :root {
+            --bg-gradient-light: #f8fafc;
+            --glass-bg-light: rgba(255, 255, 255, 0.95);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #1e293b;
+            --primary-light: #0f172a; /* كحلي داكن */
+            --accent-light: #d97706; /* ذهبي / برتقالي داكن */
+            --header-bg-light: #ffffff;
+            --success: #16a34a;
+            --error: #dc2626;
+
+            /* الوضع الداكن */
+            --bg-gradient-dark: #020617;
+            --glass-bg-dark: rgba(15, 23, 42, 0.95);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f8fafc;
+            --primary-dark: #cbd5e1;
+            --accent-dark: #fbbf24;
+            --header-bg-dark: #020617;
+
+            /* المتغيرات النشطة */
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* --- Header --- */
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0; }
+        .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        
+        /* زر الرجوع للمنصة */
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; width: 40%; justify-content: center; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
+
+        /* --- Language Button Animation (Type 1) --- */
+        .lang-button { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        /* --- Layout --- */
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; width: 100%; max-width: 100vw; }
+        aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; }
+        
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
+        .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
+        .search-input-styled:focus { border-color: var(--primary); }
+        [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        
+        .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+
+        main { flex: 1; padding: 20px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; width: 100%; }
+        .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Content Elements --- */
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(217, 119, 6, 0.15); color: var(--accent); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
+        .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
+        ul, ol { padding-inline-start: 20px; } li { margin-bottom: 10px; }
+        
+        .method-box { background: rgba(15, 23, 42, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; line-height: 1.8; }
+        [data-theme="dark"] .method-box { background: rgba(255, 255, 255, 0.05); }
+
+        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .practice-q { font-weight: bold; font-size: 1.2rem; direction: rtl; text-align: right; color: var(--primary); }
+        [dir="ltr"] .practice-q { direction: ltr; text-align: left; }
+        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-start; }
+        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: 'Cairo'; outline: none; width: 100%; max-width: 400px; background: var(--glass); color: var(--text); }
+        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
+        .feedback.correct { display: inline-block; background: rgba(22, 163, 74, 0.2); color: var(--success); }
+        .feedback.wrong { display: inline-block; background: rgba(220, 38, 38, 0.2); color: var(--error); }
+
+        .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
+        .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
+        .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
+
+        /* --- BB8 Toggle CSS --- */
+        .bb8-toggle { --toggle-size: 5px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(39, 97, 195, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; } .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { --color: var(--accent); box-shadow: inset 0px 0px 32px var(--accent); }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; margin-left: 10px; }
+        
+        /* ---------------------------------------------------- */
+        /* --- Media Queries (التعديلات الكاملة للريسبونسيف) --- */
+        /* ---------------------------------------------------- */
+        
+        @media (max-width: 900px) {
+            header { padding: 0 10px; height: 75px; }
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; justify-content: flex-start; overflow: hidden; width: auto; }
+            [dir="ltr"] .header-title-container { text-align: left; }
+            .header-title { font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; display: block; }
+            .header-title-container i { font-size: 1.5rem !important; }
+            
+            .controls { gap: 8px; flex-shrink: 0; }
+            .bb8-toggle { --toggle-size: 3px; }
+            .lang-button { width: 85px; height: 40px;}
+            .type1::after, .type1::before { width: 85px; height: 40px; font-size: 0.85rem; }
+            
+            aside { position: fixed; right: -100%; left: auto; height: calc(100vh - 75px); top: 75px; width: 280px; max-width: 85vw; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.4s ease, left 0.4s ease; z-index: 999; }
+            aside.open { right: 0; left: auto; }
+            [dir="ltr"] aside { right: auto; left: -100%; }
+            [dir="ltr"] aside.open { right: auto; left: 0; }
+            
+            .menu-btn { display: block; font-size: 1.6rem; margin-left: 5px; flex-shrink: 0; }
+            [dir="ltr"] .menu-btn { margin-left: 0; margin-right: 5px; }
+            .cta-back { display: none; }
+            
+            main { padding: 15px 10px; }
+            .card { padding: 20px 15px; margin-bottom: 20px; width: 100%; box-sizing: border-box; }
+            
+            .nav-actions { gap: 15px; }
+            .styled-btn { width: 110px; height: 45px; font-size: 13px; }
+            
+            .practice-controls { flex-direction: column; align-items: stretch; justify-content: stretch; }
+            .practice-input { max-width: 100%; width: 100%; box-sizing: border-box; }
+            .btn-check { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            header { height: 65px; }
+            aside { top: 65px; height: calc(100vh - 65px); }
+            .header-title-container i { display: none; } /* إخفاء الأيقونة في الشاشات الصغيرة جداً لتوفير المساحة */
+            .header-title { font-size: 0.95rem; }
+            .bb8-toggle { --toggle-size: 2.5px; }
+            .lang-button { width: 75px; height: 35px; }
+            .type1::after, .type1::before { width: 75px; height: 35px; font-size: 0.8rem; }
+            h1 { font-size: 1.35rem; }
+            .content { font-size: 1rem; }
+            .badge { font-size: 0.75rem; padding: 4px 12px; }
+            .practice-q { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-solid fa-handshake-angle" style="font-size: 2rem; color: var(--primary);"></i>
+            <div style="min-width: 0; overflow: hidden;">
+                <div class="header-title" id="pageTitle">مهارات التفاوض 🤝</div>
+                <div class="header-subtitle" id="pageSubTitle">د. نجلاء | Dr. Naglaa</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="Toggle Theme">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                  <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                  </div>
+                  <div class="bb8">
+                    <div class="bb8__head-container">
+                      <div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div>
+                    </div>
+                    <div class="bb8__body"></div>
+                  </div>
+                  <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div style="position: relative; width: 100%;">
+                    <input placeholder="ابحث في الشرح..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                    <span id="searchIcon" style="position: absolute; right: 15px; top: 12px; opacity: 0.5;">🔍</span>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">شريحة</span>
+                <h1 id="slideHeader">العنوان</h1>
+                
+                <div class="content" id="slideHtml"></div>
+
+                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span style="position:relative; z-index:2;">السابق</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span style="position:relative; z-index:2;">التالي</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // ==========================================
+    // 1. DATA: Bilingual Slides Data (Negotiation Skills - Complete Edition)
+    // ==========================================
+    const slides = [
+        {
+            title: "1. القصة من البداية (مقدمة)",
+            title_en: "1. The Story Begins (Intro)",
+            badge: "المقدمة",
+            badge_en: "Intro",
+            content: `
+                <p><strong>فن التعامل مع الآخرين:</strong></p>
+                <ul>
+                    <li>إن التعامل مع الآخرين مهارة يحتاجها جميع الأفراد العاملين في جميع المنظمات وخصوصاً المنظمات الخدمية.</li>
+                    <li>إن التفاوض بمفهومه العام ليس مجرد عملية جلوس عدد من السياسيين او رجال الأعمال حول مائدة مستديرة لمناقشة الخلافات.</li>
+                    <li>التفاوض هو <strong>فن من فنون الحياة اليومية</strong>، يحتاجه كل منا مهما كان عمره أو موقعه أو مركزه.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 الشرح والتفاصيل:</strong> فلا يمر يوم دون أن نعيش عشرات من المواقف التي نحتاج فيها إلى التفاوض (كالتفاوض مع بائع متمسك بسعره، أو شريك حياة متمسك بوجهة نظره، أو مدير متمسك بسياسته). وسواء انتهت هذه المفاوضات بالنجاح او الفشل فقليلاً ما نحاول أن نفهم السبب الحقيقى.
+                </div>
+            `,
+            content_en: `
+                <p><strong>The Art of Dealing with Others:</strong></p>
+                <ul>
+                    <li>Dealing with others is a skill needed by all individuals working in all organizations.</li>
+                    <li>Negotiation is not just politicians sitting around a roundtable to discuss differences.</li>
+                    <li>It is an <strong>art of daily life</strong> needed by everyone regardless of age, position, or status.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 Explanation:</strong> Not a day goes by without experiencing situations where we negotiate (e.g., with a stubborn seller, a partner, or a manager). Whether it succeeds or fails, we rarely analyze the true reasons.
+                </div>
+            `
+        },
+        {
+            title: "2. محاور التفاوض الثمانية",
+            title_en: "2. The 8 Axes of Negotiation",
+            badge: "المحاور",
+            badge_en: "Outline",
+            content: `
+                <p>يتم تناول موضوع التفاوض من خلال العناصر التالية بالتفصيل في هذه الدورة:</p>
+                <ol>
+                    <li>مفهوم التفاوض وصفات المفاوض الناجح.</li>
+                    <li>عناصر التفاوض الرئيسية.</li>
+                    <li>شروط التفاوض الناجح.</li>
+                    <li>خطوات الإعداد للتفاوض قبل البدء.</li>
+                    <li>استراتيجيات التفاوض المختلفة.</li>
+                    <li>المناخ التفاوضي وكيفية تهيئته.</li>
+                    <li>إدارة المساومة (تنازلات وعروض).</li>
+                    <li>حالات عملية وتطبيقية (Case Studies).</li>
+                </ol>
+            `,
+            content_en: `
+                <p>The topic of negotiation is covered comprehensively through these elements:</p>
+                <ol>
+                    <li>Concept of negotiation and traits of a successful negotiator.</li>
+                    <li>Main elements of negotiation.</li>
+                    <li>Conditions for successful negotiation.</li>
+                    <li>Preparation steps.</li>
+                    <li>Different negotiation strategies.</li>
+                    <li>The negotiation climate.</li>
+                    <li>Bargaining management (offers & concessions).</li>
+                    <li>Practical Case Studies.</li>
+                </ol>
+            `
+        },
+        {
+            title: "3. مفهوم وعناصر التفاوض",
+            title_en: "3. Concept & Elements",
+            badge: "مفاهيم أساسية",
+            badge_en: "Basic Concepts",
+            content: `
+                <p><strong>مفهوم التفاوض الرسمي:</strong><br>عبارة عن حوار وتبادل الآراء بين طرفين أو أكثر حول موضوع محدد أملا فى الوصول إلى اتفاق مقبول نسبياً لمختلف أطراف التفاوض.</p>
+                <div class="method-box">
+                    <strong>عناصر التفاوض (المستنتجة من المفهوم):</strong><br>
+                    أ- التفاوض يتم بين <strong>طرفين أو أكثر</strong>.<br>
+                    ب- هناك <strong>موضوع محدد</strong> للتفاوض (محور الخلاف).<br>
+                    ج- يسعي أطراف التفاوض لتحقيق اتفاق مقبول نسبياً (الهدف المشترك).<br>
+                    د- التفاوض يمثل عملية اتصال تسعي للوصول إلي <strong>حل وسط</strong>.
+                </div>
+            `,
+            content_en: `
+                <p><strong>Official Concept:</strong><br>A dialogue and exchange of opinions between two or more parties regarding a specific subject to reach a relatively acceptable agreement.</p>
+                <div class="method-box">
+                    <strong>Key Elements:</strong><br>
+                    A- Involves <strong>two or more parties</strong>.<br>
+                    B- There is a <strong>specific subject</strong> (the core issue).<br>
+                    C- Parties seek a mutually acceptable agreement.<br>
+                    D- It's a communication process aiming for a <strong>compromise</strong>.
+                </div>
+            `
+        },
+        {
+            title: "4. صفات المفاوض الناجح (جزء 1)",
+            title_en: "4. Traits of a Negotiator (Part 1)",
+            badge: "المهارات",
+            badge_en: "Skills",
+            content: `
+                <p><strong>1) اللباقة والقدرة على الحوار:</strong></p>
+                <ul>
+                    <li>عدم مقاطعة الطرف الآخر.</li>
+                    <li>حسن الاستماع والإنصات بعناية.</li>
+                    <li>احترام المفاوض الأخر واحترام عقول الآخرين.</li>
+                    <li>ألا تشعر الطرف الأخر بأنك من خصومه (أنت لست في معركة).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>2) القدرة على الإقناع:</strong><br>
+                    تعتمد على (أ) <strong>توافر المعلومات</strong> لتصور الحلول، (ب) <strong>التدريب</strong> ليقتنع الطرف الآخر أنه على حق، (ج) <strong>الصدق</strong> لأنه أقصر الطرق للإقناع وبناء الثقة.
+                </div>
+            `,
+            content_en: `
+                <p><strong>1) Tact and Dialogue Ability:</strong></p>
+                <ul>
+                    <li>Never interrupt the other party.</li>
+                    <li>Listen attentively.</li>
+                    <li>Respect the other negotiator's intellect.</li>
+                    <li>Do not make them feel like you are enemies (it's not a war).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>2) Ability to Persuade:</strong><br>
+                    Depends on (a) <strong>Information</strong> to build solutions, (b) <strong>Training</strong> to make them feel right, and (c) <strong>Honesty</strong> as the shortest path to trust.
+                </div>
+            `
+        },
+        {
+            title: "5. صفات المفاوض الناجح (جزء 2)",
+            title_en: "5. Traits of a Negotiator (Part 2)",
+            badge: "المهارات",
+            badge_en: "Skills",
+            content: `
+                <p><strong>3) القدرة على الإنصات:</strong></p>
+                <p>يحقق فوائد متعددة: التعرف علي وجهة نظر الطرف الأخر، استيعاب طريقة تفكيره، وإعطاء انطباع بالاحترام.</p>
+                <p><strong>4) التحلي بالهدوء وضبط النفس:</strong></p>
+                <p>الشخص الهادئ يستطيع أن يكتسب ثقة واحترام الآخرين ويقلل من توتر الجلسة.</p>
+                <div class="method-box">
+                    <strong>5) الموضوعية (Objectivity):</strong> عدم التحيز والإيمان بأن كل طرف له مصالح مشروعة.<br><br>
+                    <strong>6) القدرة على تنمية البدائل (Alternatives):</strong> يجب ألا يكون المفاوض أسيراً لخيار واحد، بل يجهز خططاً بديلة (Plan B, C).
+                </div>
+            `,
+            content_en: `
+                <p><strong>3) Active Listening:</strong></p>
+                <p>Identifies the other's perspective, understands their thinking, and shows respect.</p>
+                <p><strong>4) Calmness and Self-Control:</strong></p>
+                <p>A calm person gains trust and reduces tension during the session.</p>
+                <div class="method-box">
+                    <strong>5) Objectivity:</strong> Acknowledging that every party has legitimate interests.<br><br>
+                    <strong>6) Developing Alternatives:</strong> Never be held captive by a single option; always have a Plan B and C.
+                </div>
+            `
+        },
+        {
+            title: "6. صفات المفاوض الناجح (جزء 3)",
+            title_en: "6. Traits of a Negotiator (Part 3)",
+            badge: "المهارات",
+            badge_en: "Skills",
+            content: `
+                <p><strong>7) مهارة إدارة المعلومات:</strong> خروج المعلومات يجب أن يكون مدروساً ومحسوباً وليس عشوائياً.</p>
+                <p><strong>8) القدرة على التجديد والابتكار:</strong> اتباع أسلوب واحد محفوظ يعتبر فاشلاً.</p>
+                <div class="method-box">
+                    <strong>9) القوة التفاوضية:</strong><br>
+                    يستمد المفاوض قوته من: الشراء بكميات كبيرة (للمشتري)، أو تعدد البدائل، أو متانة المركز المالي.
+                </div>
+                <p><strong>10) التعاون وتطوير العلاقات:</strong></p>
+                <p>التعاون يساعد في النجاح، وإقامة علاقات طيبة وطرح بدائل تتفق مع قيم الطرف الآخر تضمن صفقة رابحة للطرفين (Win-Win).</p>
+            `,
+            content_en: `
+                <p><strong>7) Information Management:</strong> Releasing info must be deliberate, not random.</p>
+                <p><strong>8) Innovation:</strong> Sticking to a single robotic style is a failure.</p>
+                <div class="method-box">
+                    <strong>9) Negotiation Power:</strong><br>
+                    Derived from volume (for buyers), multiple alternatives, or financial strength.
+                </div>
+                <p><strong>10) Cooperation & Relationships:</strong></p>
+                <p>Cooperation and proposing value-aligned alternatives ensure a Win-Win deal.</p>
+            `
+        },
+        {
+            title: "7. أنماط المفاوضين الأساسية (هام جداً)",
+            title_en: "7. Negotiator Personalities (Very Important)",
+            badge: "إثراء معرفي 💡",
+            badge_en: "Extra Knowledge 💡",
+            content: `
+                <p>يوجد 4 أنماط رئيسية للمفاوضين يجب أن تتعرف عليهم فور جلوسك على الطاولة:</p>
+                <ul>
+                    <li><strong>1. المُنافِس (The Competitor - القفل):</strong> يرى التفاوض كمعركة يجب أن ينتصر فيها. عدواني، يتمسك برأيه، ويسعى للخسارة للطرف الآخر.</li>
+                    <li><strong>2. المُتعاوِن (The Collaborator - البناء):</strong> يبحث عن حلول مبتكرة ترضي الجميع (Win-Win). يركز على المشكلة وليس الأشخاص.</li>
+                    <li><strong>3. المُتجنِب (The Avoider - المتهرب):</strong> يكره الصراعات، يميل لتأجيل القرارات أو الانسحاب إذا زاد الضغط.</li>
+                    <li><strong>4. المُتَنازِل (The Accommodator - المضحي):</strong> يتنازل بسهولة عن حقوقه للحفاظ على العلاقة الشخصية مع الطرف الآخر.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 الخلاصة:</strong> أفضل نمط هو "المتعاون"، ولكن يجب أن تمتلك بعضاً من صفات "المنافس" لتحمي نفسك من الاستغلال!
+                </div>
+            `,
+            content_en: `
+                <p>There are 4 main negotiator personalities you must identify at the table:</p>
+                <ul>
+                    <li><strong>1. The Competitor:</strong> Sees negotiation as a war to win. Aggressive, stubborn, seeks Win/Lose.</li>
+                    <li><strong>2. The Collaborator:</strong> Seeks creative solutions to satisfy everyone (Win-Win). Focuses on problems, not people.</li>
+                    <li><strong>3. The Avoider:</strong> Hates conflicts. Tends to delay decisions or withdraw under pressure.</li>
+                    <li><strong>4. The Accommodator:</strong> Easily yields their rights to maintain personal relationships.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 Conclusion:</strong> The best style is 'Collaborator', but you must have some 'Competitor' traits to protect yourself from exploitation!
+                </div>
+            `
+        },
+        {
+            title: "8. الموقف التفاوضي (ديناميكية التفاوض)",
+            title_en: "8. The Negotiation Situation",
+            badge: "عناصر التفاوض",
+            badge_en: "Elements",
+            content: `
+                <p><strong>عناصر التفاوض الرئيسية تبدأ بـ "الموقف التفاوضي":</strong></p>
+                <ul>
+                    <li>يعد التفاوض <strong>موقف ديناميكي (حركي)</strong> يقوم على الفعل ورد الفعل إيجاباً وسلباً، وتأثير أو تأثراً.</li>
+                    <li>والتفاوض <strong>موقف مرن</strong> يتطلب قدرات هائلة للتكيف السريع والمستمر، وللمواءمة الكاملة مع المتغيرات.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 الشرح:</strong> لا يمكنك الدخول للتفاوض بخطة جامدة 100%. إذا غضب الطرف الآخر أو قدم عرضاً مفاجئاً، يجب أن تمتلك "المرونة" لتغيير تكتيكك فوراً واستيعاب الصدمة.
+                </div>
+            `,
+            content_en: `
+                <p><strong>The first element is the "Negotiation Situation":</strong></p>
+                <ul>
+                    <li>It's a <strong>dynamic situation</strong> based on action, reaction, positive/negative influences.</li>
+                    <li>It's a <strong>flexible situation</strong> requiring rapid adaptation to variables.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 Explanation:</strong> You cannot enter with a rigid 100% plan. If the other party gets angry or makes a surprise offer, you must have the "flexibility" to pivot tactics instantly.
+                </div>
+            `
+        },
+        {
+            title: "9. شروط التفاوض (متى نتفاوض؟)",
+            title_en: "9. Conditions of Negotiation",
+            badge: "شروط أساسية",
+            badge_en: "Conditions",
+            content: `
+                <p>لكي يكون هناك معنى لعملية التفاوض، يجب توافر الشروط التالية:</p>
+                <ol>
+                    <li><strong>الاعتماد المتبادل:</strong> يجب أن يكون هناك احتياج متبادل بين الطرفين. لو كنت لا أحتاجك تماماً، فلن أتفاوض معك.</li>
+                    <li><strong>وجود صراع أو اختلاف:</strong> التفاوض يحل مشكلة، إذا كنا متفقين سلفاً، فلا داعي للتفاوض.</li>
+                    <li><strong>الرغبة في الوصول لاتفاق:</strong> نية الطرفين يجب أن تكون مخلصة لإيجاد حل، وليس لتضييع الوقت.</li>
+                    <li><strong>السلطة والصلاحية:</strong> يجب أن تتفاوض مع الشخص الذي يملك "قرار" الموافقة، وليس مجرد وسيط لا يملك سلطة.</li>
+                </ol>
+            `,
+            content_en: `
+                <p>For negotiation to make sense, these conditions must be met:</p>
+                <ol>
+                    <li><strong>Interdependence:</strong> Both parties must need something from each other.</li>
+                    <li><strong>Conflict/Difference:</strong> Negotiation solves a problem; if there's no disagreement, there's no negotiation.</li>
+                    <li><strong>Desire to reach an agreement:</strong> Both must have genuine intentions to solve the issue.</li>
+                    <li><strong>Authority:</strong> You must negotiate with the decision-maker, not just a messenger without power.</li>
+                </ol>
+            `
+        },
+        {
+            title: "10. خطوات الإعداد: تحديد الأهداف والـ BATNA",
+            title_en: "10. Prep: Objectives & BATNA",
+            badge: "مرحلة التحضير",
+            badge_en: "Preparation",
+            content: `
+                <p>التحضير يمثل 80% من نجاح التفاوض. يجب تقسيم أهدافك إلى ثلاثة مستويات:</p>
+                <ul>
+                    <li><strong>الهدف المثالي:</strong> أفضل نتيجة تحلم بتحقيقها.</li>
+                    <li><strong>الهدف المقبول:</strong> النتيجة الواقعية التي ترضيك.</li>
+                    <li><strong>الحد الأدنى:</strong> الخط الأحمر الذي ستنسحب عنده.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 مفهوم الـ BATNA (البديل الأفضل لاتفاق تفاوضي):</strong><br>
+                    وهو (Best Alternative to a Negotiated Agreement). هو خطتك البديلة الجاهزة للتنفيذ إذا فشلت هذه المفاوضات وانتهت بانسحابك. <strong>كلما كان بديلك قوياً، زادت قوتك التفاوضية!</strong>
+                </div>
+            `,
+            content_en: `
+                <p>Preparation is 80% of success. Divide your goals into three levels:</p>
+                <ul>
+                    <li><strong>Ideal Goal:</strong> The best possible outcome you dream of.</li>
+                    <li><strong>Acceptable Goal:</strong> The realistic outcome that satisfies you.</li>
+                    <li><strong>Minimum Limit:</strong> The red line where you walk away.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>💡 The concept of BATNA:</strong><br>
+                    (Best Alternative to a Negotiated Agreement). Your backup plan if negotiations fail. <strong>The stronger your BATNA, the more negotiation power you hold!</strong>
+                </div>
+            `
+        },
+        {
+            title: "11. منطقة الاتفاق المحتملة (ZOPA)",
+            title_en: "11. Zone of Possible Agreement (ZOPA)",
+            badge: "إثراء معرفي 💡",
+            badge_en: "Extra Knowledge 💡",
+            content: `
+                <p>لتحقيق صفقة ناجحة، يجب أن تتلاقى طموحات البائع والمشتري في منطقة مشتركة تُسمى <strong>ZOPA</strong>:</p>
+                <ul>
+                    <li><strong>البائع:</strong> يطلب 100 ألف (الهدف المثالي)، ولن يقبل بأقل من 80 ألف (الحد الأدنى).</li>
+                    <li><strong>المشتري:</strong> يريد الشراء بـ 70 ألف (الهدف المثالي)، وأقصى مبلغ سيدفعه هو 90 ألف (الحد الأقصى).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>🎯 منطقة التقاطع (ZOPA):</strong> هنا تقع بين الـ <strong>80 ألف</strong> (أقل رقم يقبله البائع) والـ <strong>90 ألف</strong> (أعلى رقم يدفعه المشتري). أي رقم في هذا النطاق (مثلاً 85 ألف) سيؤدي إلى إتمام الصفقة!
+                </div>
+            `,
+            content_en: `
+                <p>For a successful deal, buyer and seller ambitions must overlap in the <strong>ZOPA</strong>:</p>
+                <ul>
+                    <li><strong>Seller:</strong> Asks for 100k (Ideal), won't accept less than 80k (Minimum).</li>
+                    <li><strong>Buyer:</strong> Wants to buy at 70k (Ideal), maximum they will pay is 90k (Maximum).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>🎯 The ZOPA (Overlap Zone):</strong> It lies between <strong>80k</strong> (Seller's floor) and <strong>90k</strong> (Buyer's ceiling). Any number in this range (e.g., 85k) will close the deal!
+                </div>
+            `
+        },
+        {
+            title: "12. استراتيجيات التفاوض (Win-Win)",
+            title_en: "12. Strategies (Win-Win)",
+            badge: "الاستراتيجيات",
+            badge_en: "Strategies",
+            content: `
+                <p>أهم استراتيجية وأكثرها استدامة هي <strong>مكسب / مكسب (Win / Win)</strong>:</p>
+                <ul>
+                    <li><strong>المبدأ:</strong> نحن شركاء نبحث عن حل يكبر حجم "الكعكة" بدلاً من التقاتل على شريحة واحدة.</li>
+                    <li><strong>الهدف:</strong> خروج كلا الطرفين وهما يشعران بالرضا، مما يضمن استمرار العلاقات التجارية أو الشخصية في المستقبل.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>كيف نحققها؟</strong> بالبحث عن "الاحتياجات الخفية". قد يكون البائع متمسكاً بالسعر المرتفع لأنه يتحمل تكلفة النقل. يمكنك عرض دفع تكلفة النقل مقابل خفض السعر، هنا فاز كلا الطرفين!
+                </div>
+            `,
+            content_en: `
+                <p>The most important and sustainable strategy is <strong>Win / Win</strong>:</p>
+                <ul>
+                    <li><strong>Principle:</strong> We are partners expanding the "pie" rather than fighting over a single slice.</li>
+                    <li><strong>Goal:</strong> Both parties leave satisfied, ensuring future business/personal relationships.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>How to achieve it?</strong> Look for hidden interests. A seller might insist on a high price due to shipping costs. You offer to cover shipping in exchange for a lower price—both win!
+                </div>
+            `
+        },
+        {
+            title: "13. تهيئة المناخ التفاوضي",
+            title_en: "13. The Negotiation Climate",
+            badge: "إدارة الجلسة",
+            badge_en: "Session Management",
+            content: `
+                <p><strong>المكان والزمان لهما تأثير نفسي خطير:</strong></p>
+                <ol>
+                    <li><strong>التفاوض في ملعبك:</strong> التفاوض في مكتبك يعطيك راحة نفسية، وسيطرة على الموارد والمقاطعات، ويشعر الطرف الآخر بالرهبة.</li>
+                    <li><strong>التفاوض في أرض محايدة:</strong> (فندق أو مطعم) يعطي شعوراً بالمساواة والود والابتعاد عن الرسميات.</li>
+                    <li><strong>الجلوس:</strong> الجلوس وجهاً لوجه يعطي إيحاءً بـ "التنافس" و"التحقيق"، بينما الجلوس بجوار بعضكم البعض أو على طاولة دائرية يوحي بـ "التعاون" و"حل المشكلات".</li>
+                </ol>
+            `,
+            content_en: `
+                <p><strong>Time and Location have a massive psychological impact:</strong></p>
+                <ol>
+                    <li><strong>Home Turf:</strong> Negotiating in your office gives comfort, control, and intimidates the other party.</li>
+                    <li><strong>Neutral Ground:</strong> (Hotel/Restaurant) promotes equality, friendliness, and informality.</li>
+                    <li><strong>Seating:</strong> Face-to-face implies "competition/interrogation", while sitting side-by-side or at a round table implies "cooperation/problem-solving".</li>
+                </ol>
+            `
+        },
+        {
+            title: "14. إدارة المساومة (التنازلات)",
+            title_en: "14. Bargaining (Concessions)",
+            badge: "إدارة الجلسة",
+            badge_en: "Session Management",
+            content: `
+                <p>كيف تدير <strong>لعبة التنازلات</strong> بذكاء؟</p>
+                <div class="method-box">
+                    <strong>القاعدة الذهبية:</strong> لا تقدم تنازلاً <strong>أبداً</strong> دون الحصول على شيء في المقابل (إذا وافقت على خفض السعر، يجب أن تشترط الدفع النقدي الفوري).<br><br>
+                    <strong>حجم التنازل:</strong> اجعل تنازلاتك تتناقص تدريجياً. (مثلاً: خصم 10% ➔ ثم خصم 5% ➔ ثم 1%). هذا يرسل رسالة للطرف الآخر بأنك "وصلت للحد الأقصى" ولم يعد لديك ما تقدمه.
+                </div>
+            `,
+            content_en: `
+                <p>How to smartly manage the <strong>Concession Game</strong>?</p>
+                <div class="method-box">
+                    <strong>Golden Rule:</strong> NEVER make a concession without getting something in return (If I lower the price, you must pay in cash today).<br><br>
+                    <strong>Concession Size:</strong> Taper your concessions. (e.g., 10% discount ➔ then 5% ➔ then 1%). This signals you are "hitting the bottom" and have no more room to give.
+                </div>
+            `
+        },
+        {
+            title: "15. حالة عملية (الموظفة والمدير)",
+            title_en: "15. Case Study (Employee & Boss)",
+            badge: "دراسة حالة",
+            badge_en: "Case Study",
+            content: `
+                <p><strong>نص المحادثة من الكتاب (صـ 54-56):</strong></p>
+                <p>استطاعت الموظفة أن تشير لموضوع العلاوة بذكاء:<br>
+                <strong>الموظفة:</strong> "أنا أعرف تماماً أنه لا مجال للتفكير في أي علاوة في الوقت الحالي، ولكن في حالة نجاحي في خفض التكاليف.. هل هناك احتمال لتعويضي من الأموال التي سأوفرها (في حدود الميزانية)؟"<br>
+                <strong>المدير:</strong> "لست واثقاً من نجاح كل ذلك."<br>
+                <strong>الموظفة:</strong> "لماذا لا نتفق على منحي نوعاً من الحوافز في حالة تحقيقي التوفير المطلوب؟"</p>
+                <div class="method-box">
+                    <strong>التحليل:</strong> لقد بنت الموظفة "جسراً ذهبياً" لرئيسها. لم تطلب مالاً من ميزانية الشركة، بل اقترحت "مشاركة" في الأموال التي ستوفرها هي بنفسها (Win-Win).
+                </div>
+            `,
+            content_en: `
+                <p><strong>Dialogue excerpt (Pages 54-56):</strong></p>
+                <p>The employee smoothly introduces a raise:<br>
+                <strong>Employee:</strong> "I know there's no room for a raise right now, but if I succeed in cutting costs... is there a possibility of compensating me from the money I save?"<br>
+                <strong>Boss:</strong> "I'm not sure you can succeed."<br>
+                <strong>Employee:</strong> "Why don't we agree to give me an incentive ONLY if I achieve the required savings?"</p>
+                <div class="method-box">
+                    <strong>Analysis:</strong> She built a "Golden Bridge". She didn't demand current budget money; she proposed sharing the future money she creates (Win-Win).
+                </div>
+            `
+        },
+        {
+            title: "16. تكتيكات التفاوض (1): الشرطي الطيب والشرير",
+            title_en: "16. Tactics (1): Good Cop/Bad Cop",
+            badge: "تكتيكات الضغط",
+            badge_en: "Tactics",
+            content: `
+                <p><strong>تكتيك الشرطي الطيب والشرطي الشرير (Good Cop / Bad Cop):</strong></p>
+                <ul>
+                    <li><strong>الشرير:</strong> يتخذ موقفاً متصلباً، يغضب، يرفض كل العروض، ويطالب بشروط تعجيزية.</li>
+                    <li><strong>الطيب:</strong> يتدخل لتهدئة الأوضاع، ويطلب منك تقديم "تنازل بسيط" ليقنع به زميله الشرير.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>كيف تتعامل معه؟ (Counter-Tactic):</strong> اكشف اللعبة بابتسامة! قل لهم: "يبدو أنكم تستخدمون أسلوب الشرطي الطيب والشرير معي، دعونا نعود للتفاوض بموضوعية بناءً على أرقام السوق."
+                </div>
+            `,
+            content_en: `
+                <p><strong>Good Cop / Bad Cop Tactic:</strong></p>
+                <ul>
+                    <li><strong>Bad Cop:</strong> Takes a rigid stance, gets angry, rejects offers, and makes extreme demands.</li>
+                    <li><strong>Good Cop:</strong> Steps in to "help", asking you for a "small concession" to calm their partner.</li>
+                </ul>
+                <div class="method-box">
+                    <strong>How to counter it?</strong> Call it out with a smile! Say: "It feels like you guys are playing good cop/bad cop. Let's get back to objective market numbers."
+                </div>
+            `
+        },
+        {
+            title: "17. كيفية التعامل مع المفاوض المتعنت؟",
+            title_en: "17. Handling Aggressive Negotiators",
+            badge: "إثراء معرفي 💡",
+            badge_en: "Extra Knowledge 💡",
+            content: `
+                <p>إذا كان الطرف الآخر يرفع صوته، يرفض كل شيء، ويستخدم أسلوباً عدوانياً (المفاوض المتعنت):</p>
+                <ul>
+                    <li><strong>1. لا ترد الهجوم بهجوم:</strong> إذا غضبت، سيتحول التفاوض إلى شجار شخصي. التزم الهدوء التام.</li>
+                    <li><strong>2. تجاهل المواقف وركز على المصالح:</strong> اسأله: "أنا أتفهم غضبك، ولكن ما هو السبب الحقيقي لرفضك هذا البند؟"</li>
+                    <li><strong>3. استخدم "الصمت التكتيكي":</strong> عندما يهاجمك بصوت عالٍ، انظر إليه بثبات ولا تتحدث. الصمت يجعله يشعر بالإحراج ويضطره لملء الفراغ بتبريرات.</li>
+                </ul>
+            `,
+            content_en: `
+                <p>If the other party raises their voice, rejects everything, and uses an aggressive style:</p>
+                <ul>
+                    <li><strong>1. Don't counter-attack:</strong> If you get angry, it becomes a personal fight. Stay absolutely calm.</li>
+                    <li><strong>2. Ignore positions, focus on interests:</strong> Ask: "I understand your frustration, but what is the real reason you reject this clause?"</li>
+                    <li><strong>3. Use 'Tactical Silence':</strong> When they attack loudly, look at them steadily and stay quiet. Silence makes them uncomfortable and forces them to justify.</li>
+                </ul>
+            `
+        },
+        {
+            title: "18. تكتيكات التفاوض (2): السقف العالي",
+            title_en: "18. Tactics (2): Highball / Lowball",
+            badge: "تكتيكات الضغط",
+            badge_en: "Tactics",
+            content: `
+                <p><strong>تكتيك السقف العالي / المنخفض (Highball / Lowball):</strong></p>
+                <p>أن يبدأ الطرف الآخر بعرض افتتاحي سخيف أو مبالغ فيه جداً (أعلى أو أقل بكثير من القيمة الحقيقية).</p>
+                <ul>
+                    <li><strong>الهدف:</strong> إحداث "صدمة" نفسية لك، لخفض توقعاتك، وجعلك تشك في تقييمك للأمور (إرساء نقطة ارتكاز وهمية).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>كيف تتعامل معه؟</strong> لا تقدم عرضاً مضاداً أبداً! ارفض العرض فوراً واطلب منهم العودة بعرض منطقي ومدروس قبل استئناف التفاوض.
+                </div>
+            `,
+            content_en: `
+                <p><strong>Highball / Lowball Tactic:</strong></p>
+                <p>Starting with a ridiculously extreme opening offer (way too high or too low).</p>
+                <ul>
+                    <li><strong>Goal:</strong> To shock you, lower your expectations, and make you doubt your valuation (setting a fake anchor).</li>
+                </ul>
+                <div class="method-box">
+                    <strong>How to counter it?</strong> NEVER make a counter-offer to a ridiculous number! Reject it immediately and ask them to return with a serious, justifiable offer.
+                </div>
+            `
+        },
+        {
+            title: "19. لغة الجسد في التفاوض",
+            title_en: "19. Body Language in Negotiation",
+            badge: "التواصل غير اللفظي",
+            badge_en: "Non-verbal",
+            content: `
+                <p>أكثر من 60% من رسالتك تصل عبر لغة جسدك، وليس كلماتك:</p>
+                <ul>
+                    <li><strong>التواصل البصري (Eye Contact):</strong> يدل على الثقة والصدق. التهرب من النظر يدل على إخفاء شيء أو الضعف.</li>
+                    <li><strong>المقاطعة بالأذرع (Crossed Arms):</strong> تدل على الرفض الداخلي، الدفاعية، أو عدم تقبل العرض.</li>
+                    <li><strong>الميل للأمام (Leaning Forward):</strong> يدل على الاهتمام، والانخراط الإيجابي في الصفقة.</li>
+                    <li><strong>لمس الوجه أو الأنف (Touching Nose):</strong> غالباً ما يكون مؤشراً على التردد أو عدم قول الحقيقة كاملة.</li>
+                </ul>
+            `,
+            content_en: `
+                <p>Over 60% of your message is delivered through body language, not words:</p>
+                <ul>
+                    <li><strong>Eye Contact:</strong> Shows confidence and honesty. Avoiding it signals hiding something or weakness.</li>
+                    <li><strong>Crossed Arms:</strong> Indicates internal rejection, defensiveness, or not accepting the offer.</li>
+                    <li><strong>Leaning Forward:</strong> Shows interest and positive engagement in the deal.</li>
+                    <li><strong>Touching Nose/Face:</strong> Often an indicator of hesitation or not telling the whole truth.</li>
+                </ul>
+            `
+        },
+        {
+            title: "20. المأزق التفاوضي (Deadlock)",
+            title_en: "20. The Deadlock",
+            badge: "إدارة الأزمات",
+            badge_en: "Crisis Mgt",
+            content: `
+                <p><strong>ما هو المأزق (Deadlock)؟</strong></p>
+                <p>هو وصول المفاوضات إلى "طريق مسدود"، حيث يرفض كل طرف تقديم أي تنازلات إضافية، وتتوقف المحادثات تماماً.</p>
+                <p><strong>أسباب المأزق:</strong></p>
+                <ul>
+                    <li>التمسك المبالغ فيه بالمواقف بدلاً من المصالح.</li>
+                    <li>العناد الشخصي أو الكبرياء.</li>
+                    <li>الخوف من الظهور بمظهر "الضعيف" أمام الإدارة العليا.</li>
+                </ul>
+            `,
+            content_en: `
+                <p><strong>What is a Deadlock?</strong></p>
+                <p>When negotiations reach a "dead end," where neither party is willing to make further concessions, and talks completely stall.</p>
+                <p><strong>Causes of Deadlock:</strong></p>
+                <ul>
+                    <li>Extreme attachment to 'positions' rather than 'interests'.</li>
+                    <li>Personal stubbornness or pride.</li>
+                    <li>Fear of looking "weak" to upper management.</li>
+                </ul>
+            `
+        },
+        {
+            title: "21. طرق كسر المأزق التفاوضي",
+            title_en: "21. Breaking the Deadlock",
+            badge: "إدارة الأزمات",
+            badge_en: "Crisis Mgt",
+            content: `
+                <p>كيف نعيد الحياة لمفاوضات ماتت؟</p>
+                <div class="method-box">
+                    <strong>1. تغيير بيئة التفاوض:</strong> أخذ استراحة للقهوة، أو تغيير الغرفة، أو تأجيل الجلسة للغد.<br>
+                    <strong>2. تغيير المفاوضين:</strong> استبدال الأشخاص لكسر الحاجز النفسي والعداء الشخصي الذي حدث.<br>
+                    <strong>3. تجزئة المشكلة (Salami Technique):</strong> إذا اختلفنا على السعر الإجمالي، دعونا نتفق أولاً على موعد التسليم، ثم الجودة، ونترك السعر للنهاية.<br>
+                    <strong>4. إدخال طرف ثالث (وسيط):</strong> الاستعانة بخبير محايد لتقريب وجهات النظر.
+                </div>
+            `,
+            content_en: `
+                <p>How do we revive dead negotiations?</p>
+                <div class="method-box">
+                    <strong>1. Change the Environment:</strong> Take a coffee break, change rooms, or postpone to tomorrow.<br>
+                    <strong>2. Change the Negotiators:</strong> Swap people to break personal animosity or ego clashes.<br>
+                    <strong>3. Slice the Problem (Salami Technique):</strong> If we disagree on the total price, let's agree on delivery dates first, then quality, leaving price for last.<br>
+                    <strong>4. Bring in a Mediator:</strong> Use a neutral third-party expert to bridge the gap.
+                </div>
+            `
+        },
+        {
+            title: "22. حالة عملية: لغز البرتقالة الشهير",
+            title_en: "22. Case Study: The Orange",
+            badge: "دراسة حالة",
+            badge_en: "Case Study",
+            content: `
+                <p><strong>شقيقتان تتشاجران على برتقالة واحدة متبقية!</strong></p>
+                <p>الأم تدخلت وقامت بقطع البرتقالة نصفين (حل وسطي / Compromise). أخذت كل فتاة نصف برتقالة.</p>
+                <ul>
+                    <li>الفتاة الأولى عصرت النصف الذي أخذته وشربت العصير، ورمت القشر.</li>
+                    <li>الفتاة الثانية أخذت القشر لتبشرة وتضعه على "الكيك"، ورمت اللب!</li>
+                </ul>
+                <div class="method-box">
+                    <strong>الدرس المستفاد (أهمية الاستكشاف):</strong> لو سألت الأم كل فتاة "لماذا" تريدين البرتقالة؟ (اكتشاف الاحتياجات)، لحصلت الأولى على كل العصير، وحصلت الثانية على كل القشر (Win-Win)، بدلاً من إهدار 50% من الموارد!
+                </div>
+            `,
+            content_en: `
+                <p><strong>Two sisters fighting over the last orange!</strong></p>
+                <p>The mother intervenes and cuts it in half (Compromise). Each gets half.</p>
+                <ul>
+                    <li>Sister A squeezed her half for juice and threw away the peel.</li>
+                    <li>Sister B grated the peel for a cake and threw away the pulp!</li>
+                </ul>
+                <div class="method-box">
+                    <strong>The Lesson (Importance of Exploration):</strong> If the mother had asked "WHY" they wanted it (exploring needs), Sister A would get 100% of the juice, and Sister B 100% of the peel (Win-Win), instead of wasting 50% of the resources!
+                </div>
+            `
+        },
+        {
+            title: "23. ساحة التدريب والمحاكاة ⚔️",
+            title_en: "23. Practice Arena ⚔️",
+            badge: "تطبيق عملي",
+            badge_en: "Practice",
+            isPracticeSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">هل استوعبت أسرار التفاوض؟ اكتب الكلمة الصحيحة في الفراغ لتختبر نفسك!</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Did you grasp the negotiation secrets? Type the correct word to test yourself!</p>`
+        },
+        {
+            title: "24. بنك الأسئلة الشامل (محلول) 🎓",
+            title_en: "24. Comprehensive Quiz Bank 🎓",
+            badge: "مراجعة شاملة",
+            badge_en: "Review",
+            isQuizSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">بنك أسئلة يلخص المحاضرة بالكامل. اضغط على السؤال لإظهار الإجابة الدقيقة.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">A quiz bank summarizing the entire lecture. Click the question to reveal the precise answer.</p>`
+        }
+    ];
+
+    const practiceQuestions = [
+        { q: "ما هو أقصر طريق للإقناع أثناء التفاوض وبناء الثقة؟", ans: "الصدق" },
+        { q: "المنطقة المشتركة التي تتلاقى فيها طموحات البائع والمشتري تسمى ______.", ans: "ZOPA" },
+        { q: "أفضل استراتيجية لبناء علاقات طويلة الأمد هي مكسب / _____.", ans: "مكسب" },
+        { q: "لا تقدم _____ أبداً دون الحصول على شيء في المقابل.", ans: "تنازل" },
+        { q: "بديلك الأفضل في حالة فشل المفاوضات يطلق عليه اختصار ______.", ans: "BATNA" }
+    ];
+
+    const solvedQuizData = [
+        { q_en: "هل التفاوض يقتصر على السياسيين ورجال الأعمال فقط؟", 
+          a_ar: "لا، التفاوض ليس مجرد جلوس السياسيين، بل هو فن من فنون الحياة اليومية نحتاجه جميعاً مهما كان عمرنا أو موقعنا.", 
+          a_en: "No, negotiation is an art of daily life needed by everyone, not just politicians." },
+        { q_en: "ما هو الهدف الأساسي من عملية التفاوض؟", 
+          a_ar: "الوصول إلى اتفاق مقبول نسبياً لمختلف أطراف التفاوض (حل وسط يرضي الجميع).", 
+          a_en: "To reach an agreement that is relatively acceptable to all negotiating parties (a compromise)." },
+        { q_en: "ما هي مصادر قوة المشتري (المفاوض) أثناء التفاوض؟", 
+          a_ar: "يستمد قوته من: الشراء بكميات كبيرة، تعدد مصادر التوريد (البدائل)، ومتانة المركز المالي.", 
+          a_en: "Power comes from: bulk purchasing, multiple supply sources, and a solid financial position." },
+        { q_en: "لماذا يجب أن يمتلك المفاوض مهارة إدارة المعلومات؟", 
+          a_ar: "لأن خروج المعلومات للطرف الآخر يجب أن يكون بشكل مدروس ومحسوب لخدمة خطتك، وليس بشكل عشوائي يضر بموقفك.", 
+          a_en: "Because releasing information must be deliberate and calculated to serve your plan, not random." },
+        { q_en: "كيف نجحت الموظفة في طلب العلاوة بذكاء في الحالة العملية؟", 
+          a_ar: "بناء (جسر ذهبي). لم تطلب مالاً مباشراً، بل اقترحت خفض تكاليف الشركة والحصول على نسبة من الأموال التي ستوفرها هي.", 
+          a_en: "By building a Golden Bridge. She asked for a cut of the money she would save the company by reducing costs." },
+        { q_en: "ما هو الأثر النفسي للتفاوض في 'أرضك' (مكتبك)؟", 
+          a_ar: "يعطيك راحة نفسية وسيطرة تامة، وفي المقابل يشعر الطرف الآخر بالرهبة والتوتر كونه ضيفاً.", 
+          a_en: "Gives you comfort and control, while making the other party feel intimidated as a guest." },
+        { q_en: "كيف تتصرف إذا طرح الطرف الآخر 'سقفاً عالياً جداً' (Highball) في بداية الجلسة؟", 
+          a_ar: "لا تقدم عرضاً مضاداً أبداً. ارفض العرض فوراً لأنه وهمي، واطلب منه العودة بعرض منطقي مبني على السوق.", 
+          a_en: "Never counter-offer. Reject it immediately as it is unrealistic, and demand a logical, market-based offer." }
+    ];
+
+    // ==========================================
+    // 3. LOGIC & CONTROLLERS
+    // ==========================================
+    let idx = 0;
+    let uiLang = 'ar'; 
+
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.querySelector('#prevBtn span:first-child'),
+        next: document.querySelector('#nextBtn span:first-child'),
+        sidebar: document.getElementById('sidebar'),
+        pracContainer: document.getElementById('practiceContainer'),
+        quizContainer: document.getElementById('quizContainer'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn')
+    };
+
+    function init() {
+        // سحب الثيم واللغة من المنصة
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; // لضبط العكس في دالة Toggle
+            window.toggleLang();
+        } else {
+            renderList();
+            loadSlide(0);
+        }
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            let icon = s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (i+1));
+            let titleText = isAr ? s.title : s.title_en;
+            let shortTitle = titleText.split('(')[0].split(':')[0]; 
+            li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
+            li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? s.badge : s.badge_en;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+
+        dom.pracContainer.style.display = 'none';
+        dom.quizContainer.style.display = 'none';
+
+        if (s.isPracticeSlide) {
+            dom.pracContainer.style.display = 'block';
+            renderPractice();
+        }
+        
+        if (s.isQuizSlide) {
+            dom.quizContainer.style.display = 'block';
+            renderQuiz();
+        }
+
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function renderPractice() {
+        dom.pracContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        practiceQuestions.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'practice-item';
+            let btnText = isAr ? "تحقق" : "Check";
+            let plcHolder = isAr ? "اكتب الإجابة هنا..." : "Type answer here...";
+            div.innerHTML = `
+                <div class="practice-q">س${i+1}: ${item.q}</div>
+                <div class="practice-controls">
+                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off">
+                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
+                    <span class="feedback" id="prac_fb_${i}"></span>
+                </div>
+            `;
+            dom.pracContainer.appendChild(div);
+        });
+    }
+
+    function renderQuiz() {
+        dom.quizContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        solvedQuizData.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'quiz-item';
+            let ansText = isAr ? item.a_ar : item.a_en;
+            div.innerHTML = `
+                <div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: rtl; display: inline-block;">س${i+1}: ${item.q_en}</span>
+                    <span style="font-size:1.2rem;">▼</span>
+                </div>
+                <div class="quiz-a">${ansText}</div>
+            `;
+            dom.quizContainer.appendChild(div);
+        });
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let t = isAr ? s.title.toLowerCase() : s.title_en.toLowerCase();
+            let b = isAr ? s.badge.toLowerCase() : s.badge_en.toLowerCase();
+            if(t.includes(q) || b.includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+        
+        document.getElementById('pageTitle').innerText = isAr ? "مهارات التفاوض 🤝" : "Negotiation Skills 🤝";
+        document.getElementById('pageSubTitle').innerText = isAr ? "د. نجلاء | Dr. Naglaa" : "Dr. Naglaa | د. نجلاء";
+        
+        dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
+        document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
+        document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+
+        dom.prev.innerText = isAr ? "السابق" : "Prev";
+        dom.next.innerText = isAr ? "التالي" : "Next";
+        
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    window.checkAns = function(index, correctAns) {
+        const inputEl = document.getElementById(`prac_inp_${index}`);
+        const fbEl = document.getElementById(`prac_fb_${index}`);
+        if(!inputEl || !fbEl) return;
+        
+        const isAr = uiLang === 'ar';
+        let userAns = inputEl.value.trim().toUpperCase();
+        let targetAns = correctAns.trim().toUpperCase();
+
+        if (userAns === "") {
+            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
+            fbEl.className = "feedback wrong";
+            return;
+        }
+
+        if (userAns.includes(targetAns) || targetAns.includes(userAns)) {
+            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
+            fbEl.className = "feedback correct";
+        } else {
+            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
+            fbEl.className = "feedback wrong";
+        }
+    };
+
+    window.move = function(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    window.toggleSidebar = function() { dom.sidebar.classList.toggle('open'); }
+
+    window.toggleTheme = function() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('globalTheme', newTheme);
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>

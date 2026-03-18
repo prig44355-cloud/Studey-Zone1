@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الـ PDF | المحاضرة الأولى</title>
+    <style>
+        /* تم استخدام Flexbox لتقسيم الشاشة بشكل متجاوب */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            overflow: hidden; 
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header { 
+            background: #fff; 
+            padding: 15px 30px; 
+            display: flex; 
+            align-items: center; 
+            /* تم تغيير اللون للأزرق ليتوافق مع ثيم المادة */
+            border-bottom: 2px solid #0284c7; 
+            flex-shrink: 0; /* لمنع الهيدر من الانكماش */
+        }
+
+        .header h3 {
+            margin: 0; 
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+
+        .back-btn { 
+            background: #0284c7; /* لون الزر المتوافق مع الثيم */
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-left: 20px;
+            white-space: nowrap; 
+            transition: 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #0ea5e9; /* لون أفتح عند مرور الماوس */
+        }
+
+        .container { 
+            width: 100%; 
+            flex-grow: 1; /* جعل الحاوية تأخذ باقي مساحة الشاشة تلقائياً */
+            background: #333; 
+            position: relative;
+            -webkit-overflow-scrolling: touch; /* لتحسين التمرير على أجهزة iOS */
+        }
+
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
+
+        /* التجاوب مع شاشات الموبايل */
+        @media (max-width: 600px) {
+            .header {
+                padding: 12px 15px; 
+            }
+            .back-btn {
+                padding: 8px 15px; 
+                font-size: 14px;
+                margin-left: 15px;
+            }
+            .header h3 {
+                font-size: 1rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">رجوع</a>
+        <h3>ماتيريال المحاضرة الأولى</h3>
+    </div>
+    <div class="container">
+        <iframe src="Lec 1 - Numbers.pdf"></iframe>
+    </div>
+</body>
+</html>
