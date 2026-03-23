@@ -189,7 +189,7 @@
         }
         .contact-number:hover { transform: scale(1.05); background: #10b981; color: white;}
 
-        /* ==================== 6. شبكة الكروت (تم تعديل الـ Borders & Paddings) ==================== */
+        /* ==================== 6. شبكة الكروت ==================== */
         .container { padding: 50px 5%; max-width: 1300px; margin: auto; }
         .welcome-title { text-align: center; font-size: 1.5rem; font-weight: 900; margin-bottom: 40px; color: var(--text-main); }
         
@@ -197,12 +197,12 @@
         html[dir="ltr"] .custom-grid { direction: ltr; }
 
         .modern-card {
-            border-radius: 20px; /* تم تعديل الانحناء ليكون واقعي ومريح للعين */
+            border-radius: 20px; 
             padding: 35px 20px 25px; 
             position: relative; color: white; text-align: center; 
             box-shadow: 0 8px 25px var(--shadow-color); display: flex; flex-direction: column; 
             border: 1px solid rgba(255,255,255,0.2);
-            margin-top: 15px; /* إعطاء مساحة للأيقونة الطائرة */
+            margin-top: 15px;
         }
         .modern-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px var(--shadow-color); }
 
@@ -249,37 +249,67 @@
         [data-theme="dark"] .card-light-theme { color: #ffffff; border-color: rgba(255, 255, 255, 0.2); }
         [data-theme="dark"] .card-light-theme hr { border-top-color: rgba(255, 255, 255, 0.4); }
 
-        /* ==================== 8. التجاوب (Mobile Responsive Fixes) ==================== */
+        /* ==================== 8. التجاوب ==================== */
         @media (max-width: 900px) { 
-            .full-width-card { flex-direction: column; text-align: center; padding: 35px 20px 25px; }
-            .full-width-card .card-content { padding: 0; margin-bottom: 25px; text-align: center;}
-            .full-width-card .floating-icon { position: absolute; top: -25px; right: 20px; width: 50px; height: 50px; font-size: 24px; border: 3px solid var(--bg-body); background: var(--header-bg); margin: 0;}
-            html[dir="ltr"] .full-width-card .floating-icon { right: auto; left: 20px; }
+            .full-width-card { flex-direction: column; text-align: center; padding: 25px 15px 20px; border-radius: 12px; }
+            .full-width-card .card-content { padding: 0; margin-bottom: 20px; text-align: center;}
+            .full-width-card .floating-icon { position: absolute; top: -22px; right: 15px; width: 45px; height: 45px; font-size: 20px; border: 2px solid var(--bg-body); background: var(--header-bg); margin: 0;}
+            html[dir="ltr"] .full-width-card .floating-icon { right: auto; left: 15px; }
         }
         
         @media (max-width: 768px) { 
-            /* تظبيط الهيدر ليصبح مرتب أكثر ولا يفيض عن الشاشة */
-            .navbar { display: flex; flex-direction: column; gap: 15px; padding: 15px; } 
-            .navbar-empty-space { display: block !important; order: -1; align-self: flex-start; }
+            /* ترتيب الهيدر في شبكة من صفين لمنع تمدده بالطول */
+            .navbar { 
+                display: grid; 
+                grid-template-columns: auto auto; 
+                grid-template-rows: auto auto; 
+                gap: 15px 10px; 
+                padding: 12px 15px; 
+            } 
+            .navbar-empty-space { 
+                grid-column: 1 / 2; 
+                grid-row: 1 / 2; 
+                align-self: center; 
+                justify-self: start; 
+                display: block !important;
+            }
+            .header-actions { 
+                grid-column: 2 / 3; 
+                grid-row: 1 / 2; 
+                width: auto; 
+                justify-content: flex-end; 
+                display: flex;
+            }
             
             /* شريط البحث */
-            .search-wrapper { position: relative; width: 100%; order: 2;}
-            #search-container { transform: scale(1); width: 100%; }
-            .input-search { max-width: 100%; width: 100%; } /* ليأخذ العرض بالكامل بدون مشاكل */
+            .search-wrapper { 
+                grid-column: 1 / 3; 
+                grid-row: 2 / 3; 
+                width: 100%; 
+                display: flex; 
+                justify-content: center; 
+                position: relative;
+            }
+            #search-container { transform: scale(0.9); width: 100%; display: flex; justify-content: center; }
+            .input-search { max-width: 320px; width: 100%; } 
             
-            .header-actions { justify-content: space-between; width: 100%; order: 1;}
-            .theme-btn-wrapper, .lang-btn-wrapper { transform: scale(0.75); }
+            /* ضبط أحجام الأزرار في الهيدر */
+            .theme-btn-wrapper { transform: scale(0.65); margin: 0 -10px; }
+            .lang-btn-wrapper { transform: scale(0.55); margin: 0 -20px; }
+            html[dir="ltr"] .theme-btn-wrapper { margin: 0; margin-left: -10px; }
+            html[dir="ltr"] .lang-btn-wrapper { margin: 0; margin-left: -20px; }
             
-            .container { padding: 30px 5%; }
-            .welcome-title { font-size: 1.3rem; margin-bottom: 30px; }
-            .custom-grid { gap: 35px; } /* مسافة جيدة بين الكروت */
+            .container { padding: 20px 5%; }
+            .welcome-title { font-size: 1.2rem; margin-bottom: 25px; }
+            .custom-grid { gap: 25px; } 
             
-            /* تظبيط الكروت والمقاسات للموبايل لتصبح واقعية وأنيقة */
-            .modern-card { border-radius: 16px; padding: 30px 15px 20px; margin-top: 20px; }
-            .floating-icon { width: 50px; height: 50px; font-size: 22px; top: -25px; right: 20px; }
-            html[dir="ltr"] .floating-icon { right: auto; left: 20px; }
-            .modern-card h3 { font-size: 1.35rem; }
-            .btn-enter { font-size: 1rem; padding: 0.7rem 2rem; }
+            /* تصغير البوردر والمقاسات للكروت في الموبايل */
+            .modern-card { border-radius: 12px; padding: 25px 15px 15px; margin-top: 25px; }
+            .floating-icon { width: 45px; height: 45px; font-size: 20px; top: -22px; right: 15px; border-width: 2px;}
+            html[dir="ltr"] .floating-icon { right: auto; left: 15px; }
+            .modern-card h3 { font-size: 1.2rem; margin-bottom: 8px;}
+            .modern-card p { font-size: 0.9rem; margin-bottom: 15px;}
+            .btn-enter { font-size: 0.95rem; padding: 0.6rem 1.5rem; }
         }
     </style>
 </head>
