@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>محتويات المحاضرة الثالثة | المنصة التعليمية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,13 +20,15 @@
             --card-locked: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             --text-locked: #94a3b8; --icon-color: #fbd38d; 
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
         body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; -webkit-user-select: none; user-select: none; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; background: var(--header-bg); padding: 15px 5%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: var(--header-bg); padding: 15px 5%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 15px; }
         .page-title { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
         .header-actions { display: flex; align-items: center; gap: 15px; }
 
-        .cta-back { display: flex; align-items: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: #4c51bf; transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; }
+        .cta-back { display: flex; align-items: center; justify-content: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: #4c51bf; transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; }
         [data-theme="dark"] .cta-back { background: var(--icon-color); color: #1e293b; box-shadow: -5px 5px 0 #ffffff; }
         .cta-back:focus { outline: none; } .cta-back:hover { transition: 0.5s; box-shadow: -8px 8px 0 var(--icon-color); }
         .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
@@ -85,6 +87,8 @@
         .active-card { background: var(--card-active); color: white; }
         .active-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         .floating-icon { position: absolute; top: -20px; right: -15px; background: var(--header-bg); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid var(--bg-body); transition: 0.3s; color: var(--icon-color); }
+        html[dir="ltr"] .floating-icon { right: auto; left: -15px; }
+
         .content-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 900; }
         .content-card p { margin-bottom: 30px; flex-grow: 1; font-size: 1rem; opacity: 0.9;}
         .btn-enter { font-size: 1.1rem; padding: 0.8rem 2.5rem; border: none; outline: none; border-radius: 0.4rem; cursor: pointer; background-color: rgb(14, 14, 26); color: rgb(234, 234, 234); font-weight: 700; transition: 0.6s; box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4); text-decoration: none; display: inline-block; margin: auto auto 0; font-family: 'Cairo'; width: 100%; }
@@ -95,7 +99,50 @@
         .spinner { width: 3em; height: 3em; border-radius: 50%; border: 2px solid transparent; box-shadow: -10px -10px 10px #6359f8, 0px -10px 10px 0px #9c32e2, 10px -10px 10px #f36896, 10px 0 10px #ff0b0b, 10px 10px 10px 0px #ff5500, 0 10px 10px 0px #ff9500, -10px 10px 10px 0px #ffb700; animation: rot55 0.7s linear infinite; position: relative; }
         .spinnerin { border: 2px solid var(--text-locked); width: 1.5em; height: 1.5em; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         @keyframes rot55 { to { transform: rotate(360deg); } }
-        @media (max-width: 768px) { .navbar { flex-direction: column-reverse; gap: 20px; padding: 20px;} .header-actions { justify-content: space-between; width: 100%;} .floating-icon { top: -20px; right: -15px; width: 60px; height: 60px; font-size: 22px;} }
+
+        /* ================= التجاوب (Responsive Design Fixes) ================= */
+        @media (max-width: 768px) { 
+            .navbar { flex-direction: column-reverse; gap: 15px; padding: 15px 5%;} 
+            .header-actions { justify-content: center; flex-wrap: wrap; width: 100%; gap: 15px;}
+            .floating-icon { top: -20px; right: 15px; width: 55px; height: 55px; font-size: 22px;}
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+            .page-title { font-size: 1.3rem; text-align: center; }
+            .title { font-size: 1.5rem; margin-bottom: 30px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+            .content-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            .navbar { padding: 15px; }
+            
+            /* تظبيط الهيدر عشان الزراير الكتير متبوظش الشكل */
+            .header-actions { flex-wrap: nowrap; gap: 8px; justify-content: space-between; align-items: center; }
+            .theme-btn-wrapper { transform: scale(0.55); transform-origin: right; margin-left: -20px;}
+            html[dir="ltr"] .theme-btn-wrapper { transform-origin: left; margin-left: 0; margin-right: -20px;}
+            .lang-btn-wrapper { transform: scale(0.48); transform-origin: center; margin: 0 -20px;}
+            
+            /* الزرار ملموم ومضبوط */
+            .cta-back { width: auto; font-size: 12px; padding: 6px 12px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main);}
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
+            .cta-back .span { transform: skewX(-10deg); }
+            .cta-back .second { width: 15px; margin-right: 5px; }
+            .cta-back:hover .second { margin-right: 10px; }
+
+            .title { font-size: 1.35rem; margin-bottom: 35px; }
+            
+            /* جعل التصميم بعمود واحد وتجنب الخروج عن حواف الشاشة */
+            .grid { grid-template-columns: 1fr; gap: 35px; }
+            
+            /* تصغير البوردر بشكل شيك وواقعي جداً للموبايل */
+            .content-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
+            
+            /* تظبيط الأيقونة العائمة عشان متعملش سكرول جانبي وتفضل محتفظة بشكلها */
+            .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+            
+            .content-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+            .btn-enter { font-size: 1rem; padding: 10px 20px; }
+        }
     </style>
 </head>
 <body>
@@ -150,7 +197,7 @@
     
     <script>
         const dict = {
-            ar: { lec_title: "المحاضرة الاولي ", back_to_subject: "رجوع للمادة", select_content: "اختر مسار المذاكرة 📂", card1_title: "الشرح التفاعلي", card1_desc: "ذاكر المحاضرة بنظام الشرائح التفاعلية والأسئلة.", btn1: "بدء المذاكرة", loading: "جاري التجهيز...", card2_title: "الماتيريال الأصلي", card2_desc: "تصفح ملف الـ PDF الخاص بالمحاضرة.", btn2: "عرض الـ PDF", langTxt: "EN" },
+            ar: { lec_title: "المحاضرة الثالثة", back_to_subject: "رجوع للمادة", select_content: "اختر مسار المذاكرة 📂", card1_title: "الشرح التفاعلي", card1_desc: "ذاكر المحاضرة بنظام الشرائح التفاعلية والأسئلة.", btn1: "بدء المذاكرة", loading: "جاري التجهيز...", card2_title: "الماتيريال الأصلي", card2_desc: "تصفح ملف الـ PDF الخاص بالمحاضرة.", btn2: "عرض الـ PDF", langTxt: "EN" },
             en: { lec_title: "Third Lecture", back_to_subject: "Back to Subject", select_content: "Choose Study Path 📂", card1_title: "Interactive Study", card1_desc: "Study the lecture with interactive slides and questions.", btn1: "Start Studying", loading: "Preparing...", card2_title: "Original Material", card2_desc: "Browse the original PDF file of the lecture.", btn2: "View PDF", langTxt: "عربي" }
         };
         let lang = localStorage.getItem('globalLang') || 'ar';

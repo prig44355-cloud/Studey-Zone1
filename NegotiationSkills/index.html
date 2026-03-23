@@ -23,9 +23,9 @@
         body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; -webkit-user-select: none; user-select: none; }
 
         .navbar { display: flex; justify-content: space-between; align-items: center; background: var(--header-bg); padding: 15px 5%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 15px; }
-        .page-title { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 10px; text-align: center; }
+        .page-title { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
 
-        .cta-back { display: flex; align-items: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: #6225e6; transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; justify-content: center; }
+        .cta-back { display: flex; align-items: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: #6225e6; transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; }
         [data-theme="dark"] .cta-back { background: var(--icon-color); color: #1e293b; box-shadow: -5px 5px 0 #ffffff; }
         .cta-back:focus { outline: none; } .cta-back:hover { transition: 0.5s; box-shadow: -8px 8px 0 #fbc638; }
         .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
@@ -40,57 +40,66 @@
         .container { max-width: 1200px; margin: 50px auto; padding: 0 5%; width: 100%; }
         .title { text-align: center; font-size: 1.8rem; font-weight: 900; margin-bottom: 50px; color: var(--text-main); }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; direction: rtl; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; direction: rtl; }
 
         .lec-card { border-radius: 40px 10px 40px 10px; padding: 40px 20px 30px; position: relative; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; transition: transform 0.4s, box-shadow 0.4s; border: 1px solid rgba(255,255,255,0.2); }
-        .active-card { background: var(--card-active); color: white; }
+        .active-card { background: var(--card-active); color: white; cursor: pointer; }
         .active-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         
         .floating-icon { position: absolute; top: -20px; right: -15px; background: var(--header-bg); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid var(--bg-body); transition: 0.3s; color: var(--icon-color); }
+        
+        /* تعديل اتجاه الأيقونة العائمة في حالة اللغة الإنجليزية */
+        html[dir="ltr"] .floating-icon { right: auto; left: -15px; }
+
         .lec-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 900; }
         .lec-card p { margin-bottom: 30px; flex-grow: 1; font-size: 1rem; opacity: 0.9;}
         
         .btn-glass { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.5); color: white; padding: 12px 30px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 1.1rem; display: block; transition: 0.3s; margin: auto auto 0; width: 100%; }
         .btn-glass:hover { background: white; color: var(--icon-color); box-shadow: 0 5px 15px rgba(255,255,255,0.4); }
 
-        .locked-card { background: var(--card-locked); color: var(--text-locked); border: 1px dashed var(--text-locked); opacity: 0.8;}
+        .locked-card { background: var(--card-locked); color: var(--text-locked); border: 1px dashed var(--text-locked); opacity: 0.8; cursor: not-allowed;}
         .locked-card .floating-icon { color: var(--text-locked); filter: grayscale(100%); }
         .spinner-container { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: auto;}
         .spinner { width: 3em; height: 3em; border-radius: 50%; border: 2px solid transparent; box-shadow: -10px -10px 10px #6359f8, 0px -10px 10px 0px #9c32e2, 10px -10px 10px #f36896, 10px 0 10px #ff0b0b, 10px 10px 10px 0px #ff5500, 0 10px 10px 0px #ff9500, -10px 10px 10px 0px #ffb700; animation: rot55 0.7s linear infinite; position: relative; }
         .spinnerin { border: 2px solid var(--text-locked); width: 1.5em; height: 1.5em; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         @keyframes rot55 { to { transform: rotate(360deg); } }
 
-        /* --------------------------------------------------- */
-        /* --- Media Queries (التعديلات الكاملة للريسبونسيف) --- */
-        /* --------------------------------------------------- */
-
-        /* شاشات التابلت والموبايل العرضية */
+        /* ================= التجاوب (Responsive Design Fixes) ================= */
         @media (max-width: 768px) { 
-            .navbar { flex-direction: column-reverse; padding: 20px; gap: 20px; } 
-            .floating-icon { top: -20px; right: -10px; width: 55px; height: 55px; font-size: 18px;} 
-            .container { margin: 30px auto; }
-            .title { font-size: 1.5rem; margin-bottom: 40px; }
-            .grid { gap: 25px; }
+            .navbar { justify-content: space-between; } 
+            .page-title { font-size: 1.3rem; text-align: right; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+            
+            /* تظبيط البوردر والأيقونة للتابلت */
+            .lec-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
+            .floating-icon { top: -25px; right: 15px; width: 55px; height: 55px; font-size: 20px;}
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
         }
 
-        /* شاشات الموبايل الصغيرة */
         @media (max-width: 480px) {
-            .navbar { padding: 15px; gap: 15px; }
-            .page-title { font-size: 1.3rem; }
-            .cta-back { width: 90%; max-width: 300px; font-size: 16px; padding: 8px 15px; transform: skewX(10deg); }
+            /* تظبيط الهيدر والزراير للموبايل الصغير */
+            .navbar { flex-direction: row; gap: 10px; padding: 15px; flex-wrap: nowrap;}
+            .page-title { font-size: 1.1rem; gap: 5px; flex: 1;}
+            .cta-back { font-size: 13px; padding: 6px 15px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main);}
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
             .cta-back .span { transform: skewX(-10deg); }
+            .cta-back .second { width: 18px; margin-right: 8px;}
+            .cta-back:hover .second { margin-right: 15px; }
+
+            .title { font-size: 1.4rem; margin-bottom: 35px; }
             
-            .title { font-size: 1.35rem; margin-bottom: 35px; }
+            /* جعل التصميم بعمود واحد وتجنب الخروج عن حواف الشاشة */
+            .grid { grid-template-columns: 1fr; gap: 35px; }
             
-            /* تحويل الشبكة لعمود واحد فقط ليأخذ كامل عرض الشاشة الصغيرة */
-            .grid { grid-template-columns: 1fr; gap: 30px; }
+            /* تصغير البوردر بشكل شيك وواقعي جداً للموبايل */
+            .lec-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
             
-            .lec-card { padding: 35px 15px 25px; }
-            .lec-card h3 { font-size: 1.3rem; }
-            .lec-card p { font-size: 0.95rem; }
+            /* تظبيط الأيقونة العائمة عشان متعملش سكرول جانبي وتفضل محتفظة بشكلها */
+            .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+            
+            .lec-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
             .btn-glass { font-size: 1rem; padding: 10px 20px; }
-            .spinner { width: 2.5em; height: 2.5em; }
-            .spinnerin { width: 1.2em; height: 1.2em; }
         }
     </style>
 </head>
@@ -105,24 +114,24 @@
     <main class="container">
         <h1 class="title">قائمة المحاضرات 📚</h1>
         <div class="grid">
-            <div class="lec-card active-card">
+            <div class="lec-card active-card" onclick="window.location.href='Lecture1/index.html'">
                 <div class="floating-icon">1</div>
-                <h3>المحاضرة الأولى</h3>
-                <p>مقدمة في فنون التفاوض.</p>
+                <h3 class="lec-title">المحاضرة الأولى</h3>
+                <p class="lec-desc">مقدمة في فنون التفاوض.</p>
                 <a href="Lecture1/index.html" class="btn-glass">دخول للمحاضرة</a>
             </div>
             <div class="lec-card locked-card">
                 <div class="floating-icon">2</div>
-                <h3>المحاضرة الثانية</h3>
+                <h3 class="lec-title">المحاضرة الثانية</h3>
                 <div class="spinner-container">
-                    <div class="spinner"><div class="spinnerin"></div></div><span style="font-weight:bold;">جاري التجهيز...</span>
+                    <div class="spinner"><div class="spinnerin"></div></div><span style="font-weight:bold;" class="loading-text">جاري التجهيز...</span>
                 </div>
             </div>
             <div class="lec-card locked-card">
                 <div class="floating-icon">3</div>
-                <h3>المحاضرة الثالثة</h3>
+                <h3 class="lec-title">المحاضرة الثالثة</h3>
                 <div class="spinner-container">
-                    <div class="spinner"><div class="spinnerin"></div></div><span style="font-weight:bold;">جاري التجهيز...</span>
+                    <div class="spinner"><div class="spinnerin"></div></div><span style="font-weight:bold;" class="loading-text">جاري التجهيز...</span>
                 </div>
             </div>
         </div>
@@ -130,16 +139,37 @@
     <script>
         let globalTheme = localStorage.getItem('globalTheme') || 'light';
         let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
         function initSubPage() {
             document.documentElement.setAttribute('data-theme', globalTheme);
             document.documentElement.lang = globalLang;
             document.documentElement.dir = globalLang === 'ar' ? 'rtl' : 'ltr';
+            
             if (globalLang === 'en') {
                 document.querySelector('.page-title').innerText = '🤝 Negotiation Skills';
                 document.querySelector('.span').innerText = 'Home';
                 document.querySelector('.title').innerText = 'Lectures List 📚';
+
+                // ترجمة العناوين
+                const titles = document.querySelectorAll('.lec-title');
+                if(titles[0]) titles[0].innerText = 'Lecture 1';
+                if(titles[1]) titles[1].innerText = 'Lecture 2';
+                if(titles[2]) titles[2].innerText = 'Lecture 3';
+
+                // ترجمة الوصف
+                const descs = document.querySelectorAll('.lec-desc');
+                if(descs[0]) descs[0].innerText = 'Introduction to negotiation arts.';
+
+                // ترجمة الأزرار
+                const btns = document.querySelectorAll('.btn-glass');
+                btns.forEach(btn => btn.innerText = 'Enter Lecture');
+
+                // ترجمة كروت التحميل
+                const loaders = document.querySelectorAll('.loading-text');
+                loaders.forEach(loader => loader.innerText = 'Preparing...');
             }
         }
+        
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.ondragstart = () => false;
         document.addEventListener('keydown', e => {
@@ -147,6 +177,7 @@
             if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'C')) return false;
             if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 'P')) return false;
         });
+        
         window.onload = initSubPage;
     </script>
 </body>

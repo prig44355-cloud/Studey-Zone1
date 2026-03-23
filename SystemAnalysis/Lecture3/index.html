@@ -65,7 +65,7 @@
         .lang-button.type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
 
         /* زر الثيم الموحد (BB8) */
-        .theme-btn-wrapper { transform: scale(0.55); margin: 0 -10px; }
+        .theme-btn-wrapper { transform: scale(0.55); margin: 0 -10px; transform-origin: center;}
         .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent-bb8: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
         .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
         .bb8-toggle__checkbox { appearance: none; display: none; }
@@ -100,7 +100,8 @@
         .active-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0, 180, 216, 0.2); }
         
         .floating-icon { position: absolute; top: -20px; right: -15px; background: var(--header-bg); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid var(--bg-body); transition: 0.3s; color: var(--icon-color); }
-        
+        html[dir="ltr"] .floating-icon { right: auto; left: -15px; }
+
         .content-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 900; color: var(--icon-color); }
         .content-card p { margin-bottom: 30px; flex-grow: 1; font-size: 1rem; opacity: 0.9; color: #f8fafc;}
         
@@ -108,37 +109,48 @@
         .btn-enter { font-size: 1.1rem; padding: 0.8rem 2.5rem; border: none; outline: none; border-radius: 0.4rem; cursor: pointer; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(0, 180, 216, 0.5); backdrop-filter: blur(5px); color: #fff; font-weight: 700; transition: 0.6s; text-decoration: none; display: inline-block; margin: auto auto 0; font-family: 'Cairo'; width: 100%; }
         .btn-enter:hover { background: var(--accent); color: #fff; box-shadow: 0 5px 15px rgba(0, 180, 216, 0.4); }
 
-        /* --------------------------------------------------- */
-        /* --- Media Queries --- */
-        /* --------------------------------------------------- */
+        /* ================= التجاوب (Responsive Design Fixes) ================= */
 
         @media (max-width: 768px) { 
             .navbar { flex-direction: column-reverse; padding: 20px; gap: 20px; } 
-            .header-actions { justify-content: center; flex-wrap: wrap; width: 100%; gap: 10px;}
-            .floating-icon { top: -20px; right: -10px; width: 55px; height: 55px; font-size: 22px;} 
+            .header-actions { justify-content: center; flex-wrap: wrap; width: 100%; gap: 15px;}
+            .floating-icon { top: -20px; right: 15px; width: 55px; height: 55px; font-size: 22px;} 
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
             .container { margin: 30px auto; padding: 0 15px; }
             .title { font-size: 1.5rem; margin-bottom: 40px; }
-            .grid { gap: 25px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+            .content-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
         }
 
         @media (max-width: 480px) {
             .navbar { padding: 15px; gap: 15px; }
             .page-title { font-size: 1.3rem; text-align: center; }
-            .header-actions { gap: 10px; justify-content: center; flex-direction: row-reverse; }
             
-            .theme-btn-wrapper { transform: scale(0.45); margin: 0 -15px; }
-            .lang-button.type1 { transform: scale(0.8); margin: 0 -10px; }
+            /* تظبيط زراير الهيدر عشان يكونوا في سطر واحد بمقاسات مناسبة */
+            .header-actions { gap: 8px; justify-content: space-between; flex-direction: row; flex-wrap: nowrap; width: 100%;}
             
-            .cta-back { padding: 8px 15px; font-size: 15px; transform: skewX(10deg); width: 100%; max-width: 250px; justify-content: center;}
+            .theme-btn-wrapper { transform: scale(0.38); margin-left: -35px; margin-right: -15px; transform-origin: right;}
+            html[dir="ltr"] .theme-btn-wrapper { transform-origin: left; margin-left: -15px; margin-right: -35px;}
+            
+            .lang-button.type1 { transform: scale(0.65); margin: 0 -15px; }
+            
+            .cta-back { width: auto; font-size: 12px; padding: 6px 12px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main); max-width: none;}
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
             .cta-back .span { transform: skewX(-10deg); }
-            .cta-back .second { margin-right: 10px; width: 20px; }
+            .cta-back .second { width: 15px; margin-right: 5px; }
+            .cta-back:hover .second { margin-right: 10px; }
             
             .title { font-size: 1.35rem; margin-bottom: 35px; }
             
             .grid { grid-template-columns: 1fr; gap: 30px; }
             
-            .content-card { padding: 35px 15px 25px; }
-            .content-card h3 { font-size: 1.3rem; }
+            /* الكروت في الموبايل */
+            .content-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
+            
+            .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+
+            .content-card h3 { font-size: 1.3rem; margin-bottom: 10px;}
             .content-card p { font-size: 0.95rem; }
             .btn-enter { font-size: 1rem; padding: 0.8rem 1.5rem; }
         }
@@ -182,14 +194,14 @@
         <h1 class="title" data-i18n="select_content">اختر مسار المذاكرة 📂</h1>
         <div class="grid">
 
-            <div class="content-card active-card">
+            <div class="content-card active-card" onclick="window.location.href='interactive.html'" style="cursor: pointer;">
                 <div class="floating-icon"><i class="fa-solid fa-laptop-code"></i></div>
                 <h3 data-i18n="card1_title">الشرح التفاعلي</h3>
                 <p data-i18n="card1_desc">ذاكر المحاضرة بنظام الشرائح التفاعلية والأسئلة.</p>
                 <a href="interactive.html" class="btn-enter" data-i18n="btn1">ابدأ المذاكرة</a>
             </div>
 
-            <div class="content-card active-card">
+            <div class="content-card active-card" onclick="window.location.href='pdf-viewer.html'" style="cursor: pointer;">
                 <div class="floating-icon"><i class="fa-solid fa-file-pdf"></i></div>
                 <h3 data-i18n="card2_title">الماتيريال الأصلي</h3>
                 <p data-i18n="card2_desc">تصفح ملف الـ PDF الخاص بالمحاضرة.</p>

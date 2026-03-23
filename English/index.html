@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>إنجليزي | المنصة التعليمية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -63,23 +63,41 @@
         .spinnerin { border: 2px solid var(--text-locked); width: 1.5em; height: 1.5em; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         @keyframes rot55 { to { transform: rotate(360deg); } }
 
-        /* التجاوب مع الشاشات (Responsive Design) */
+        /* ================= التجاوب (Responsive Design Fixes) ================= */
         @media (max-width: 768px) { 
-            .navbar { justify-content: center; } 
-            .page-title { font-size: 1.3rem; text-align: center; }
-            .floating-icon { top: -20px; right: -10px; width: 55px; height: 55px; font-size: 18px;}
-            html[dir="ltr"] .floating-icon { left: -10px; right: auto; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+            .navbar { justify-content: space-between; } 
+            .page-title { font-size: 1.3rem; text-align: right; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+            
+            /* تظبيط البوردر والأيقونة للتابلت */
+            .lec-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
+            .floating-icon { top: -25px; right: 15px; width: 55px; height: 55px; font-size: 20px;}
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
         }
 
         @media (max-width: 480px) {
-            .navbar { flex-direction: column-reverse; gap: 15px; padding: 15px; }
-            .cta-back { font-size: 15px; padding: 6px 20px; }
-            .title { font-size: 1.5rem; margin-bottom: 30px; }
+            /* تظبيط الهيدر والزراير للموبايل الصغير */
+            .navbar { flex-direction: row; gap: 10px; padding: 15px; flex-wrap: nowrap;}
+            .page-title { font-size: 1.1rem; gap: 5px; flex: 1;}
+            .cta-back { font-size: 13px; padding: 6px 15px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main);}
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
+            .cta-back .span { transform: skewX(-10deg); }
+            .cta-back .second { width: 18px; margin-right: 8px;}
+            .cta-back:hover .second { margin-right: 15px; }
+
+            .title { font-size: 1.4rem; margin-bottom: 35px; }
+            
             /* جعل التصميم بعمود واحد وتجنب الخروج عن حواف الشاشة */
-            .grid { grid-template-columns: 1fr; gap: 30px; }
-            .lec-card { padding: 35px 15px 20px; }
-            .lec-card h3 { font-size: 1.3rem; }
+            .grid { grid-template-columns: 1fr; gap: 35px; }
+            
+            /* تصغير البوردر بشكل شيك وواقعي جداً للموبايل */
+            .lec-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
+            
+            /* تظبيط الأيقونة العائمة عشان متعملش سكرول جانبي وتفضل محتفظة بشكلها */
+            .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+            
+            .lec-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
             .btn-glass { font-size: 1rem; padding: 10px 20px; }
         }
     </style>

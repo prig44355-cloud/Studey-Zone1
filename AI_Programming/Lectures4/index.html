@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>محتويات المحاضرة الرابعة | المنصة التعليمية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,7 +27,7 @@
         .page-title { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
         .header-actions { display: flex; align-items: center; gap: 15px; }
 
-        .cta-back { display: flex; align-items: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: #6225e6; transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; }
+        .cta-back { display: flex; align-items: center; justify-content: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: #6225e6; transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; }
         [data-theme="dark"] .cta-back { background: var(--icon-color); color: #1e293b; box-shadow: -5px 5px 0 #ffffff; }
         .cta-back:focus { outline: none; } .cta-back:hover { transition: 0.5s; box-shadow: -8px 8px 0 #fbc638; }
         .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
@@ -157,32 +157,48 @@
         .spinnerin { border: 2px solid var(--text-locked); width: 1.5em; height: 1.5em; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         @keyframes rot55 { to { transform: rotate(360deg); } }
 
-        /* الشاشات المتوسطة والأجهزة اللوحية (التابلت) */
+        /* ================= التجاوب (Responsive Design Fixes) ================= */
         @media (max-width: 768px) { 
             .navbar { flex-direction: column-reverse; gap: 15px; padding: 15px 5%;} 
             .header-actions { justify-content: center; flex-wrap: wrap; width: 100%; gap: 15px;}
-            .floating-icon { top: -20px; right: -10px; width: 55px; height: 55px; font-size: 22px;}
-            html[dir="ltr"] .floating-icon { left: -10px; right: auto; }
-            .page-title { font-size: 1.3rem; text-align: center; }
-            .title { font-size: 1.5rem; margin-bottom: 30px; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+            .page-title { font-size: 1.3rem; text-align: center; justify-content: center; width: 100%;}
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+            
+            /* تظبيط البوردر والأيقونة للتابلت */
+            .content-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
+            .floating-icon { top: -25px; right: 15px; width: 55px; height: 55px; font-size: 22px;}
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
         }
 
-        /* الهواتف الذكية الصغيرة */
         @media (max-width: 480px) {
-            .navbar { padding: 12px 5%; }
-            .header-actions { gap: 10px; }
-            .theme-btn-wrapper { transform: scale(0.60); }
-            .lang-btn-wrapper { transform: scale(0.55); }
-            .cta-back { font-size: 14px; padding: 6px 15px; }
-            .cta-back .second { width: 18px; margin-right: 8px; }
-            .cta-back:hover .second { margin-right: 15px; }
-            .page-title { font-size: 1.1rem; }
-            .title { font-size: 1.3rem; margin-top: 10px; margin-bottom: 25px; }
-            /* جعل التصميم بعمود واحد على الشاشات الصغيرة لتجنب الخروج عن حواف الشاشة */
-            .grid { grid-template-columns: 1fr; gap: 30px; }
-            .content-card { padding: 35px 15px 20px; }
-            .btn-enter { font-size: 1rem; padding: 0.7rem 1.5rem; }
+            .navbar { padding: 15px; }
+            /* تظبيط الهيدر عشان الزراير الكتير متبوظش الشكل */
+            .header-actions { flex-wrap: nowrap; gap: 8px; justify-content: space-between; align-items: center; }
+            .theme-btn-wrapper { transform: scale(0.55); transform-origin: right; margin-left: -20px;}
+            html[dir="ltr"] .theme-btn-wrapper { transform-origin: left; margin-left: 0; margin-right: -20px;}
+            .lang-btn-wrapper { transform: scale(0.48); transform-origin: center; margin: 0 -20px;}
+            
+            /* الزرار ملموم ومضبوط */
+            .cta-back { width: auto; font-size: 12px; padding: 6px 12px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main);}
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
+            .cta-back .span { transform: skewX(-10deg); }
+            .cta-back .second { width: 15px; margin-right: 5px; }
+            .cta-back:hover .second { margin-right: 10px; }
+
+            .title { font-size: 1.35rem; margin-bottom: 35px; }
+            
+            /* جعل التصميم بعمود واحد وتجنب الخروج عن حواف الشاشة */
+            .grid { grid-template-columns: 1fr; gap: 35px; }
+            
+            /* تصغير البوردر بشكل شيك وواقعي جداً للموبايل */
+            .content-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
+            
+            /* تظبيط الأيقونة العائمة عشان متعملش سكرول جانبي وتفضل محتفظة بشكلها */
+            .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+            
+            .content-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+            .btn-enter { font-size: 1rem; padding: 10px 20px; }
         }
     </style>
 </head>
