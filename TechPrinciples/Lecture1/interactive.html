@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مبادئ التكنولوجيا | الفصل الأول</title>
+    <title>Tech Principles | Lec 1 - Intro to Technology</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- ألوان مادة مبادئ التكنولوجيا (أزرق داكن وسماوي) --- */
         :root {
-            /* هوية مادة مبادئ التكنولوجيا */
-            --bg-gradient-light: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --bg-gradient-light: #fdfbfb;
             --glass-bg-light: rgba(255, 255, 255, 0.95);
             --glass-border-light: rgba(255, 255, 255, 0.6);
             --text-main-light: #2d3748;
             --primary-light: #2b6cb0; 
-            --accent-light: #38b2ac;  
-            --header-bg-light: rgba(255, 255, 255, 0.98);
+            --accent-light: #38b2ac; 
+            --header-bg-light: #ffffff;
             --success: #38a169;
             --error: #e53e3e;
 
-            --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --glass-bg-dark: rgba(30, 41, 59, 0.95);
+            /* الوضع الداكن */
+            --bg-gradient-dark: #0f172a;
+            --glass-bg-dark: rgba(15, 23, 42, 0.95);
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --text-main-dark: #f1f5f9;
             --primary-dark: #63b3ed;
             --accent-dark: #4fd1c5;
-            --header-bg-dark: rgba(15, 23, 42, 0.98);
+            --header-bg-dark: #0f172a;
 
+            /* المتغيرات النشطة */
             --bg-body: var(--bg-gradient-light);
             --glass: var(--glass-bg-light);
             --border: var(--glass-border-light);
@@ -34,7 +36,7 @@
             --primary: var(--primary-light);
             --accent: var(--accent-light);
             --header-bg: var(--header-bg-light);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --shadow: 0 8px 32px 0 rgba(43, 108, 176, 0.15);
         }
 
         [data-theme="dark"] {
@@ -52,7 +54,8 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0;}
+        /* --- Header --- */
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0; }
         .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
         
         .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
@@ -74,13 +77,14 @@
         .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
         .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
 
-        .lang-button.type1 { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
-        .lang-button.type1:hover { box-shadow: .5px .5px 150px var(--primary); }
-        .lang-button.type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
-        .lang-button.type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
-        .lang-button.type1:hover::after { transform: translateY(0) scale(1.2); }
-        .lang-button.type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+        .lang-button { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
 
+        /* --- Layout --- */
         .container { display: flex; flex: 1; overflow: hidden; position: relative; }
         aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
@@ -98,30 +102,39 @@
         .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(56, 178, 172, 0.15); color: var(--accent); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        /* --- Content Elements --- */
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(43, 108, 176, 0.15); color: var(--primary); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
         h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
         .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
-        ul, ol { padding-inline-start: 20px; margin-bottom: 15px; } li { margin-bottom: 10px; }
+        ul, ol { padding-inline-start: 20px; } li { margin-bottom: 10px; }
         
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.02); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: center; }
+        th { background: var(--primary); color: white; font-weight: bold; }
+        tr:nth-child(even) { background: rgba(0,0,0,0.04); }
+        [data-theme="dark"] tr:nth-child(even) { background: rgba(255,255,255,0.04); }
+
         .method-box { background: rgba(43, 108, 176, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
-        [data-theme="dark"] .method-box { background: rgba(255, 255, 255, 0.05); }
+        .example-box { background: rgba(56, 178, 172, 0.05); border: 1px solid var(--accent); padding: 20px; margin: 15px 0; border-radius: 8px; font-size: 1.1rem; text-align: left; direction: ltr; }
 
-        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .practice-q { font-weight: bold; font-size: 1.2rem; direction: rtl; text-align: right; color: var(--primary); }
-        [dir="ltr"] .practice-q { direction: ltr; text-align: left; }
-        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-start; }
-        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: 'Cairo'; outline: none; width: 100%; max-width: 400px; background: var(--glass); color: var(--text); }
-        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
-        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
-        .feedback.correct { display: inline-block; background: rgba(56, 161, 105, 0.2); color: var(--success); }
-        .feedback.wrong { display: inline-block; background: rgba(229, 62, 62, 0.2); color: var(--error); }
-
+        /* --- Tools & Practice --- */
+        .converter-box { background: rgba(43, 108, 176, 0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-top: 15px; }
+        
+        /* --- Quiz Area --- */
         .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
         .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
         .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
         .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
 
-        .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        /* --- Timeline Tool --- */
+        .timeline-btns { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
+        .time-btn { padding: 10px 15px; background: var(--glass); border: 1px solid var(--primary); color: var(--primary); border-radius: 8px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; flex: 1; min-width: 120px; transition: 0.3s; }
+        .time-btn:hover, .time-btn.active-time { background: var(--primary); color: white; }
+        #timelineResult { padding: 15px; background: rgba(0,0,0,0.03); border-radius: 8px; border-right: 4px solid var(--accent); min-height: 100px; font-size: 1.1rem; }
+        [dir="ltr"] #timelineResult { border-right: none; border-left: 4px solid var(--accent); }
+
+        /* --- BB8 Toggle CSS --- */
+        .bb8-toggle { --toggle-size: 5px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
         .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
         .bb8-toggle__checkbox { appearance: none; display: none; }
         .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
@@ -146,10 +159,13 @@
         .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
         .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
         .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
 
+        /* --- Nav Buttons Styled --- */
         .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
         .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
-        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(43, 108, 176, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(56, 178, 172, 0.2); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
         .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
         .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
         .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
@@ -163,18 +179,19 @@
         @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
         @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
 
-        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; }
+        /* Responsive Logic */
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; margin-left:10px;}
         
         @media (max-width: 900px) {
             header { padding: 0 15px; }
             .header-subtitle { display: none; }
-            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; justify-content: flex-start; }
             [dir="ltr"] .header-title-container { text-align: left; }
             .header-title { font-size: 1rem; }
             .controls { gap: 10px; }
             .bb8-toggle { --toggle-size: 3px; }
-            .lang-button.type1 { width: 90px; height: 40px;}
-            .lang-button.type1::after, .lang-button.type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
+            .lang-button { width: 90px; height: 40px;}
+            .type1::after, .type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
             aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 80px); top: 80px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
             aside.open { right: 0; left: auto; }
             [dir="ltr"] aside { right: auto; left: -320px; }
@@ -185,11 +202,10 @@
             .card { padding: 20px; margin-bottom: 20px; }
             .nav-actions { gap: 15px; }
             .styled-btn { width: 110px; font-size: 12px; }
-            .practice-controls { justify-content: center; }
-            .practice-q { text-align: center; }
         }
     </style>
-</head><body>
+</head>
+<body data-theme="light">
 
     <header>
         <div class="header-right">
@@ -201,10 +217,10 @@
         </div>
         
         <div class="header-title-container">
-            <i class="fa-solid fa-microchip" style="font-size: 1.8rem; color: var(--primary);"></i>
+            <i class="fa-solid fa-microchip" style="font-size: 2rem; color: var(--primary);"></i>
             <div>
-                <div class="header-title" id="pageTitle">مبادئ التكنولوجيا 💻</div>
-                <div class="header-subtitle" id="pageSubTitle">Module 1: Introduction to Technology</div>
+                <div class="header-title" id="pageTitle">مبادئ التكنولوجيا | L1 💻</div>
+                <div class="header-subtitle" id="pageSubTitle">مقدمة في مفاهيم التكنولوجيا</div>
             </div>
         </div>
 
@@ -213,16 +229,19 @@
                 <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
                 <div class="bb8-toggle__container">
                   <div class="bb8-toggle__scenery">
-                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
-                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
                   </div>
                   <div class="bb8">
-                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__head-container">
+                      <div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div>
+                    </div>
                     <div class="bb8__body"></div>
                   </div>
                   <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
                 </div>
             </label>
+
             <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
         </div>
     </header>
@@ -242,9 +261,11 @@
             <div class="card" id="contentCard">
                 <span class="badge" id="slideBadge">شريحة</span>
                 <h1 id="slideHeader">العنوان</h1>
+                
                 <div class="content" id="slideHtml"></div>
-                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+
                 <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="toolContainer" style="display: none; margin-top: 20px;"></div>
 
                 <div class="nav-actions">
                     <button class="styled-btn" id="prevBtn" onclick="move(-1)">
@@ -254,6 +275,7 @@
                         </div>
                         <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
                     </button>
+
                     <button class="styled-btn" id="nextBtn" onclick="move(1)">
                         <span style="position:relative; z-index:2;">التالي</span>
                         <div class="clip-box">
@@ -268,239 +290,169 @@
 
 <script>
     // ==========================================
-    // DATA: Principles of Technology - Module 1
+    // 1. DATA: Bilingual Slides Data (Intro to Tech)
     // ==========================================
     const slides = [
         {
-            title: "1. مقدمة وتعريف التكنولوجيا",
-            title_en: "1. Intro & Definition of Technology",
+            title: "1. نشأة التكنولوجيا",
+            title_en: "1. Origin of Technology",
+            badge: "مقدمة",
+            badge_en: "Introduction",
+            content: `
+                <p>تعتبر التكنولوجيا جزءاً أساسياً من حياة الإنسان الحديثة، حيث تلعب دوراً حيوياً في مختلف المجالات مثل الصناعة، التعليم، والطب.</p>
+                <p>بمرور الوقت، تطورت التكنولوجيا لتلبية احتياجات الإنسان وتحسين جودة الحياة. الهدف من هذا الفصل هو تعريف التكنولوجيا واستكشاف أصولها وتطورها التاريخي.</p>
+            `,
+            content_en: `
+                <p>Technology is an essential part of modern human life, playing a vital role in various fields such as industry, education, and medicine.</p>
+                <p>Over time, technology has evolved to meet human needs and improve the quality of life. This section aims to define technology and explore its origins and historical development.</p>
+            `
+        },
+        {
+            title: "2. تعريف التكنولوجيا",
+            title_en: "2. Definition of Technology",
             badge: "مفاهيم أساسية",
-            badge_en: "Core Concepts",
+            badge_en: "Basic Concepts",
             content: `
-                <p>تعتبر التكنولوجيا جزءاً أساسياً من حياتنا الحديثة، وتلعب دوراً حيوياً في مجالات مثل الصناعة، التعليم، والطب. وقد تطورت عبر الزمن لتلبية احتياجات البشر وتحسين جودة حياتهم.</p>
-                <p><strong>ما هي التكنولوجيا؟</strong></p>
-                <p>هي التطبيقات العلمية والعملية لتطوير الأدوات، الأنظمة، والعمليات لزيادة الكفاءة. وهي مزيج من المعرفة والمهارات لحل المشكلات وتسهيل المهام.</p>
+                <p>تشير التكنولوجيا إلى <strong>التطبيقات العملية والعلمية</strong> المستخدمة لتطوير الأدوات، الأنظمة، والعمليات التي تعزز الكفاءة في تحقيق أهداف مختلفة.</p>
+                <p>يُنظر إليها على أنها مزيج من المعرفة، المهارات، والتقنيات المستخدمة لحل المشكلات وتسهيل المهام البشرية.</p>
                 <div class="method-box">
-                    <strong>أهم التعريفات:</strong><br>
-                    • <strong>جاك إلول (Jacques Ellul):</strong> "مجموعة من الوسائل والطرق المستخدمة لتحقيق هدف محدد بكفاءة".<br>
-                    • <strong>مانويل كاستيلز (Manuel Castells):</strong> "تعتبر التكنولوجيا أحد المحركات الرئيسية للتغيير الاجتماعي والاقتصادي".
+                    <strong>آراء العلماء:</strong><br>
+                    <ul>
+                        <li>يُعرّف <strong>جاك إلول (Jacques Ellul)</strong> التكنولوجيا بأنها "مجموعة من الوسائل والطرق المستخدمة لتحقيق هدف محدد بفعالية".</li>
+                        <li>بينما يعتبر <strong>مانويل كاستيلز (Manuel Castells)</strong> التكنولوجيا واحدة من المحركات الرئيسية للتغيير الاجتماعي والاقتصادي.</li>
+                    </ul>
                 </div>
             `,
             content_en: `
-                <p>Technology is an essential part of modern life, playing a vital role in industry, education, and medicine. It has evolved to meet human needs and improve quality of life.</p>
-                <p><strong>What is Technology?</strong></p>
-                <p>Scientific and practical applications used to develop tools, systems, and processes that enhance efficiency. It is a combination of knowledge and skills to solve problems.</p>
+                <p>Technology refers to the <strong>scientific and practical applications</strong> used to develop tools, systems, and processes that enhance efficiency in achieving various goals.</p>
+                <p>It is viewed as a combination of knowledge, skills, and techniques used to solve problems and facilitate human tasks.</p>
                 <div class="method-box">
-                    <strong>Key Definitions:</strong><br>
-                    • <strong>Jacques Ellul:</strong> "A set of means and methods used to achieve a specific objective effectively".<br>
-                    • <strong>Manuel Castells:</strong> "Considers technology one of the key drivers of social and economic change".
-                </div>
-            `
-        },
-        {
-            title: "2. تطور التكنولوجيا عبر العصور",
-            title_en: "2. Evolution of Tech Through Ages",
-            badge: "التاريخ",
-            badge_en: "History",
-            content: `
-                <p>تطورت التكنولوجيا عبر مراحل تاريخية شكلت المجتمعات:</p>
-                <ul>
-                    <li><strong>العصور القديمة (Ancient):</strong> استخدم الإنسان الأدوات الحجرية للصيد. تطورت لتؤدي لاكتشاف الزراعة وتكوين المجتمعات. برزت حضارات مثل مصر (الأهرامات)، السومريين (الكتابة المسمارية والعجلة)، والصين (الورق، الحرير، والبارود).</li>
-                    <li><strong>العصور الوسطى (Middle Ages):</strong> تقدم في الهندسة والزراعة (المحراث الحديدي والري). العمارة العسكرية (القلاع والمدفعية). واختراع <strong>آلة الطباعة</strong> بواسطة يوهان جوتنبرج في القرن الـ 15، مما أحدث ثورة في نشر المعرفة.</li>
-                    <li><strong>الثورة الصناعية (Industrial):</strong> القرن الـ 18. ظهرت المحركات البخارية والفحم، مما أدى للإنتاج الضخم. واختراع التلغراف والمحركات الكهربائية.</li>
-                    <li><strong>العصر الرقمي (Digital):</strong> القرن الـ 20 والـ 21. ظهور الكمبيوتر، الإنترنت، الهواتف الذكية، والذكاء الاصطناعي، مما أعاد تشكيل الحياة اليومية.</li>
-                </ul>
-            `,
-            content_en: `
-                <p>Technology evolved through historical stages shaping societies:</p>
-                <ul>
-                    <li><strong>Ancient Times:</strong> Used stone tools for hunting. Led to agriculture and early societies. Egypt (pyramids), Sumerians (cuneiform, wheel), China (paper, silk, gunpowder).</li>
-                    <li><strong>Middle Ages:</strong> Progress in engineering and agriculture (iron plow). Military architecture (castles, artillery). The <strong>printing press</strong> by Johannes Gutenberg (15th century) revolutionized knowledge.</li>
-                    <li><strong>Industrial Revolution:</strong> 18th century. Steam engines and coal led to mass production. Telegraph and electrical engines accelerated growth.</li>
-                    <li><strong>Digital Age:</strong> 20th/21st century. Rise of computers, internet, smartphones, and AI redefining daily life.</li>
-                </ul>
-            `
-        },
-        {
-            title: "3. دور التكنولوجيا في الحياة اليومية",
-            title_en: "3. Role of Tech in Daily Life",
-            badge: "المجتمع",
-            badge_en: "Society",
-            content: `
-                <p>عززت التكنولوجيا من كفاءة وراحة المهام اليومية في عدة مجالات:</p>
-                <div class="method-box">
-                    • <strong>الاتصالات (Communication):</strong> تطبيقات المراسلة الفورية مثل واتساب وتليجرام مكنت التواصل اللحظي. وتطور شبكات 5G سرّع الإنترنت.<br><br>
-                    • <strong>التعليم (Education):</strong> دورات عبر الإنترنت وفصول افتراضية. الذكاء الاصطناعي خصص تجربة التعلم، والواقع المعزز/الافتراضي (AR/VR) وفر تجارب تفاعلية.<br><br>
-                    • <strong>الرعاية الصحية (Healthcare):</strong> التطبيب عن بعد (Telemedicine) لتسهيل الاستشارات. الأجهزة القابلة للارتداء (الساعات الذكية) لمراقبة الصحة.<br><br>
-                    • <strong>الترفيه (Entertainment):</strong> منصات البث مثل نتفليكس ويوتيوب وتطور ألعاب الفيديو والواقع الافتراضي.<br><br>
-                    • <strong>النقل (Transportation):</strong> تقنية GPS، ظهور السيارات الكهربائية (EVs) والقيادة الذاتية لتقليل التأثير البيئي.
-                </div>
-            `,
-            content_en: `
-                <p>Technology significantly enhanced efficiency and convenience in several areas:</p>
-                <div class="method-box">
-                    • <strong>Communication:</strong> Instant messaging (WhatsApp, Telegram) enabled real-time chats. 5G networks accelerated internet speed.<br><br>
-                    • <strong>Education:</strong> Online courses, virtual classrooms. AI for personalized learning, and AR/VR for immersive experiences.<br><br>
-                    • <strong>Healthcare:</strong> Telemedicine for remote consultations. Wearable devices (smartwatches) to monitor health.<br><br>
-                    • <strong>Entertainment:</strong> Streaming platforms (Netflix, YouTube) and VR gaming.<br><br>
-                    • <strong>Transportation:</strong> GPS technology, EVs and autonomous driving to reduce environmental impact.
+                    <strong>Scholars' Views:</strong><br>
+                    <ul>
+                        <li><strong>Jacques Ellul</strong> defines technology as "a set of means and methods used to achieve a specific objective effectively."</li>
+                        <li>Meanwhile, <strong>Manuel Castells</strong> considers technology one of the key drivers of social and economic change.</li>
+                    </ul>
                 </div>
             `
         },
         {
-            title: "4. دور التكنولوجيا في الصناعة",
-            title_en: "4. Role of Tech in Industry",
-            badge: "الصناعة",
-            badge_en: "Industry",
+            title: "3. التكنولوجيا في القرن العشرين",
+            title_en: "3. Technology in the 20th Century",
+            badge: "التطور التاريخي",
+            badge_en: "Historical Evolution",
             content: `
-                <p>أحدثت التكنولوجيا ثورة في العمليات الصناعية لزيادة الإنتاجية وتقليل التكاليف:</p>
+                <p>شهد القرن العشرون قفزات تكنولوجية ملحوظة، بما في ذلك:</p>
                 <ul>
-                    <li><strong>الأتمتة والروبوتات:</strong> تُستخدم الروبوتات الصناعية في خطوط التجميع لتحسين الدقة وتقليل الأخطاء البشرية.</li>
-                    <li><strong>التصنيع الذكي وإنترنت الأشياء (IoT):</strong> أجهزة إنترنت الأشياء تجمع البيانات في الوقت الفعلي للصيانة التنبؤية وتقليل فترات التوقف. المصانع الذكية تستخدم تحليل البيانات الضخمة (Big data).</li>
-                    <li><strong>الطباعة ثلاثية الأبعاد (3D Printing):</strong> مكنت من الإنتاج السريع والتكلفة المنخفضة للتصميمات المعقدة، وقللت من إهدار المواد.</li>
-                    <li><strong>الطاقة المتجددة:</strong> تحسين كفاءة الألواح الشمسية وتوربينات الرياح. استخدام شبكات الطاقة الذكية (AI) لموازنة العرض والطلب.</li>
-                    <li><strong>الأمن السيبراني:</strong> حماية البيانات الحساسة من الهجمات باستخدام التشفير واكتشاف التهديدات بالذكاء الاصطناعي و(البلوك تشين).</li>
+                    <li>اختراع الطائرات والسيارات.</li>
+                    <li>الاتصالات اللاسلكية (الراديو).</li>
+                    <li><strong>صعود تكنولوجيا المعلومات:</strong> حيث أدى تطوير أجهزة الكمبيوتر والإنترنت إلى إحداث ثورة في التفاعل البشري، وتغيير طريقة تواصل الناس ووصولهم إلى المعلومات.</li>
                 </ul>
             `,
             content_en: `
-                <p>Technology revolutionized industrial processes, increasing productivity and reducing costs:</p>
+                <p>The 20th century witnessed remarkable technological leaps, including:</p>
                 <ul>
-                    <li><strong>Automation & Robotics:</strong> Industrial robots improve precision and reduce human error.</li>
-                    <li><strong>Smart Manufacturing & IoT:</strong> IoT devices facilitate real-time data for predictive maintenance, minimizing downtime. Smart factories use big data analytics.</li>
-                    <li><strong>3D Printing:</strong> Cost-effective and rapid production of complex designs, reducing material waste.</li>
-                    <li><strong>Renewable Energy:</strong> Improved efficiency of solar panels and wind turbines. Smart grids use AI to balance supply and demand.</li>
-                    <li><strong>Cybersecurity:</strong> Protecting sensitive data using encryption, AI threat detection, and blockchain.</li>
+                    <li>The invention of airplanes and automobiles.</li>
+                    <li>Radio communication.</li>
+                    <li><strong>The rise of information technology:</strong> The development of computers and the internet revolutionized human interaction, transforming the way people communicate and access information.</li>
                 </ul>
             `
         },
         {
-            title: "5. العلم مقابل التكنولوجيا والهندسة",
-            title_en: "5. Science vs. Technology vs. Engineering",
-            badge: "مفاهيم",
-            badge_en: "Concepts",
+            title: "4. التكنولوجيا في العصر الرقمي والمستقبل",
+            title_en: "4. Digital Age & Future",
+            badge: "العصر الحديث",
+            badge_en: "Modern Era",
             content: `
-                <p>المفاهيم الثلاثة مترابطة، لكن لكل منها تعريف مميز:</p>
-                <div class="method-box" style="border-inline-start-color: var(--success);">
-                    <strong>1. العلم (Science):</strong><br>
-                    دراسة الظواهر الطبيعية عبر الملاحظة والتجربة لاستنتاج القوانين والمبادئ. يعتمد على منهجية تجريبية، ويهدف لإنتاج <strong>معرفة جديدة</strong>.
+                <div class="method-box" style="border-inline-start-color: var(--accent);">
+                    <strong>القرن الحادي والعشرون (العصر الرقمي):</strong><br>
+                    شهد ثورة رقمية غير مسبوقة. التطور السريع للهواتف الذكية، الحوسبة السحابية (Cloud Computing)، والذكاء الاصطناعي أعاد تعريف الحياة اليومية والهياكل الاقتصادية. أصبح استخدام الإنترنت جزءاً لا يتجزأ من المجتمع الحديث.
                 </div>
                 <div class="method-box" style="border-inline-start-color: var(--primary);">
-                    <strong>2. التكنولوجيا (Technology):</strong><br>
-                    التطبيق العملي للمعرفة العلمية لتطوير أدوات وآلات وأنظمة تحسن حياة الإنسان. تركز على <strong>الابتكار وحل المشكلات العملية</strong>.
-                </div>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>3. الهندسة (Engineering):</strong><br>
-                    المجال الذي يطبق المبادئ العلمية والتكنولوجية لتصميم وبناء هياكل وأنظمة تخدم المجتمع. يحول المعرفة إلى <strong>حلول عملية</strong>.
+                    <strong>مستقبل التكنولوجيا:</strong><br>
+                    من المتوقع أن تستمر التكنولوجيا في التطور بطرق لا يمكن التنبؤ بها، مع ابتكارات ناشئة مثل الذكاء الاصطناعي (AI)، الروبوتات، وإنترنت الأشياء (IoT). من المتوقع أن تُحسّن هذه التطورات من جودة الحياة مع طرح تحديات أخلاقية واجتماعية تتطلب حلولاً مستدامة.
                 </div>
             `,
             content_en: `
-                <p>These concepts are interconnected but have distinct definitions:</p>
-                <div class="method-box" style="border-inline-start-color: var(--success);">
-                    <strong>1. Science:</strong><br>
-                    The study of natural phenomena through observation and experimentation to derive laws. Based on experimental methodology, aims to produce <strong>new knowledge</strong>.
+                <div class="method-box" style="border-inline-start-color: var(--accent);">
+                    <strong>The 21st Century (Digital Age):</strong><br>
+                    Has seen an unprecedented digital revolution. The rapid evolution of smartphones, cloud computing, and artificial intelligence has redefined daily life and economic structures. The internet has become an integral part of modern society.
                 </div>
                 <div class="method-box" style="border-inline-start-color: var(--primary);">
-                    <strong>2. Technology:</strong><br>
-                    The practical application of scientific knowledge to develop tools and machines. Focuses on <strong>innovation and solving practical problems</strong>.
-                </div>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>3. Engineering:</strong><br>
-                    The field that applies scientific and technological principles to design and build structures and systems. Transforms knowledge into <strong>practical solutions</strong>.
+                    <strong>Future of Technology:</strong><br>
+                    Technology is expected to continue evolving in unpredictable ways, with emerging innovations such as Artificial Intelligence (AI), Robotics, and the Internet of Things (IoT). These advancements are anticipated to improve quality of life while presenting ethical challenges.
                 </div>
             `
         },
         {
-            title: "6. العلاقة التكاملية والأمثلة التطبيقية",
-            title_en: "6. Relationship & Applied Examples",
-            badge: "العلاقات",
-            badge_en: "Relations",
+            title: "5. المخطط الزمني التفاعلي ⏳",
+            title_en: "5. Interactive Timeline ⏳",
+            badge: "أداة ذكية",
+            badge_en: "Smart Tool",
+            isToolSlide: true,
             content: `
-                <p><strong>العلاقة التكاملية (The Relationship):</strong></p>
-                <p>العلم يوفر المعرفة الأساسية، التكنولوجيا تستخدمها لتطوير تطبيقات عملية، والهندسة تستفيد منهما معاً لتصميم مشاريع تلبي احتياجات المجتمع.</p>
-                <hr style="margin: 15px 0; border-color: var(--border);">
-                <p><strong>أمثلة توضيحية (Examples):</strong></p>
-                <ul>
-                    <li><strong>الكهرباء:</strong> العلم يدرس المغناطيسية والكهرباء ➔ التكنولوجيا تطور المصابيح ➔ الهندسة تصمم شبكات توزيع الطاقة.</li>
-                    <li><strong>الطيران:</strong> العلم يدرس الديناميكا الهوائية ➔ التكنولوجيا تطور مواد خفيفة وقوية ➔ الهندسة تبني الطائرات.</li>
-                    <li><strong>الطب:</strong> العلم يدرس علم الأحياء والوظائف ➔ التكنولوجيا تطور أجهزة الأشعة السينية ➔ الهندسة تصمم المعدات الطبية.</li>
-                </ul>
-            `,
-            content_en: `
-                <p><strong>The Relationship:</strong></p>
-                <p>Science provides fundamental knowledge, technology uses it to develop practical applications, and engineering leverages both to design projects meeting societal needs.</p>
-                <hr style="margin: 15px 0; border-color: var(--border);">
-                <p><strong>Illustrative Examples:</strong></p>
-                <ul>
-                    <li><strong>Electricity:</strong> Science studies magnetism ➔ Technology develops light bulbs ➔ Engineering designs power networks.</li>
-                    <li><strong>Aviation:</strong> Science studies aerodynamics ➔ Technology develops lightweight materials ➔ Engineering builds aircraft.</li>
-                    <li><strong>Medicine:</strong> Science investigates biology ➔ Technology develops X-ray machines ➔ Engineering designs medical equipment.</li>
-                </ul>
-            `
-        },
-        {
-            title: "7. الخاتمة (Conclusion)",
-            title_en: "7. Conclusion",
-            badge: "نهاية الفصل",
-            badge_en: "Conclusion",
-            content: `
-                <p><strong>الخلاصة:</strong></p>
-                <ul>
-                    <li>تلعب التكنولوجيا دوراً متكاملاً في تشكيل الحياة اليومية والتقدم الصناعي.</li>
-                    <li>ساهمت في تعزيز الاتصالات، التعليم، الرعاية الصحية، الترفيه، ودفع الكفاءة والاستدامة في الصناعة.</li>
-                </ul>
-                <div class="method-box" style="border-inline-start-color: var(--accent);">
-                    <strong>قاعدة هامة:</strong> على الرغم من التحديات والمخاوف الأخلاقية وتهديدات الأمن السيبراني، إلا أن <strong>الفوائد تفوق السلبيات بكثير (Benefits far outweigh the drawbacks)</strong>. يجب على المجتمعات تبني هذه التغييرات بشكل استراتيجي ومسؤول.
+                <p>استكشف أبرز معالم التطور التكنولوجي عبر العصور من خلال الضغط على الفترات الزمنية أدناه:</p>
+                <div class="converter-box">
+                    <div class="timeline-btns">
+                        <button class="time-btn" onclick="showTimeline('ancient', 'ar')">العصور القديمة</button>
+                        <button class="time-btn" onclick="showTimeline('industrial', 'ar')">الثورة الصناعية</button>
+                        <button class="time-btn" onclick="showTimeline('twentieth', 'ar')">القرن الـ 20</button>
+                        <button class="time-btn" onclick="showTimeline('digital', 'ar')">العصر الرقمي</button>
+                        <button class="time-btn" onclick="showTimeline('future', 'ar')">المستقبل</button>
+                    </div>
+                    <div id="timelineResult">الرجاء اختيار فترة زمنية لاستكشاف أبرز تقنياتها.</div>
                 </div>
             `,
             content_en: `
-                <p><strong>Conclusion:</strong></p>
-                <ul>
-                    <li>Technology plays an integral role in shaping both daily life and industrial progress.</li>
-                    <li>It enhanced communication, education, healthcare, and drove efficiency and sustainability in industry.</li>
-                </ul>
-                <div class="method-box" style="border-inline-start-color: var(--accent);">
-                    <strong>Key Takeaway:</strong> Despite challenges like cybersecurity threats and ethical concerns, the <strong>benefits far outweigh the drawbacks</strong>. Societies must embrace these changes responsibly and strategically.
+                <p>Explore the milestones of technological evolution by clicking on the time periods below:</p>
+                <div class="converter-box">
+                    <div class="timeline-btns" style="direction:ltr;">
+                        <button class="time-btn" onclick="showTimeline('ancient', 'en')">Ancient Ages</button>
+                        <button class="time-btn" onclick="showTimeline('industrial', 'en')">Industrial Rev.</button>
+                        <button class="time-btn" onclick="showTimeline('twentieth', 'en')">20th Century</button>
+                        <button class="time-btn" onclick="showTimeline('digital', 'en')">Digital Age</button>
+                        <button class="time-btn" onclick="showTimeline('future', 'en')">The Future</button>
+                    </div>
+                    <div id="timelineResult" style="direction:ltr; text-align:left;">Please select a time period to explore its key technologies.</div>
                 </div>
             `
         },
         {
-            title: "8. ساحة التدريب والمحاكاة ⚔️",
-            title_en: "8. Practice Arena ⚔️",
-            badge: "تطبيق عملي",
-            badge_en: "Practice",
-            isPracticeSlide: true,
-            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر معلوماتك في مبادئ التكنولوجيا! (أجب بالإنجليزية).</p>`,
-            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your knowledge on Principles of Technology! (Answer in English).</p>`
-        },
-        {
-            title: "9. بنك الأسئلة الشامل 🎓",
-            title_en: "9. Comprehensive Quiz Bank 🎓",
-            badge: "مراجعة شاملة",
-            badge_en: "Review",
+            title: "6. أسئلة المراجعة (Quiz) 🎓",
+            title_en: "6. Review Quiz 🎓",
+            badge: "اختبر نفسك",
+            badge_en: "Test Yourself",
             isQuizSlide: true,
-            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">تجميعة لأسئلة الامتحان المتوقعة. اضغط على السؤال لإظهار الإجابة الدقيقة.</p>`,
-            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Collection of expected exam questions. Click to reveal the precise answer.</p>`
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر استيعابك لمفاهيم المحاضرة الأولى (مقدمة في التكنولوجيا).</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your understanding of the concepts from Lecture 1.</p>`
         }
     ];
 
-    const practiceQuestions = [
-        { q: "Who defined technology as 'a set of means and methods used to achieve a specific objective effectively'?", ans: "jacques ellul" },
-        { q: "What century did Johannes Gutenberg invent the printing press?", ans: "15" },
-        { q: "What technology is essential to protect sensitive data from cyber threats in modern industries?", ans: "cybersecurity" },
-        { q: "Which discipline focuses on studying natural phenomena through observation and experimentation?", ans: "science" },
-        { q: "Which discipline transforms scientific knowledge into practical solutions that meet human needs?", ans: "engineering" }
-    ];
-
+    // ==========================================
+    // 2. DATA: Quiz (Bilingual)
+    // ==========================================
     const solvedQuizData = [
-        { q_en: "According to Manuel Castells, what is the role of technology?", a_ar: "الحل: يعتبرها أحد المحركات الرئيسية للتغيير الاجتماعي والاقتصادي.", a_en: "Answer: He considers technology one of the key drivers of social and economic change." },
-        { q_en: "What is the relationship between Science, Technology, and Engineering?", a_ar: "الحل: العلم يقدم المعرفة الأساسية، التكنولوجيا تستخدمها لتطوير تطبيقات عملية، والهندسة تستخدم كلاهما لتصميم وبناء حلول لاحتياجات المجتمع.", a_en: "Answer: Science provides basic knowledge, technology applies it practically, and engineering uses both to design and build solutions." },
-        { q_en: "How does IoT benefit smart manufacturing?", a_ar: "الحل: يسهل جمع البيانات في الوقت الفعلي، يسمح بالصيانة التنبؤية، ويقلل من وقت التوقف عن العمل في المصانع.", a_en: "Answer: It facilitates real-time data collection, allows predictive maintenance, and minimizes downtime in factories." },
-        { q_en: "Give an example of how Science, Technology, and Engineering work together in Aviation.", a_ar: "الحل: العلم يدرس الديناميكا الهوائية، التكنولوجيا تطور مواد خفيفة، والهندسة تطبق ذلك لبناء الطائرات.", a_en: "Answer: Science studies aerodynamics, technology develops lightweight materials, and engineering applies this to build aircraft." },
-        { q_en: "What is the primary purpose of 3D printing in advanced manufacturing?", a_ar: "الحل: تمكين الإنتاج السريع والتكلفة المنخفضة للتصميمات المعقدة وتقليل إهدار المواد.", a_en: "Answer: Enabling cost-effective and rapid production of complex designs and reducing material waste." }
+        { 
+            q_en: "Who defined technology as 'a set of means and methods used to achieve a specific objective effectively'?", 
+            a_en: "Jacques Ellul.",
+            a_ar: "جاك إلول (Jacques Ellul)."
+        },
+        { 
+            q_en: "Which century is known for the rapid evolution of smartphones, cloud computing, and AI?", 
+            a_en: "The 21st Century (Digital Age).",
+            a_ar: "القرن الحادي والعشرون (العصر الرقمي)."
+        },
+        { 
+            q_en: "What are examples of emerging innovations in the future of technology?", 
+            a_en: "Artificial Intelligence (AI), Robotics, and the Internet of Things (IoT).",
+            a_ar: "الذكاء الاصطناعي (AI)، الروبوتات، وإنترنت الأشياء (IoT)."
+        }
     ];
 
+    // ==========================================
+    // 3. LOGIC & CONTROLLERS
+    // ==========================================
     let idx = 0;
-    let uiLang = localStorage.getItem('globalLang') || 'ar'; 
+    let uiLang = 'ar'; 
 
     const dom = {
         title: document.getElementById('slideHeader'),
@@ -510,13 +462,30 @@
         prev: document.querySelector('#prevBtn span:first-child'),
         next: document.querySelector('#nextBtn span:first-child'),
         sidebar: document.getElementById('sidebar'),
-        pracContainer: document.getElementById('practiceContainer'),
+        toolContainer: document.getElementById('toolContainer'),
         quizContainer: document.getElementById('quizContainer'),
         search: document.getElementById('searchInp'),
         langBtn: document.getElementById('langBtn')
     };
 
-    function init() { renderList(); loadSlide(0); }
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            window.toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+    }
 
     function renderList() {
         dom.list.innerHTML = '';
@@ -524,8 +493,9 @@
         slides.forEach((s, i) => {
             let li = document.createElement('li');
             li.className = 'list-item';
-            let icon = s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (i+1));
-            let shortTitle = (isAr ? s.title : s.title_en).split(':')[0].substring(0, 30);
+            let icon = s.isToolSlide ? '⏳' : (s.isQuizSlide ? '🎓' : (i+1));
+            let titleText = isAr ? s.title : s.title_en;
+            let shortTitle = titleText.split('(')[0].split(':')[0]; 
             li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
             li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
             dom.list.appendChild(li);
@@ -537,56 +507,49 @@
         idx = index;
         const s = slides[index];
         const isAr = uiLang === 'ar';
+
         dom.title.innerHTML = isAr ? s.title : s.title_en;
         dom.badge.innerText = isAr ? s.badge : s.badge_en;
         dom.content.innerHTML = isAr ? s.content : s.content_en;
-        dom.pracContainer.style.display = 'none';
+
+        dom.toolContainer.style.display = 'none';
         dom.quizContainer.style.display = 'none';
-        if (s.isPracticeSlide) { dom.pracContainer.style.display = 'block'; renderPractice(); }
-        if (s.isQuizSlide) { dom.quizContainer.style.display = 'block'; renderQuiz(); }
+
+        if (s.isQuizSlide) {
+            dom.quizContainer.style.display = 'block';
+            renderQuiz();
+        }
+
         document.getElementById('prevBtn').disabled = index === 0;
         document.getElementById('nextBtn').disabled = index === slides.length - 1;
+
         updateActiveItem(index);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function updateActiveItem(index) {
         const items = document.querySelectorAll('.list-item');
-        items.forEach((item, i) => { if(i === index) item.classList.add('active'); else item.classList.remove('active'); });
-    }
-
-    function renderPractice() {
-        dom.pracContainer.innerHTML = '';
-        const isAr = uiLang === 'ar';
-        practiceQuestions.forEach((item, i) => {
-            let div = document.createElement('div');
-            div.className = 'practice-item';
-            let btnText = isAr ? "تحقق" : "Check";
-            let plcHolder = isAr ? "اكتب الإجابة (إنجليزي)..." : "Type answer here...";
-            div.innerHTML = `<div class="practice-q">${isAr ? 'س' : 'Q'}${i+1}: ${item.q}</div>
-                <div class="practice-controls">
-                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off" dir="ltr" style="text-align: left;">
-                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
-                    <span class="feedback" id="prac_fb_${i}"></span>
-                </div>`;
-            dom.pracContainer.appendChild(div);
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
         });
     }
 
     function renderQuiz() {
         dom.quizContainer.innerHTML = '';
         const isAr = uiLang === 'ar';
+        if(solvedQuizData.length === 0) return;
         solvedQuizData.forEach((item, i) => {
             let div = document.createElement('div');
             div.className = 'quiz-item';
             let ansText = isAr ? item.a_ar : item.a_en;
-            let qPrefix = isAr ? `س${i+1}: ` : `Q${i+1}: `;
-            
-            div.innerHTML = `<div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
-                    <span style="direction: ${isAr ? 'rtl' : 'ltr'}; display: inline-block;">${qPrefix}${item.q_en}</span>
+            div.innerHTML = `
+                <div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: ltr; display: inline-block;">Q${i+1}: ${item.q_en}</span>
                     <span style="font-size:1.2rem;">▼</span>
                 </div>
-                <div class="quiz-a">${ansText}</div>`;
+                <div class="quiz-a" dir="ltr" style="text-align:left;">Answer: ${ansText}</div>
+            `;
             dom.quizContainer.appendChild(div);
         });
     }
@@ -603,21 +566,22 @@
         });
     }
 
-    // دالة الترجمة الموحدة
-    function applyLangUpdates() {
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
         const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+        
         dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
         dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
-        
-        document.getElementById('pageTitle').innerText = isAr ? "مبادئ التكنولوجيا 💻" : "Principles of Tech 💻";
-        document.getElementById('pageSubTitle').innerText = isAr ? "الفصل 1: مقدمة وتعريف التكنولوجيا" : "Module 1: Introduction to Technology";
-        
-        const backBtnSpan = document.querySelector('.cta-back .span');
-        if (backBtnSpan) backBtnSpan.innerText = isAr ? "الرجوع" : "Back";
 
+        document.getElementById('pageTitle').innerText = isAr ? "مبادئ التكنولوجيا | L1 💻" : "Tech Principles | L1 💻";
+        document.getElementById('pageSubTitle').innerText = isAr ? "مقدمة في مفاهيم التكنولوجيا" : "Intro to Technology";
+        
         dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
         document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
         document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+
         dom.prev.innerText = isAr ? "السابق" : "Prev";
         dom.next.innerText = isAr ? "التالي" : "Next";
         
@@ -628,31 +592,42 @@
         loadSlide(idx);
     }
 
-    window.toggleLang = function() {
-        uiLang = uiLang === 'ar' ? 'en' : 'ar';
-        localStorage.setItem('globalLang', uiLang);
-        applyLangUpdates();
-    }
+    // --- Timeline Tool Logic ---
+    window.showTimeline = function(period, lang) {
+        const resBox = document.getElementById('timelineResult');
+        
+        // Update active button styles
+        document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active-time'));
+        event.target.classList.add('active-time');
 
-    window.checkAns = function(index, correctAns) {
-        const inputEl = document.getElementById(`prac_inp_${index}`);
-        const fbEl = document.getElementById(`prac_fb_${index}`);
-        if(!inputEl || !fbEl) return;
-        const isAr = uiLang === 'ar';
-        let userAns = inputEl.value.trim().toLowerCase();
-        let targetAns = correctAns.trim().toLowerCase();
-        if (userAns === "") {
-            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
-            fbEl.className = "feedback wrong"; return;
-        }
-        if (userAns.includes(targetAns) || targetAns.includes(userAns)) {
-            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
-            fbEl.className = "feedback correct";
-        } else {
-            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
-            fbEl.className = "feedback wrong";
-        }
-    };
+        const data = {
+            'ancient': {
+                ar: '<strong>العصور القديمة (العصر الحجري والبرونزي والحديدي):</strong> تطوير الأدوات البدائية والزراعة واستخدام المعادن التي مكنت الإنسان من البقاء والاستقرار.',
+                en: '<strong>Ancient Ages (Stone, Bronze, Iron Ages):</strong> Development of primitive tools, agriculture, and the use of metals that enabled human survival and settlement.'
+            },
+            'industrial': {
+                ar: '<strong>الثورة الصناعية:</strong> الانتقال من العمل اليدوي إلى التصنيع الآلي واختراع المحرك البخاري الذي غيّر وجه الصناعة والاقتصاد.',
+                en: '<strong>Industrial Revolution:</strong> The transition from manual labor to machine manufacturing and the invention of the steam engine which transformed industry and the economy.'
+            },
+            'twentieth': {
+                ar: '<strong>القرن العشرين:</strong> اختراع الطائرات، السيارات، الراديو، وبداية صعود تكنولوجيا المعلومات مع أجهزة الكمبيوتر والإنترنت.',
+                en: '<strong>20th Century:</strong> Invention of airplanes, automobiles, radio, and the rise of information technology with computers and the internet.'
+            },
+            'digital': {
+                ar: '<strong>العصر الرقمي (القرن الـ 21):</strong> ثورة الهواتف الذكية، الحوسبة السحابية، والاعتماد الكلي على الإنترنت في التواصل والتعليم والطب.',
+                en: '<strong>Digital Age (21st Century):</strong> The revolution of smartphones, cloud computing, and total reliance on the internet for communication, education, and medicine.'
+            },
+            'future': {
+                ar: '<strong>المستقبل:</strong> التركيز على الذكاء الاصطناعي (AI)، الروبوتات، وإنترنت الأشياء (IoT) مع مواجهة التحديات الأخلاقية.',
+                en: '<strong>The Future:</strong> Focus on Artificial Intelligence (AI), Robotics, and the Internet of Things (IoT) while facing ethical and social challenges.'
+            }
+        };
+
+        resBox.innerHTML = data[period][lang];
+        // simple fade animation
+        resBox.style.opacity = 0;
+        setTimeout(() => { resBox.style.opacity = 1; }, 50);
+    }
 
     window.move = function(step) {
         const newIdx = idx + step;
@@ -667,24 +642,10 @@
         const newTheme = isLight ? 'dark' : 'light';
         body.setAttribute('data-theme', newTheme);
         localStorage.setItem('globalTheme', newTheme);
-        const headerToggle = document.getElementById('themeCheckbox');
-        if(headerToggle) headerToggle.checked = (newTheme === 'dark');
     }
 
-    function initGlobalSettings() {
-        const savedTheme = localStorage.getItem('globalTheme') || 'light';
-        document.body.setAttribute('data-theme', savedTheme);
-        const headerToggle = document.getElementById('themeCheckbox');
-        if(headerToggle) headerToggle.checked = (savedTheme === 'dark');
-        
-        uiLang = localStorage.getItem('globalLang') || 'ar';
-        applyLangUpdates();
-    }
-
-    window.onload = function() {
-        initGlobalSettings();
-        init();
-    };
+    window.onload = init;
 </script>
+
 </body>
 </html>

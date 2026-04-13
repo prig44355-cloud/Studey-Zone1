@@ -182,18 +182,44 @@
                 <a href="Lecture1/index.html" class="btn-glass">دخول للمحاضرة</a>
             </div>
 
-            <div class="lec-card locked-card">
+            <div class="lec-card active-card">
                 <div class="floating-icon">2</div>
                 <h3 class="lec-title">المحاضرة الثانية</h3>
-                <div class="spinner-container">
-                    <div class="spinner"><div class="spinnerin"></div></div>
-                    <span style="font-weight:bold;" class="loading-text">جاري التجهيز...</span>
-                </div>
+                <p class="lec-desc">أساسيات الحوسبة.</p>
+                <a href="Lecture2/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card active-card">
+                <div class="floating-icon">3</div>
+                <h3 class="lec-title">المحاضرة الثالثة</h3>
+                <p class="lec-desc">شبكات الحاسوب والإنترنت.</p>
+                <a href="Lecture3/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card active-card">
+                <div class="floating-icon">4</div>
+                <h3 class="lec-title">المحاضرة الرابعة</h3>
+                <p class="lec-desc">أمن المعلومات والبيانات.</p>
+                <a href="Lecture4/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card active-card">
+                <div class="floating-icon">5</div>
+                <h3 class="lec-title">المحاضرة الخامسة</h3>
+                <p class="lec-desc">التطور التكنولوجي والذكاء الاصطناعي.</p>
+                <a href="Lecture5/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card active-card">
+                <div class="floating-icon">6</div>
+                <h3 class="lec-title">المحاضرة السادسة</h3>
+                <p class="lec-desc">الحوسبة السحابية وإنترنت الأشياء.</p>
+                <a href="Lecture6/index.html" class="btn-glass">دخول للمحاضرة</a>
             </div>
 
             <div class="lec-card locked-card">
-                <div class="floating-icon">3</div>
-                <h3 class="lec-title">المحاضرة الثالثة</h3>
+                <div class="floating-icon">7</div>
+                <h3 class="lec-title">المحاضرة السابعة</h3>
                 <div class="spinner-container">
                     <div class="spinner"><div class="spinnerin"></div></div>
                     <span style="font-weight:bold;" class="loading-text">جاري التجهيز...</span>
@@ -221,9 +247,18 @@
                 if(titles[0]) titles[0].innerText = 'Lecture 1';
                 if(titles[1]) titles[1].innerText = 'Lecture 2';
                 if(titles[2]) titles[2].innerText = 'Lecture 3';
+                if(titles[3]) titles[3].innerText = 'Lecture 4';
+                if(titles[4]) titles[4].innerText = 'Lecture 5';
+                if(titles[5]) titles[5].innerText = 'Lecture 6';
+                if(titles[6]) titles[6].innerText = 'Lecture 7';
 
                 const descs = document.querySelectorAll('.lec-desc');
                 if(descs[0]) descs[0].innerText = 'Introduction to Technology concepts.';
+                if(descs[1]) descs[1].innerText = 'Computing Fundamentals.';
+                if(descs[2]) descs[2].innerText = 'Computer Networks and Internet.';
+                if(descs[3]) descs[3].innerText = 'Information and Data Security.';
+                if(descs[4]) descs[4].innerText = 'Technological Evolution and AI.';
+                if(descs[5]) descs[5].innerText = 'Cloud Computing and IoT.'; 
 
                 const btns = document.querySelectorAll('.btn-glass');
                 btns.forEach(btn => btn.innerText = 'Enter Lecture');

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tech Principles | Lec 5 - Info Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- ألوان مادة مبادئ التكنولوجيا (أزرق داكن وسماوي) --- */
+        :root {
+            --bg-gradient-light: #fdfbfb;
+            --glass-bg-light: rgba(255, 255, 255, 0.95);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #2d3748;
+            --primary-light: #2b6cb0; 
+            --accent-light: #38b2ac; 
+            --header-bg-light: #ffffff;
+            --success: #38a169;
+            --error: #e53e3e;
+
+            /* الوضع الداكن */
+            --bg-gradient-dark: #0f172a;
+            --glass-bg-dark: rgba(15, 23, 42, 0.95);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f1f5f9;
+            --primary-dark: #63b3ed;
+            --accent-dark: #4fd1c5;
+            --header-bg-dark: #0f172a;
+
+            /* المتغيرات النشطة */
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(43, 108, 176, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* --- Header --- */
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0; }
+        .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
+        
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
+
+        .lang-button { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        /* --- Layout --- */
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
+        .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
+        .search-input-styled:focus { border-color: var(--primary); }
+        [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        
+        .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+
+        main { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+        .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Content Elements --- */
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(43, 108, 176, 0.15); color: var(--primary); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
+        .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
+        ul, ol { padding-inline-start: 20px; } li { margin-bottom: 10px; }
+        
+        .method-box { background: rgba(43, 108, 176, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .example-box { background: rgba(56, 178, 172, 0.05); border: 1px solid var(--accent); padding: 20px; margin: 15px 0; border-radius: 8px; font-size: 1.1rem; text-align: left; direction: ltr; }
+        
+        /* --- Tools & Practice --- */
+        .converter-box { background: rgba(43, 108, 176, 0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-top: 15px; }
+        select.logic-sel { padding: 8px; font-size: 1.1rem; border-radius: 6px; border: 1px solid var(--border); background: var(--glass); color: var(--text); outline: none; margin-bottom: 10px; width: 100%; max-width: 300px;}
+
+        /* --- Quiz Area --- */
+        .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
+        .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
+        .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
+
+        /* --- BB8 Toggle CSS --- */
+        .bb8-toggle { --toggle-size: 5px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+
+        /* --- Nav Buttons Styled --- */
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(56, 178, 172, 0.2); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; } .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { --color: var(--accent); box-shadow: inset 0px 0px 32px var(--accent); }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+
+        /* Responsive Logic */
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; margin-left:10px;}
+        
+        @media (max-width: 900px) {
+            header { padding: 0 15px; }
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; justify-content: flex-start; }
+            [dir="ltr"] .header-title-container { text-align: left; }
+            .header-title { font-size: 1rem; }
+            .controls { gap: 10px; }
+            .bb8-toggle { --toggle-size: 3px; }
+            .lang-button { width: 90px; height: 40px;}
+            .type1::after, .type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
+            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 80px); top: 80px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
+            aside.open { right: 0; left: auto; }
+            [dir="ltr"] aside { right: auto; left: -320px; }
+            [dir="ltr"] aside.open { right: auto; left: 0; }
+            .menu-btn { display: block; }
+            .cta-back { display: none; }
+            main { padding: 10px; }
+            .card { padding: 20px; margin-bottom: 20px; }
+            .nav-actions { gap: 15px; }
+            .styled-btn { width: 110px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <button class="cta-back" onclick="window.location.href='../index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرئيسية</span>
+            </button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-solid fa-shield-halved" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">مبادئ التكنولوجيا | L5 💻</div>
+                <div class="header-subtitle" id="pageSubTitle">أمن المعلومات وحماية البيانات</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="Toggle Theme">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                  <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                  </div>
+                  <div class="bb8">
+                    <div class="bb8__head-container">
+                      <div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div>
+                    </div>
+                    <div class="bb8__body"></div>
+                  </div>
+                  <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div style="position: relative; width: 100%;">
+                    <input placeholder="ابحث في الشرح..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                    <span id="searchIcon" style="position: absolute; right: 15px; top: 12px; opacity: 0.5;">🔍</span>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">شريحة</span>
+                <h1 id="slideHeader">العنوان</h1>
+                
+                <div class="content" id="slideHtml"></div>
+
+                <div id="toolContainer" style="display: none; margin-top: 20px;"></div>
+                <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span style="position:relative; z-index:2;">السابق</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span style="position:relative; z-index:2;">التالي</span>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // ==========================================
+    // 1. DATA: Bilingual Slides Data (Info Security & Data Protection)
+    // ==========================================
+    const slides = [
+        {
+            title: "1. مقدمة في أمن المعلومات",
+            title_en: "1. Intro to InfoSec",
+            badge: "تعريفات",
+            badge_en: "Definitions",
+            content: `
+                <p>أصبحت المعلومات والبيانات في العصر الرقمي أصولاً لا تقدر بثمن. ومع تزايد استخدام التكنولوجيا، أصبحت الحاجة لحمايتها من التهديدات أمراً بالغ الأهمية.</p>
+                <div class="method-box">
+                    <strong>الفرق بين أمن المعلومات وحماية البيانات:</strong>
+                    <ul>
+                        <li><strong>أمن المعلومات (Information Security):</strong> السياسات والتقنيات المستخدمة لحماية البيانات من الوصول غير المصرح به أو التعديل، سواء كانت رقمية أو مادية.</li>
+                        <li><strong>حماية البيانات (Data Protection):</strong> تركز بشكل خاص على حماية البيانات الحساسة أو الشخصية من سوء الاستخدام مع الامتثال لقوانين الخصوصية (مثل GDPR).</li>
+                    </ul>
+                </div>
+            `,
+            content_en: `
+                <p>In the digital age, information and data have become invaluable assets. As technology use grows, protecting them from increasing threats is critical.</p>
+                <div class="method-box">
+                    <strong>InfoSec vs. Data Protection:</strong>
+                    <ul>
+                        <li><strong>Information Security:</strong> Practices, policies, and technologies to protect data (digital or physical) from unauthorized access, alteration, or destruction.</li>
+                        <li><strong>Data Protection:</strong> Specifically focuses on safeguarding personal or sensitive data from misuse and ensuring compliance with privacy laws (like GDPR).</li>
+                    </ul>
+                </div>
+            `
+        },
+        {
+            title: "2. مثلث الحماية (CIA Triad)",
+            title_en: "2. The CIA Triad",
+            badge: "المفاهيم الأساسية",
+            badge_en: "Core Concepts",
+            content: `
+                <p>يعتمد أمن المعلومات على ثلاثة مبادئ أساسية تُعرف بـ <strong>CIA Triad</strong>:</p>
+                <ul>
+                    <li><strong>1. السرية (Confidentiality):</strong> ضمان أن البيانات لا يمكن الوصول إليها إلا من قبل الأشخاص المصرح لهم فقط.</li>
+                    <li><strong>2. النزاهة (Integrity):</strong> ضمان بقاء البيانات دقيقة وصحيحة، وعدم العبث بها أو تغييرها من قبل أشخاص غير مصرح لهم.</li>
+                    <li><strong>3. التوافر (Availability):</strong> ضمان أن الأنظمة والبيانات متاحة وجاهزة للاستخدام عند الحاجة إليها من قبل المستخدمين المصرح لهم.</li>
+                </ul>
+            `,
+            content_en: `
+                <p>Information security is built on three core principles known as the <strong>CIA Triad</strong>:</p>
+                <ul>
+                    <li><strong>1. Confidentiality:</strong> Ensures that sensitive information is accessed only by authorized individuals.</li>
+                    <li><strong>2. Integrity:</strong> Guarantees that data remains accurate and trustworthy, and is not altered by unauthorized entities.</li>
+                    <li><strong>3. Availability:</strong> Ensures that data and systems are accessible when needed by authorized users.</li>
+                </ul>
+            `
+        },
+        {
+            title: "3. التهديدات الأمنية الشائعة",
+            title_en: "3. Common Threats",
+            badge: "المخاطر",
+            badge_en: "Risks",
+            content: `
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>أبرز الهجمات الإلكترونية:</strong>
+                    <ul>
+                        <li><strong>البرمجيات الخبيثة (Malware):</strong> برامج مثل الفيروسات، وبرامج الفدية (Ransomware)، المصممة لإلحاق الضرر بالأنظمة.</li>
+                        <li><strong>التصيد الاحتيالي (Phishing):</strong> خداع الأفراد عبر رسائل بريد إلكتروني تبدو شرعية لسرقة كلمات المرور والبيانات.</li>
+                        <li><strong>التهديدات الداخلية (Insider Threats):</strong> تأتي من داخل المؤسسة (موظفين) سواء كان ذلك عن طريق الخطأ أو بسوء نية.</li>
+                        <li><strong>هجمات حجب الخدمة (DoS/DDoS):</strong> إغراق الخادم بحركة مرور وهمية هائلة لجعله غير قادر على خدمة المستخدمين الشرعيين.</li>
+                    </ul>
+                </div>
+            `,
+            content_en: `
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <strong>Common Cyber Attacks:</strong>
+                    <ul>
+                        <li><strong>Malware:</strong> Malicious software like viruses and ransomware designed to damage systems or lock data.</li>
+                        <li><strong>Phishing:</strong> Deceiving individuals via emails that look legitimate to steal passwords and sensitive data.</li>
+                        <li><strong>Insider Threats:</strong> Arise from within an organization (employees), whether accidental or malicious.</li>
+                        <li><strong>DoS/DDoS Attacks:</strong> Overwhelming a system with traffic to make it unavailable to legitimate users.</li>
+                    </ul>
+                </div>
+            `
+        },
+        {
+            title: "4. استراتيجيات الحماية والامتثال",
+            title_en: "4. Protection Strategies & Compliance",
+            badge: "الدفاع القانوني والتقني",
+            badge_en: "Tech & Legal Defense",
+            content: `
+                <p>لحماية البيانات، تستخدم المؤسسات أدوات تقنية وتلتزم بالقوانين الدولية:</p>
+                <ul>
+                    <li><strong>التشفير (Encryption):</strong> تحويل البيانات إلى رموز غير مفهومة بحيث لا يمكن قراءتها بدون مفتاح فك التشفير.</li>
+                    <li><strong>التحكم في الوصول (Access Control):</strong> تقييد الوصول للأنظمة ليكون متاحاً للمصرح لهم فقط (مثل المصادقة الثنائية 2FA).</li>
+                    <li><strong>النسخ الاحتياطي (Data Backup):</strong> تخزين نسخ من البيانات لاستعادتها في حالة الهجمات (مثل برامج الفدية).</li>
+                </ul>
+                <div class="example-box">
+                    <strong>الامتثال للقوانين (Compliance):</strong> قوانين مثل <strong>GDPR</strong> في أوروبا تفرض على الشركات حماية بيانات المستخدمين بصرامة وتعطيهم الحق في التحكم ببياناتهم.
+                </div>
+            `,
+            content_en: `
+                <p>To protect data, organizations use technical tools and adhere to international laws:</p>
+                <ul>
+                    <li><strong>Encryption:</strong> Converting data into a coded format that is unreadable without a decryption key.</li>
+                    <li><strong>Access Control:</strong> Restricting access to systems only to authorized individuals (e.g., Two-Factor Authentication 2FA).</li>
+                    <li><strong>Data Backup:</strong> Storing copies of data to restore it in case of data loss or ransomware attacks.</li>
+                </ul>
+                <div class="example-box">
+                    <strong>Regulatory Compliance:</strong> Laws like <strong>GDPR</strong> in Europe mandate strict user data protection and grant individuals control over their personal info.
+                </div>
+            `
+        },
+        {
+            title: "5. أفضل الممارسات الأمنية",
+            title_en: "5. Security Best Practices",
+            badge: "تطبيقات عملية",
+            badge_en: "Practical Application",
+            content: `
+                <p>لتعزيز الأمن، يجب اتباع الممارسات التالية للحد من المخاطر:</p>
+                <ol>
+                    <li><strong>إدارة كلمات المرور:</strong> استخدام كلمات مرور معقدة وفريدة، واستخدام برامج إدارة كلمات المرور (Password Managers).</li>
+                    <li><strong>التدريب الأمني:</strong> تدريب الموظفين والمستخدمين على اكتشاف التهديدات مثل التصيد الاحتيالي.</li>
+                    <li><strong>التدقيق واختبار الاختراق (Penetration Testing):</strong> محاكاة هجمات لاكتشاف الثغرات وإصلاحها قبل استغلالها.</li>
+                    <li><strong>التحديثات (Updates & Patching):</strong> تحديث الأنظمة والتطبيقات باستمرار لسد الثغرات الأمنية المعروفة.</li>
+                </ol>
+            `,
+            content_en: `
+                <p>To enhance security, follow these best practices to mitigate risks:</p>
+                <ol>
+                    <li><strong>Secure Password Management:</strong> Use complex, unique passwords and consider utilizing password managers.</li>
+                    <li><strong>Security Awareness Training:</strong> Train employees and users to recognize threats like phishing.</li>
+                    <li><strong>Security Audits & Penetration Testing:</strong> Simulate cyberattacks to uncover and fix vulnerabilities before they are exploited.</li>
+                    <li><strong>Software Updates & Patching:</strong> Keep software and OS up to date to close known security gaps.</li>
+                </ol>
+            `
+        },
+        {
+            title: "6. مستكشف مصطلحات الأمن 🛡️",
+            title_en: "6. Security Explorer 🛡️",
+            badge: "أداة ذكية",
+            badge_en: "Smart Tool",
+            isToolSlide: true,
+            content: `
+                <p>اختر المصطلح لتستكشف معناه في عالم أمن المعلومات:</p>
+                <div class="converter-box" style="text-align:center;">
+                    <select id="secSelect" class="logic-sel" onchange="updateExplorer('ar')">
+                        <option value="cia">CIA Triad (مثلث الحماية)</option>
+                        <option value="malware">Malware (البرمجيات الخبيثة)</option>
+                        <option value="phishing">Phishing (التصيد الاحتيالي)</option>
+                        <option value="ddos">DDoS (هجمات حجب الخدمة)</option>
+                        <option value="gdpr">GDPR (اللائحة العامة لحماية البيانات)</option>
+                        <option value="encryption">Encryption (التشفير)</option>
+                    </select>
+                    <div id="explorerRes" style="margin-top:15px; padding:15px; background:rgba(255,255,255,0.8); border-radius:8px; border:2px solid var(--accent); color:var(--text-main-light); font-weight:bold; line-height: 1.6;">
+                        يرجى اختيار مصطلح من القائمة.
+                    </div>
+                </div>
+            `,
+            content_en: `
+                <p>Select a term to explore its meaning in Information Security:</p>
+                <div class="converter-box" style="text-align:center;">
+                    <select id="secSelect" class="logic-sel" onchange="updateExplorer('en')">
+                        <option value="cia">CIA Triad</option>
+                        <option value="malware">Malware</option>
+                        <option value="phishing">Phishing</option>
+                        <option value="ddos">DDoS Attack</option>
+                        <option value="gdpr">GDPR</option>
+                        <option value="encryption">Encryption</option>
+                    </select>
+                    <div id="explorerRes" style="margin-top:15px; padding:15px; background:rgba(255,255,255,0.8); border-radius:8px; border:2px solid var(--accent); color:var(--text-main-light); font-weight:bold; line-height: 1.6;">
+                        Please select a term from the list.
+                    </div>
+                </div>
+            `
+        },
+        {
+            title: "7. أسئلة المراجعة (Quiz) 🎓",
+            title_en: "7. Review Quiz 🎓",
+            badge: "اختبر نفسك",
+            badge_en: "Test Yourself",
+            isQuizSlide: true,
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر استيعابك لمفاهيم أمن المعلومات وحماية البيانات.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your understanding of Information Security and Data Protection.</p>`
+        }
+    ];
+
+    // ==========================================
+    // 2. DATA: Quiz (Bilingual)
+    // ==========================================
+    const solvedQuizData = [
+        { 
+            q_en: "Which part of the CIA Triad ensures that data is not altered or tampered with by unauthorized users?", 
+            a_en: "Integrity.",
+            a_ar: "النزاهة (Integrity)."
+        },
+        { 
+            q_en: "What type of attack involves overwhelming a system with excessive traffic to make it unavailable?", 
+            a_en: "DoS/DDoS Attack.",
+            a_ar: "هجوم حجب الخدمة (DoS/DDoS)."
+        },
+        { 
+            q_en: "Which European regulation mandates strict protection of personal user data?", 
+            a_en: "GDPR (General Data Protection Regulation).",
+            a_ar: "اللائحة العامة لحماية البيانات (GDPR)."
+        }
+    ];
+
+    // ==========================================
+    // 3. LOGIC & CONTROLLERS
+    // ==========================================
+    let idx = 0;
+    let uiLang = 'ar'; 
+
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.querySelector('#prevBtn span:first-child'),
+        next: document.querySelector('#nextBtn span:first-child'),
+        sidebar: document.getElementById('sidebar'),
+        toolContainer: document.getElementById('toolContainer'),
+        quizContainer: document.getElementById('quizContainer'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn')
+    };
+
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            window.toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            let icon = s.isToolSlide ? '🛡️' : (s.isQuizSlide ? '🎓' : (i+1));
+            let titleText = isAr ? s.title : s.title_en;
+            let shortTitle = titleText.split('(')[0].split(':')[0]; 
+            li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
+            li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? s.badge : s.badge_en;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+
+        dom.toolContainer.style.display = 'none';
+        dom.quizContainer.style.display = 'none';
+
+        if (s.isToolSlide) {
+            dom.toolContainer.style.display = 'block';
+            setTimeout(() => updateExplorer(uiLang), 100);
+        }
+
+        if (s.isQuizSlide) {
+            dom.quizContainer.style.display = 'block';
+            renderQuiz();
+        }
+
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function renderQuiz() {
+        dom.quizContainer.innerHTML = '';
+        const isAr = uiLang === 'ar';
+        if(solvedQuizData.length === 0) return;
+        solvedQuizData.forEach((item, i) => {
+            let div = document.createElement('div');
+            div.className = 'quiz-item';
+            let ansText = isAr ? item.a_ar : item.a_en;
+            div.innerHTML = `
+                <div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
+                    <span style="direction: ltr; display: inline-block;">Q${i+1}: ${item.q_en}</span>
+                    <span style="font-size:1.2rem;">▼</span>
+                </div>
+                <div class="quiz-a" dir="ltr" style="text-align:left;">Answer: ${ansText}</div>
+            `;
+            dom.quizContainer.appendChild(div);
+        });
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        const isAr = uiLang === 'ar';
+        slides.forEach((s, i) => {
+            let t = isAr ? s.title.toLowerCase() : s.title_en.toLowerCase();
+            let b = isAr ? s.badge.toLowerCase() : s.badge_en.toLowerCase();
+            if(t.includes(q) || b.includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    // --- Interactive Tool Logic ---
+    window.updateExplorer = function(lang) {
+        const sel = document.getElementById('secSelect');
+        const res = document.getElementById('explorerRes');
+        if(!sel || !res) return;
+        
+        const val = sel.value;
+        const data = {
+            'cia': {
+                ar: '<strong>مثلث الحماية (CIA Triad):</strong> يتكون من السرية (Confidentiality)، والنزاهة (Integrity)، والتوافر (Availability). وهو حجر الزاوية الذي تبنى عليه كل سياسات أمن المعلومات لضمان حماية البيانات بالكامل.',
+                en: '<strong>CIA Triad:</strong> Consists of Confidentiality, Integrity, and Availability. It is the core model underlying all information security policies to ensure comprehensive data protection.'
+            },
+            'malware': {
+                ar: '<strong>البرمجيات الخبيثة (Malware):</strong> مصطلح عام يشمل أي برنامج ضار مثل الفيروسات أو برامج الفدية، يتم تصميمه للوصول غير المصرح به للأنظمة أو تدميرها.',
+                en: '<strong>Malware:</strong> A broad term encompassing malicious software like viruses and ransomware, designed to gain unauthorized access or cause damage to systems.'
+            },
+            'phishing': {
+                ar: '<strong>التصيد الاحتيالي (Phishing):</strong> هجوم يعتمد على الهندسة الاجتماعية، حيث يتظاهر المهاجم بأنه جهة موثوقة (كالبنك) لسرقة بيانات حساسة مثل كلمات المرور أو أرقام بطاقات الائتمان.',
+                en: '<strong>Phishing:</strong> A social engineering attack where the attacker masquerades as a trusted entity (e.g., a bank) to steal sensitive info like passwords or credit card numbers.'
+            },
+            'ddos': {
+                ar: '<strong>هجوم حجب الخدمة (DDoS):</strong> هجوم يتم فيه إغراق الخادم أو الشبكة بعدد هائل من الطلبات الوهمية حتى يتعطل ولا يعود قادراً على تلبية طلبات المستخدمين الحقيقيين.',
+                en: '<strong>DDoS Attack:</strong> An attack where a server or network is flooded with an overwhelming amount of fake traffic, causing it to crash and become unavailable to real users.'
+            },
+            'gdpr': {
+                ar: '<strong>اللائحة العامة لحماية البيانات (GDPR):</strong> قانون صارم في الاتحاد الأوروبي يُلزم الشركات بحماية بيانات المستخدمين ويمنح الأفراد الحق في التحكم، تعديل، أو حذف بياناتهم.',
+                en: '<strong>GDPR:</strong> A strict regulation in the European Union that mandates companies to protect user data and gives individuals the right to control, amend, or delete their personal info.'
+            },
+            'encryption': {
+                ar: '<strong>التشفير (Encryption):</strong> عملية تحويل البيانات العادية إلى نصوص مشفرة لا يمكن قراءتها. وهي من أفضل الطرق لحماية البيانات أثناء النقل أو التخزين.',
+                en: '<strong>Encryption:</strong> The process of converting plain text into unreadable ciphertext. It is one of the most effective ways to protect data in transit or at rest.'
+            }
+        };
+
+        res.innerHTML = data[val][lang];
+        res.style.opacity = 0;
+        setTimeout(() => res.style.opacity = 1, 50);
+    }
+
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+        
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        document.getElementById('pageTitle').innerText = isAr ? "مبادئ التكنولوجيا | L5 💻" : "Tech Principles | L5 💻";
+        document.getElementById('pageSubTitle').innerText = isAr ? "أمن المعلومات وحماية البيانات" : "InfoSec & Data Protection";
+        
+        dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
+        document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
+        document.getElementById('searchIcon').style.left = isAr ? "auto" : "15px";
+
+        dom.prev.innerText = isAr ? "السابق" : "Prev";
+        dom.next.innerText = isAr ? "التالي" : "Next";
+        
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    window.move = function(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    window.toggleSidebar = function() { dom.sidebar.classList.toggle('open'); }
+
+    window.toggleTheme = function() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('globalTheme', newTheme);
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

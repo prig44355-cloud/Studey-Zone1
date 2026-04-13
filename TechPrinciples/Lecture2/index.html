@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>محتويات المحاضرة الأولى | مبادئ التكنولوجيا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* هوية مادة مبادئ التكنولوجيا (الأزرق والسماوي المخضر) */
+            --bg-body: #fdfbfb; 
+            --text-main: #2d3748; 
+            --header-bg: rgba(255, 255, 255, 0.98);
+            --primary: #2b6cb0; 
+            --accent: #38b2ac;  
+            
+            /* ألوان الكروت */
+            --card-active: linear-gradient(135deg, #2b6cb0 0%, #1a365d 100%); 
+            --card-locked: linear-gradient(135deg, #e2ebf0 0%, #cfd9df 100%);
+            --text-locked: #475569; 
+            --icon-color: #38b2ac; 
+        }
+        [data-theme="dark"] {
+            --bg-body: #0f172a; 
+            --text-main: #f1f5f9; 
+            --header-bg: rgba(15, 23, 42, 0.98);
+            --primary: #63b3ed;
+            --accent: #4fd1c5;
+            
+            --card-active: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --card-locked: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --text-locked: #94a3b8; 
+            --icon-color: #4fd1c5; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
+        body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; -webkit-user-select: none; user-select: none; }
+        
+        /* الهيدر الزجاجي الموحد */
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); padding: 15px 5%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 15px;}
+        .page-title { font-size: 1.5rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 10px; text-align: center;}
+        .header-actions { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center;}
+
+        /* زر الرجوع الموحد */
+        .cta-back { display: flex; align-items: center; justify-content: center; padding: 8px 25px; text-decoration: none; font-size: 18px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -5px 5px 0 var(--text-main); transform: skewX(15deg); border: none; cursor: pointer; }
+        [data-theme="dark"] .cta-back { background: var(--primary); color: #000; box-shadow: -5px 5px 0 #ffffff; }
+        .cta-back:focus { outline: none; } .cta-back:hover { transition: 0.5s; box-shadow: -8px 8px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 15px; width: 25px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 35px; }
+        .one { transition: 0.4s; transform: translateX(-60%); } .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
+
+        /* زر اللغة الموحد */
+        .lang-button.type1 { height: 45px; width: 100px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; transform: scale(0.9); }
+        .lang-button.type1:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .lang-button.type1::after { content: attr(data-hover); height: 45px; width: 100px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .lang-button.type1::before { content: attr(data-main); height: 45px; width: 100px; background-color: rgba(0,0,0,0.05); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; }
+        [data-theme="dark"] .lang-button.type1::before { background-color: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+        .lang-button.type1:hover::after { transform: translateY(0) scale(1.2); }
+        .lang-button.type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        /* زر الثيم الموحد (BB8) */
+        .theme-btn-wrapper { transform: scale(0.55); margin: 0 -10px; transform-origin: center;}
+        .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent-bb8: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent-bb8) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent-bb8) 0.125em, transparent 0.125em 0.188em, var(--accent-bb8) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent-bb8) 0.375em 0.938em, transparent 0.938em 1em, var(--accent-bb8) 1em 1.125em, transparent 1.125em 1.875em, var(--accent-bb8) 1.875em 2em, transparent 2em 2.063em, var(--accent-bb8) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent-bb8) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent-bb8) 2.438em); transition: var(--transition); }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent-bb8) 4% 10%, transparent 10% 90%, var(--accent-bb8) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent-bb8) 4% 10%, transparent 10% 90%, var(--accent-bb8) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent-bb8); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent-bb8) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent-bb8) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+
+        /* الكروت */
+        .container { max-width: 1200px; margin: 50px auto; padding: 0 5%; width: 100%;}
+        .title { text-align: center; font-size: 1.8rem; font-weight: 900; margin-bottom: 50px; color: var(--primary); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; direction: rtl; }
+        
+        .content-card { border-radius: 40px 10px 40px 10px; padding: 40px 20px 30px; position: relative; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; transition: transform 0.4s, box-shadow 0.4s; border: 1px solid rgba(255,255,255,0.2); }
+        
+        .active-card { background: var(--card-active); color: white; border: 1px solid rgba(56, 178, 172, 0.3); }
+        .active-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(56, 178, 172, 0.2); }
+
+        .floating-icon { position: absolute; top: -20px; right: -15px; background: var(--header-bg); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid var(--bg-body); transition: 0.3s; color: var(--icon-color); }
+        html[dir="ltr"] .floating-icon { right: auto; left: -15px; }
+        
+        .content-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 900; color: var(--icon-color); }
+        .content-card p { margin-bottom: 30px; flex-grow: 1; font-size: 1rem; opacity: 0.9; color: #f8fafc;}
+        
+        /* زر الدخول للمحاضرة */
+        .btn-enter { font-size: 1.1rem; padding: 0.8rem 2.5rem; border: none; outline: none; border-radius: 0.4rem; cursor: pointer; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(56, 178, 172, 0.5); backdrop-filter: blur(5px); color: #fff; font-weight: 700; transition: 0.6s; text-decoration: none; display: inline-block; margin: auto auto 0; font-family: 'Cairo'; width: 100%; }
+        .btn-enter:hover { background: var(--accent); color: #fff; box-shadow: 0 5px 15px rgba(56, 178, 172, 0.4); }
+
+        /* ================= التجاوب (Responsive Design Fixes) ================= */
+        @media (max-width: 768px) { 
+            .navbar { flex-direction: column-reverse; padding: 20px; gap: 20px; } 
+            .header-actions { justify-content: center; flex-wrap: wrap; width: 100%; gap: 15px;}
+            .floating-icon { top: -20px; right: 15px; width: 55px; height: 55px; font-size: 22px;} 
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+            .container { margin: 30px auto; padding: 0 15px; }
+            .title { font-size: 1.5rem; margin-bottom: 40px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+            .content-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            .navbar { padding: 15px; gap: 15px; }
+            .page-title { font-size: 1.3rem; text-align: center; }
+            
+            /* تظبيط زراير الهيدر عشان يكونوا في سطر واحد بمقاسات مناسبة */
+            .header-actions { gap: 8px; justify-content: space-between; flex-direction: row; flex-wrap: nowrap; width: 100%;}
+            
+            .theme-btn-wrapper { transform: scale(0.38); margin-left: -35px; margin-right: -15px; transform-origin: right;}
+            html[dir="ltr"] .theme-btn-wrapper { transform-origin: left; margin-left: -15px; margin-right: -35px;}
+            
+            .lang-button.type1 { transform: scale(0.65); margin: 0 -15px; }
+            
+            .cta-back { width: auto; font-size: 12px; padding: 6px 12px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main); max-width: none;}
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
+            .cta-back .span { transform: skewX(-10deg); }
+            .cta-back .second { width: 15px; margin-right: 5px; }
+            .cta-back:hover .second { margin-right: 10px; }
+            
+            .title { font-size: 1.35rem; margin-bottom: 35px; }
+            
+            .grid { grid-template-columns: 1fr; gap: 30px; }
+            
+            /* الكروت في الموبايل */
+            .content-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
+            
+            .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
+            html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
+
+            .content-card h3 { font-size: 1.3rem; margin-bottom: 10px;}
+            .content-card p { font-size: 0.95rem; }
+            .btn-enter { font-size: 1rem; padding: 0.8rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <h2 class="page-title" data-i18n="lec_title">محتويات المحاضرة الأولى</h2>
+        <div class="header-actions">
+            
+            <div class="theme-btn-wrapper">
+                <label class="bb8-toggle" title="Toggle Theme">
+                    <input class="bb8-toggle__checkbox" id="themeToggleCheck" type="checkbox" onchange="toggleTheme()">
+                    <div class="bb8-toggle__container">
+                      <div class="bb8-toggle__scenery">
+                        <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                        <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                      </div>
+                      <div class="bb8">
+                        <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                        <div class="bb8__body"></div>
+                      </div>
+                      <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                    </div>
+                </label>
+            </div>
+
+            <div>
+                <button class="lang-button type1" onclick="toggleLangTrigger()" id="langBtn" data-main="EN" data-hover="Switch ⇆"></button>
+            </div>
+
+            <button class="cta-back" onclick="window.location.href='../index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span" data-i18n="back_to_subject">عودة للمادة</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="title" data-i18n="select_content">اختر مسار المذاكرة 📂</h1>
+        <div class="grid">
+
+            <div class="content-card active-card" onclick="window.location.href='interactive.html'" style="cursor: pointer;">
+                <div class="floating-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                <h3 data-i18n="card1_title">الشرح التفاعلي</h3>
+                <p data-i18n="card1_desc">ذاكر المحاضرة بنظام الشرائح التفاعلية والأسئلة.</p>
+                <a href="interactive.html" class="btn-enter" data-i18n="btn1">ابدأ المذاكرة</a>
+            </div>
+
+            <div class="content-card active-card" onclick="window.location.href='pdf-viewer.html'" style="cursor: pointer;">
+                <div class="floating-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                <h3 data-i18n="card2_title">الماتيريال الأصلي</h3>
+                <p data-i18n="card2_desc">تصفح ملف الـ PDF الخاص بالمحاضرة.</p>
+                <a href="pdf-viewer.html" class="btn-enter" data-i18n="btn2">عرض الـ PDF</a>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // قواميس الترجمة تم تحديثها للمحاضرة الأولى - مبادئ التكنولوجيا
+        const dict = {
+            ar: { 
+                btn1: "ابدأ المذاكرة", 
+                lec_title: "محتويات المحاضرة الأولى", 
+                back_to_subject: "رجوع للمادة", 
+                select_content: "اختر مسار المذاكرة 📂", 
+                card1_title: "الشرح التفاعلي", 
+                card1_desc: "ذاكر المحاضرة بنظام الشرائح التفاعلية والأسئلة.", 
+                card2_title: "الماتيريال الأصلي", 
+                card2_desc: "تصفح ملف الـ PDF الخاص بالمحاضرة.", 
+                btn2: "عرض الـ PDF" 
+            },
+            en: { 
+                btn1: "Start Studying", 
+                lec_title: "First Lecture Content", 
+                back_to_subject: "Back to Subject", 
+                select_content: "Choose Study Path 📂", 
+                card1_title: "Interactive Study", 
+                card1_desc: "Study the lecture with interactive slides and questions.", 
+                card2_title: "Original Material", 
+                card2_desc: "Browse the original PDF file of the lecture.", 
+                btn2: "View PDF" 
+            }
+        };
+        
+        let lang = localStorage.getItem('globalLang') || 'ar';
+        let theme = localStorage.getItem('globalTheme') || 'light';
+        
+        function initPlatform() { 
+            const themeToggle = document.getElementById('themeToggleCheck');
+            if(theme === 'dark') { 
+                themeToggle.checked = true; 
+                document.documentElement.setAttribute('data-theme', 'dark'); 
+            } else { 
+                themeToggle.checked = false; 
+                document.documentElement.setAttribute('data-theme', 'light'); 
+            }
+            applyLang(lang); 
+        }
+        
+        function toggleTheme() {
+            const themeToggle = document.getElementById('themeToggleCheck');
+            theme = themeToggle.checked ? 'dark' : 'light'; 
+            document.documentElement.setAttribute('data-theme', theme); 
+            localStorage.setItem('globalTheme', theme); 
+        }
+        
+        function toggleLangTrigger() { 
+            lang = lang === 'ar' ? 'en' : 'ar'; 
+            localStorage.setItem('globalLang', lang); 
+            applyLang(lang); 
+        }
+        
+        function applyLang(l) { 
+            document.documentElement.lang = l; 
+            document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'; 
+            
+            const langBtn = document.getElementById('langBtn');
+            if(l === 'ar') {
+                langBtn.setAttribute('data-main', "EN");
+                langBtn.setAttribute('data-hover', "Switch ⇆");
+            } else {
+                langBtn.setAttribute('data-main', "عربي");
+                langBtn.setAttribute('data-hover', "تغيير ⇆");
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                if(dict[l][el.getAttribute('data-i18n')]) el.innerText = dict[l][el.getAttribute('data-i18n')]; 
+            }); 
+        }
+        
+        document.addEventListener('contextmenu', e => e.preventDefault()); 
+        document.ondragstart = () => false; 
+        document.addEventListener('keydown', e => { 
+            if (e.key === 'F12' || e.keyCode === 123) return false; 
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'C')) return false; 
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 'P')) return false; 
+        });
+        
+        window.onload = initPlatform;
+    </script>
+</body>
+</html>
