@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Operating Systems | Masterclass</title>
+    <title>Operating Systems | Lecture</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- ألوان مادة نظم التشغيل (بنفسجي وأزرق) --- */
         :root {
-            /* ألوان تناسب نظم التشغيل (كحلي داكن وأخضر زمردي) */
-            --bg-gradient-light: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --bg-gradient-light: #f4f5f7;
             --glass-bg-light: rgba(255, 255, 255, 0.95);
             --glass-border-light: rgba(255, 255, 255, 0.6);
             --text-main-light: #1e293b;
-            --primary-light: #0f172a; 
-            --accent-light: #10b981;  
-            --header-bg-light: rgba(255, 255, 255, 0.98);
-            --success: #059669;
-            --error: #dc2626;
+            --primary-light: #764ba2; 
+            --accent-light: #667eea; 
+            --header-bg-light: #ffffff;
+            --success: #10b981;
+            --error: #ef4444;
 
-            /* الوضع الداكن (Terminal Vibe) */
-            --bg-gradient-dark: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-            --glass-bg-dark: rgba(15, 23, 42, 0.95);
+            /* الوضع الداكن */
+            --bg-gradient-dark: #0f172a;
+            --glass-bg-dark: rgba(30, 41, 59, 0.95);
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --text-main-dark: #f8fafc;
-            --primary-dark: #38bdf8;
-            --accent-dark: #10b981;
-            --header-bg-dark: rgba(2, 6, 23, 0.98);
+            --primary-dark: #a78bfa;
+            --accent-dark: #818cf8;
+            --header-bg-dark: #0f172a;
 
+            /* المتغيرات النشطة */
             --bg-body: var(--bg-gradient-light);
             --glass: var(--glass-bg-light);
             --border: var(--glass-border-light);
@@ -34,7 +36,7 @@
             --primary: var(--primary-light);
             --accent: var(--accent-light);
             --header-bg: var(--header-bg-light);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --shadow: 0 8px 32px 0 rgba(118, 75, 162, 0.15);
         }
 
         [data-theme="dark"] {
@@ -52,11 +54,11 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        header { height: 75px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; }
+        /* --- Header --- */
+        header { height: 80px; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: var(--shadow); position: relative; flex-shrink: 0; }
         .header-right { display: flex; align-items: center; gap: 15px; z-index: 2; }
         
-        /* ================= زرار الرجوع (Back Button) ================= */
-        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; }
+        .cta-back { display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; background: var(--primary); transition: 1s; box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; margin-right: 10px; }
         [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; background: var(--primary);}
         .cta-back:focus { outline: none; }
         .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
@@ -69,24 +71,28 @@
         .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
         .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
         @keyframes color_anim { 0% { fill: white; } 50% { fill: var(--accent); } 100% { fill: white; } }
-        /* =========================================================== */
 
-        .header-title-container { text-align: center; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; display: flex; flex-direction: column; align-items: center;}
-        .header-title { font-weight: 900; font-size: 1.1rem; color: var(--primary); }
-        .header-subtitle { font-size: 0.8rem; color: var(--accent); font-weight: bold; }
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 1; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
         .controls { display: flex; gap: 15px; align-items: center; z-index: 2; }
 
-        .lang-button { border: 1px solid var(--primary); background: transparent; color: var(--primary); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s;}
-        .lang-button:hover { background: var(--primary); color: white; }
-        [data-theme="dark"] .lang-button { border-color: var(--accent); color: var(--accent); }
-        [data-theme="dark"] .lang-button:hover { background: var(--accent); color: #000; }
+        .lang-button { height: 45px; width: 120px; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s ease-in-out; background: transparent; font-family: 'Cairo', sans-serif; }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after { content: attr(data-hover); height: 45px; width: 120px; background-color: var(--primary); color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; }
+        .type1::before { content: attr(data-main); height: 45px; width: 120px; background-color: var(--glass); color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2); font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px; }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
 
+        /* --- Layout --- */
         .container { display: flex; flex: 1; overflow: hidden; position: relative; }
         aside { width: 300px; background: var(--glass); border-inline-end: 1px solid var(--border); display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
         .search-area { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; }
         .search-input-styled { background-color: rgba(0,0,0,0.05); border: 1px solid var(--border); width: 100%; height: 45px; border-radius: 10px; color: var(--text); padding-inline: 40px; font-size: 14px; font-family: 'Cairo'; outline: none; }
         .search-input-styled:focus { border-color: var(--primary); }
         [data-theme="dark"] .search-input-styled { background-color: rgba(255,255,255,0.05); color: white; }
+        
         .slide-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
         .list-item { padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
         .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
@@ -96,50 +102,41 @@
         .card { background: var(--glass); width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 30px; animation: slideUp 0.5s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); color: var(--accent); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
+        /* --- Content Elements --- */
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(118, 75, 162, 0.15); color: var(--primary); font-weight: bold; font-size: 0.8rem; margin-bottom: 15px; }
         h1 { font-size: 1.6rem; margin-bottom: 20px; line-height: 1.4; color: var(--primary); }
         .content { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--text); }
-        ul, ol { padding-inline-start: 20px; margin-bottom: 15px; } li { margin-bottom: 10px; }
+        ul, ol { padding-inline-start: 20px; } li { margin-bottom: 10px; }
         
-        .method-box { background: rgba(16, 185, 129, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
-        [data-theme="dark"] .method-box { background: rgba(255, 255, 255, 0.05); }
+        .method-box { background: rgba(118, 75, 162, 0.05); border-inline-start: 4px solid var(--primary); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .example-box { background: rgba(102, 126, 234, 0.05); border: 1px solid var(--accent); padding: 20px; margin: 15px 0; border-radius: 8px; font-size: 1.1rem; text-align: left; direction: ltr; }
+        
+        /* --- Tools & Practice --- */
+        .converter-box { background: rgba(118, 75, 162, 0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-top: 15px; }
+        select.logic-sel { padding: 8px; font-size: 1.1rem; border-radius: 6px; border: 1px solid var(--border); background: var(--glass); color: var(--text); outline: none; margin-bottom: 10px; width: 100%; max-width: 300px;}
 
-        table { width: 100%; max-width: 600px; margin: 15px auto; border-collapse: collapse; background: rgba(0,0,0,0.02); border-radius: 10px; overflow: hidden; border: 2px solid var(--primary);}
-        th, td { padding: 12px; border: 1px solid var(--border); text-align: center; font-family: 'Cairo';}
-        th { background: var(--primary); color: white; font-weight: bold; }
-        tr:nth-child(even) { background: rgba(0,0,0,0.04); }
-        [data-theme="dark"] tr:nth-child(even) { background: rgba(255,255,255,0.04); }
-
-        .practice-item { background: rgba(0,0,0,0.03); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .practice-q { font-weight: bold; font-size: 1.2rem; direction: rtl; text-align: right; color: var(--primary); }
-        [dir="ltr"] .practice-q { direction: ltr; text-align: left; }
-        .practice-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-start; }
-        .practice-input { padding: 10px; border-radius: 8px; border: 2px solid var(--border); font-size: 1.1rem; font-family: 'Cairo'; outline: none; width: 100%; max-width: 400px; background: var(--glass); color: var(--text); }
-        .btn-check { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
-        .feedback { font-weight: bold; font-size: 1rem; display: none; padding: 5px 10px; border-radius: 5px; }
-        .feedback.correct { display: inline-block; background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .feedback.wrong { display: inline-block; background: rgba(220, 38, 38, 0.2); color: var(--error); }
-
+        /* --- Quiz Area --- */
         .quiz-item { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
         .quiz-q { font-weight: bold; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; line-height: 1.5; }
         .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
         .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
 
-        .bb8-toggle { --toggle-size: 4px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent-bb8: #10b981; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
+        /* --- BB8 Toggle CSS --- */
+        .bb8-toggle { --toggle-size: 5px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; }
         .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
         .bb8-toggle__checkbox { appearance: none; display: none; }
         .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
         .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
         .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
-        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent-bb8) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
         .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
-        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent-bb8) 0.125em, transparent 0.125em 0.188em, var(--accent-bb8) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent-bb8) 0.375em 0.938em, transparent 0.938em 1em, var(--accent-bb8) 1em 1.125em, transparent 1.125em 1.875em, var(--accent-bb8) 1.875em 2em, transparent 2em 2.063em, var(--accent-bb8) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent-bb8) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent-bb8) 2.438em); transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
         .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
         .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
         .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
-        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent-bb8) 4% 10%, transparent 10% 90%, var(--accent-bb8) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent-bb8) 4% 10%, transparent 10% 90%, var(--accent-bb8) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
         .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
-        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent-bb8); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent-bb8) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent-bb8) 42% 58%, var(--bb8-bg) 58%); }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
         .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
         .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
         .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
@@ -150,10 +147,13 @@
         .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
         .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
         .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
 
+        /* --- Nav Buttons Styled --- */
         .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
         .styled-btn { position: relative; width: 140px; height: 50px; background: transparent; border: none; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo'; font-size: 14px; }
-        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(15, 23, 42, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(118, 75, 162, 0.2); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
         .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
         .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
         .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
@@ -167,91 +167,70 @@
         @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
         @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
 
-        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; }
+        /* Responsive Logic */
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; margin-left:10px;}
         
-        /* --------------------------------------------------- */
-        /* --- Media Queries (لتجاوب الشاشات بمختلف أحجامها) --- */
-        /* --------------------------------------------------- */
-
         @media (max-width: 900px) {
-            header { padding: 0 10px; }
+            header { padding: 0 15px; }
             .header-subtitle { display: none; }
-            .header-title-container { position: static; transform: none; flex: 1; text-align: center; margin: 0; }
+            .header-title-container { position: static; transform: none; flex: 1; text-align: right; margin: 0 10px; justify-content: flex-start; }
+            [dir="ltr"] .header-title-container { text-align: left; }
             .header-title { font-size: 1rem; }
             .controls { gap: 10px; }
             .bb8-toggle { --toggle-size: 3px; }
-            .cta-back { padding: 6px 10px; margin-right: 5px;}
-            .cta-back .span { display: none; } /* إخفاء كلمة رجوع في الموبايل وترك الأيقونة */
-            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 75px); top: 75px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
+            .lang-button { width: 90px; height: 40px;}
+            .type1::after, .type1::before { width: 90px; height: 40px; font-size: 0.9rem; }
+            aside { position: fixed; right: -320px; left: auto; height: calc(100vh - 80px); top: 80px; width: 80%; max-width: 300px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: right 0.3s ease, left 0.3s ease; }
             aside.open { right: 0; left: auto; }
             [dir="ltr"] aside { right: auto; left: -320px; }
             [dir="ltr"] aside.open { right: auto; left: 0; }
             .menu-btn { display: block; }
+            .cta-back { display: none; }
             main { padding: 10px; }
             .card { padding: 20px; margin-bottom: 20px; }
-            
-            table { display: block; overflow-x: auto; white-space: nowrap; }
-        }
-
-        /* شاشات الموبايل الصغيرة جداً */
-        @media (max-width: 480px) {
-            header { padding: 0 5px; height: 65px; }
-            .header-title { font-size: 0.95rem; }
-            .cta-back { padding: 5px 8px; }
-            .cta-back .second { margin-right: 0; width: 15px; }
-            .menu-btn { font-size: 1.3rem; margin-left: 5px;}
-            .lang-button { padding: 5px 8px; font-size: 0.8rem; }
-            .bb8-toggle { --toggle-size: 2.2px; } /* تصغير الأيقونة لتناسب الهيدر */
-            
-            main { padding: 10px 5px; }
-            .card { padding: 20px 15px; border-radius: 15px; }
-            h1 { font-size: 1.3rem; }
-            .content { font-size: 1rem; }
-            
-            /* تعديل منطقة التدريب لترص العناصر تحت بعضها بشكل أنيق */
-            .practice-item { padding: 15px; }
-            .practice-controls { flex-direction: column; align-items: stretch; gap: 12px;}
-            .practice-input { max-width: 100%; width: 100%; }
-            .btn-check { width: 100%; }
-            .feedback { text-align: center; }
-            
-            /* أزرار التنقل السفلية */
-            .nav-actions { gap: 10px; flex-direction: row; justify-content: space-between;}
-            .styled-btn { width: 48%; height: 45px; font-size: 12px; }
+            .nav-actions { gap: 15px; }
+            .styled-btn { width: 110px; font-size: 12px; }
         }
     </style>
-</head><body data-theme="light">
+</head>
+<body data-theme="light">
 
     <header>
         <div class="header-right">
             <button class="menu-btn" onclick="toggleSidebar()">☰</button>
             <button class="cta-back" onclick="window.location.href='../index.html'">
                 <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
-                <span class="span" id="backBtnText">الرجوع</span>
+                <span class="span">الرئيسية</span>
             </button>
         </div>
         
         <div class="header-title-container">
-            <div class="header-title" id="pageTitle">نظم التشغيل 💻</div>
-            <div class="header-subtitle" id="pageSubTitle">Operating Systems</div>
+            <i class="fa-solid fa-microchip" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">نظم التشغيل | OS ⚙️</div>
+                <div class="header-subtitle" id="pageSubTitle">المهام والأنظمة الموزعة</div>
+            </div>
         </div>
 
         <div class="controls">
-            <button class="lang-button" onclick="toggleLang()" id="langBtn">🇺🇸 EN</button>
             <label class="bb8-toggle" title="Toggle Theme">
                 <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
                 <div class="bb8-toggle__container">
                   <div class="bb8-toggle__scenery">
-                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
-                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
                   </div>
                   <div class="bb8">
-                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__head-container">
+                      <div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div>
+                    </div>
                     <div class="bb8__body"></div>
                   </div>
                   <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
                 </div>
             </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
         </div>
     </header>
 
@@ -270,274 +249,208 @@
             <div class="card" id="contentCard">
                 <span class="badge" id="slideBadge">شريحة</span>
                 <h1 id="slideHeader">العنوان</h1>
+                
                 <div class="content" id="slideHtml"></div>
-                <div id="practiceContainer" style="display: none; margin-top: 20px;"></div>
+
+                <div id="toolContainer" style="display: none; margin-top: 20px;"></div>
                 <div id="quizContainer" style="display: none; margin-top: 20px;"></div>
 
                 <div class="nav-actions">
                     <button class="styled-btn" id="prevBtn" onclick="move(-1)">
                         <span style="position:relative; z-index:2;">السابق</span>
-                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
                         <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
                     </button>
+
                     <button class="styled-btn" id="nextBtn" onclick="move(1)">
                         <span style="position:relative; z-index:2;">التالي</span>
-                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <div class="clip-box">
+                            <div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div>
+                        </div>
                         <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
                     </button>
                 </div>
             </div>
         </main>
-    </div><script>
+    </div>
+
+<script>
     // ==========================================
-    // 1. DATA: Bilingual Slides Data (Operating Systems)
+    // 1. DATA: Bilingual Slides Data (OS Concepts)
     // ==========================================
     const slides = [
         {
-            title: "1. ما هو نظام التشغيل (OS)؟",
-            title_en: "1. What is an Operating System?",
-            badge: "المفاهيم الأساسية",
-            badge_en: "Core Concepts",
+            title: "1. نظام الحماية (Protection System)",
+            title_en: "1. Protection System",
+            badge: "وظائف نظام التشغيل",
+            badge_en: "OS Functions",
             content: `
-                <p><strong>نظام التشغيل (Operating System - OS):</strong></p>
-                <p>هو البرنامج الأساسي الذي يعمل كوسيط (Intermediary) بين مستخدم الحاسوب والعتاد المادي (Hardware). هدفه جعل استخدام الحاسوب سهلاً ومريحاً، وإدارة موارده بكفاءة.</p>
+                <p>نظام التشغيل ليس مجرد مشغل للبرامج، بل هو الحارس المسؤول عن أمان النظام.</p>
                 <div class="method-box">
-                    <strong>المكونات الأساسية للنظام:</strong>
-                    <ul>
-                        <li><strong>المستخدمون (Users):</strong> الأشخاص أو الأجهزة أو البرامج الأخرى.</li>
-                        <li><strong>البرامج التطبيقية (Application Programs):</strong> مثل المتصفح، أو برامج معالجة النصوص (التي تحل مشاكل المستخدم).</li>
-                        <li><strong>نظام التشغيل (OS):</strong> يتحكم في الهاردوير وينسق استخدامه بين البرامج. (يحتوي على الـ Kernel).</li>
-                        <li><strong>العتاد (Hardware):</strong> المعالج (CPU)، الذاكرة، وأجهزة الإدخال والإخراج.</li>
-                    </ul>
+                    <strong>مفهوم الحماية:</strong><br>
+                    يشير نظام الحماية إلى وجود <strong>"آلية" (Mechanism)</strong> للتحكم في وصول البرامج أو العمليات (Processes) أو المستخدمين إلى موارد النظام.
                 </div>
-            `,
-            content_en: `
-                <p><strong>Operating System (OS):</strong></p>
-                <p>It is a program that acts as an intermediary between a user of a computer and the computer hardware. Its purpose is to provide an environment in which a user can execute programs in a convenient and efficient manner.</p>
-                <div class="method-box">
-                    <strong>Computer System Components:</strong>
-                    <ul>
-                        <li><strong>Users:</strong> People, machines, or other computers.</li>
-                        <li><strong>Application Programs:</strong> Browsers, word processors, compilers (define ways to solve user problems).</li>
-                        <li><strong>Operating System:</strong> Controls and coordinates the use of hardware among various applications.</li>
-                        <li><strong>Hardware:</strong> CPU, memory, and I/O devices.</li>
-                    </ul>
-                </div>
-            `
-        },
-        {
-            title: "2. وظائف نظام التشغيل الأساسية",
-            title_en: "2. OS Functions",
-            badge: "الوظائف",
-            badge_en: "Functions",
-            content: `
-                <p>يحتوي قلب نظام التشغيل (Kernel) على عدة وظائف ومهام حيوية لإدارة الجهاز:</p>
-                <ol>
-                    <li><strong>إدارة العمليات (Process Management):</strong> إنشاء وجدولة وإيقاف البرامج التي تعمل (العمليات).</li>
-                    <li><strong>إدارة الذاكرة (Memory Management):</strong> تتبع أجزاء الذاكرة المستخدمة ومن يستخدمها، وتخصيص مساحات للبرامج.</li>
-                    <li><strong>إدارة الملفات (File System):</strong> إنشاء وحذف الملفات والمجلدات وتخزينها على الأقراص.</li>
-                    <li><strong>برامج تشغيل الأجهزة (Device Drivers):</strong> التعامل مع أجهزة الإدخال والإخراج (I/O).</li>
-                    <li><strong>الحماية والأمان (Protection & Security):</strong> التحكم في وصول البرامج والمستخدمين لموارد النظام.</li>
-                    <li><strong>مفسر الأوامر (Command-Interpreter):</strong> واجهة سطر الأوامر (Shell) لتنفيذ طلبات المستخدم.</li>
-                </ol>
-            `,
-            content_en: `
-                <p>The core of the OS (the Kernel) performs several vital functions:</p>
-                <ol>
-                    <li><strong>Process Management:</strong> Creating, scheduling, and terminating processes.</li>
-                    <li><strong>Memory Management:</strong> Keeping track of which parts of memory are currently being used and by whom.</li>
-                    <li><strong>File System Management:</strong> Creating, deleting, and organizing files and directories.</li>
-                    <li><strong>Device Drivers (I/O):</strong> Managing communication with external hardware devices.</li>
-                    <li><strong>Protection System:</strong> Controlling access to system resources.</li>
-                    <li><strong>Command-Interpreter System:</strong> The shell that reads and executes user commands.</li>
-                </ol>
-            `
-        },
-        {
-            title: "3. تطور وأنواع نظم التشغيل (1)",
-            title_en: "3. Types of Operating Systems (1)",
-            badge: "أنواع النظم",
-            badge_en: "OS Types",
-            content: `
-                <p>لقد تطورت نظم التشغيل بمرور الزمن لحل مشاكل مختلفة. من أهم أنواعها:</p>
+                <p>لكي يكون نظام الحماية فعالاً، يجب أن توفر الآلية ما يلي:</p>
                 <ul>
-                    <li><strong>نظام الدفعات (Batch System):</strong> في القديم، كان يتم تجميع الوظائف المتشابهة في "دفعة" (Batch) ومعالجتها معاً دون تدخل المستخدم (تُنفذ تباعاً). المشكلة: إذا احتاج البرنامج لعملية I/O (مثل الطباعة)، يتوقف المعالج (CPU) تماماً وينتظر!</li>
-                    <li><strong>البرمجة المتعددة (Multiprogramming):</strong> حلت مشكلة الـ Batch. يحتفظ النظام بعدة برامج في الذاكرة. إذا توقف برنامج لانتظار الـ I/O، يقوم الـ CPU بالانتقال <strong>فوراً</strong> لتنفيذ برنامج آخر. هذا يزيد من كفاءة استغلال المعالج.</li>
+                    <li><strong>التمييز (Distinguish):</strong> القدرة على التفرقة بين الاستخدام المصرح به (Authorized) والاستخدام غير المصرح به (Unauthorized).</li>
+                    <li><strong>تحديد القيود (Specify Controls):</strong> تحديد الضوابط والقواعد التي يجب فرضها على النظام.</li>
+                    <li><strong>التطبيق الصارم (Enforcement):</strong> توفير وسيلة لإجبار النظام على اتباع هذه القيود لمنع الاختراق.</li>
                 </ul>
             `,
             content_en: `
-                <p>Operating systems have evolved over time. Key types include:</p>
+                <p>The operating system is not just a program executor; it is the guardian responsible for system security.</p>
+                <div class="method-box">
+                    <strong>Concept of Protection:</strong><br>
+                    Protection refers to a <strong>mechanism</strong> for controlling access by programs, processes, or users to system and user resources.
+                </div>
+                <p>For the protection mechanism to be effective, it must:</p>
                 <ul>
-                    <li><strong>Batch System:</strong> Similar jobs are grouped together and executed as a batch without user interaction. Problem: CPU is often idle when a job waits for I/O.</li>
-                    <li><strong>Multiprogramming:</strong> Keeps several jobs in memory. If one job has to wait for I/O, the OS switches the CPU to another job. This maximizes CPU utilization.</li>
+                    <li><strong>Distinguish:</strong> Differentiate between authorized and unauthorized usage.</li>
+                    <li><strong>Specify Controls:</strong> Determine the rules and limits to be imposed.</li>
+                    <li><strong>Enforcement:</strong> Provide a reliable means to enforce these restrictions to prevent breaches.</li>
                 </ul>
             `
         },
         {
-            title: "4. تطور وأنواع نظم التشغيل (2)",
-            title_en: "4. Types of Operating Systems (2)",
-            badge: "أنواع النظم",
-            badge_en: "OS Types",
+            title: "2. نظام تفسير الأوامر",
+            title_en: "2. Command-Interpreter System",
+            badge: "وظائف نظام التشغيل",
+            badge_en: "OS Functions",
             content: `
-                <p>من الأنواع الحديثة والمتقدمة:</p>
-                <div class="method-box">
-                    <strong>1. المشاركة الزمنية (Time-Sharing / Multitasking):</strong><br>
-                    تطوير للبرمجة المتعددة. يقوم الـ CPU بالتبديل بين البرامج بسرعة هائلة جداً، مما يسمح <strong>لعدة مستخدمين</strong> بالتفاعل مع النظام في نفس الوقت وكأن كل مستخدم يملك الجهاز لوحده.
+                <p>لكي يتواصل المستخدم مع نظام التشغيل، فإنه يحتاج إلى مترجم يستقبل أوامره وينفذها.</p>
+                <div class="example-box">
+                    <strong>مفهوم المفسر:</strong><br>
+                    هو البرنامج الذي يقرأ الأوامر (Control statements) التي يدخلها المستخدم ويقوم بتفسيرها. يُطلق عليه عدة أسماء مثل <strong>مفسر سطر الأوامر (Command-line interpreter)</strong> أو <strong>الصدفة (Shell)</strong> كما هو الحال في أنظمة UNIX.
                 </div>
-                <div class="method-box">
-                    <strong>2. النظم في الوقت الفعلي (Real-Time Systems):</strong><br>
-                    تُستخدم في الأنظمة الحرجة التي تتطلب استجابة في وقت محدد بدقة. تنقسم إلى:
-                    <ul>
-                        <li><strong>Hard Real-Time:</strong> (صارم) التأخير مرفوض تماماً وقد يسبب كوارث (مثل: أنظمة الطيران والأسلحة).</li>
-                        <li><strong>Soft Real-Time:</strong> (مرن) التأخير غير محبذ ولكنه لا يسبب كوارث (مثل: بث الفيديو).</li>
-                    </ul>
-                </div>
-            `,
-            content_en: `
-                <p>More advanced types include:</p>
-                <div class="method-box">
-                    <strong>1. Time-Sharing (Multitasking):</strong><br>
-                    A logical extension of multiprogramming. The CPU switches between jobs so frequently that users can interact with each program while it is running. Allows multiple users to share the system simultaneously.
-                </div>
-                <div class="method-box">
-                    <strong>2. Real-Time Systems:</strong><br>
-                    Used when rigid time requirements have been placed on the operation of a processor.
-                    <ul>
-                        <li><strong>Hard Real-Time:</strong> Guarantees that critical tasks complete on time (e.g., medical imaging, weapons systems).</li>
-                        <li><strong>Soft Real-Time:</strong> A critical task gets priority over other tasks, but missing a deadline isn't fatal (e.g., video streaming).</li>
-                    </ul>
-                </div>
-            `
-        },
-        {
-            title: "5. دورة حياة العملية (Process Life Cycle)",
-            title_en: "5. Process Life Cycle",
-            badge: "إدارة العمليات",
-            badge_en: "Process Mgt.",
-            content: `
-                <p>العملية (Process) هي برنامج قيد التنفيذ. تمر العملية خلال حياتها بعدة حالات (States):</p>
-                <ol>
-                    <li><strong>جديدة (New/Create):</strong> يتم الآن إنشاء العملية.</li>
-                    <li><strong>جاهزة (Ready):</strong> العملية في الذاكرة تنتظر دورها للحصول على المعالج (CPU).</li>
-                    <li><strong>تعمل (Running):</strong> يتم الآن تنفيذ أوامر العملية بواسطة الـ CPU.</li>
-                    <li><strong>قيد الانتظار (Waiting/Blocked):</strong> العملية توقفت وتنتظر حدثاً معيناً (مثل انتظار إدخال من الكيبورد، أو قراءة من القرص الصلب).</li>
-                    <li><strong>منتهية (Terminated/Exit):</strong> العملية أنهت عملها وتم إزالتها من الذاكرة.</li>
-                </ol>
-            `,
-            content_en: `
-                <p>A Process is a program in execution. As a process executes, it changes state:</p>
-                <ol>
-                    <li><strong>New (Create):</strong> The process is being created.</li>
-                    <li><strong>Ready:</strong> The process is waiting to be assigned to a processor.</li>
-                    <li><strong>Running:</strong> Instructions are being executed by the CPU.</li>
-                    <li><strong>Waiting (Blocked):</strong> The process is waiting for some event to occur (such as an I/O completion).</li>
-                    <li><strong>Terminated (Exit):</strong> The process has finished execution.</li>
-                </ol>
-            `
-        },
-        {
-            title: "6. جدولة المعالج (CPU Scheduling)",
-            title_en: "6. CPU Scheduling",
-            badge: "إدارة العمليات",
-            badge_en: "Scheduling",
-            content: `
-                <p>بما أن هناك معالج واحد وعدة عمليات في الـ (Ready Queue)، يجب على نظام التشغيل أن يقرر من سيدخل المعالج أولاً. من أشهر الخوارزميات:</p>
+                <p><strong>الوظيفة الأساسية:</strong><br> جلب الأمر التالي (Get the next command) وتنفيذه مباشرة.</p>
+                <p><strong>مجالات الأوامر:</strong><br> تتعامل هذه الأوامر مع وظائف النظام الحساسة مثل:</p>
                 <ul>
-                    <li><strong>FCFS (First Come, First Served):</strong> من يأتي أولاً يتم تنفيذه أولاً (نظام الطابور العادي).</li>
-                    <li><strong>SJF (Shortest Job First):</strong> النظام يختار العملية الأقصر (التي تحتاج وقتاً أقل للتنفيذ) لتكون الأولى، مما يقلل وقت الانتظار الكلي.</li>
-                    <li><strong>Round Robin (RR):</strong> التقسيم الزمني الدائري. يتم إعطاء كل عملية وقتاً ثابتاً ومحدداً (Time Quantum). إذا لم تنتهِ، تُعاد لآخر الطابور وتدخل العملية التي تليها. <em>(مثالية للـ Time-Sharing)</em>.</li>
+                    <li>إنشاء وإدارة العمليات (Process creation).</li>
+                    <li>إدارة وحدات الإدخال والإخراج (I/O handling).</li>
+                    <li>إدارة الذاكرة والوصول إلى نظام الملفات (File-system access).</li>
                 </ul>
             `,
             content_en: `
-                <p>Since there's one CPU and multiple ready processes, the OS must decide which process runs next using scheduling algorithms:</p>
+                <p>For a user to communicate with the OS, a translator is needed to receive and execute commands.</p>
+                <div class="example-box">
+                    <strong>Interpreter Concept:</strong><br>
+                    It is the program that reads and interprets control statements. It is known variously as a <strong>command-line interpreter</strong> or a <strong>shell</strong> (in UNIX).
+                </div>
+                <p><strong>Primary Function:</strong><br> To get and execute the next command statement.</p>
+                <p><strong>Command Scope:</strong><br> These commands deal with critical system functions such as:</p>
                 <ul>
-                    <li><strong>FCFS (First Come, First Served):</strong> The process that requests the CPU first is allocated the CPU first.</li>
-                    <li><strong>SJF (Shortest Job First):</strong> Associates with each process the length of its next CPU burst. The CPU is assigned to the process with the smallest burst.</li>
-                    <li><strong>Round Robin (RR):</strong> Each process gets a small unit of CPU time (time quantum). After this time, the process is preempted and added to the end of the ready queue.</li>
+                    <li>Process creation and management.</li>
+                    <li>I/O handling.</li>
+                    <li>Main/Secondary memory management and File-system access.</li>
                 </ul>
             `
         },
         {
-            title: "7. الذاكرة الافتراضية والاختناق",
-            title_en: "7. Virtual Memory & Deadlocks",
-            badge: "مفاهيم متقدمة",
-            badge_en: "Advanced",
+            title: "3. الأنظمة الموزعة (Distributed Systems)",
+            title_en: "3. Distributed Systems",
+            badge: "بيئات التشغيل",
+            badge_en: "Computing Environments",
             content: `
-                <div class="method-box">
-                    <strong>1. الذاكرة الافتراضية (Virtual Memory):</strong><br>
-                    ماذا لو كان حجم البرنامج أكبر من مساحة الـ RAM؟ الحل هو الذاكرة الافتراضية! تقنية تتيح لنظام التشغيل استخدام جزء من القرص الصلب (Hard Disk) كأنه امتداد للـ RAM، مما يسمح بتشغيل برامج ضخمة بسهولة.
+                <p>النظام الموزع هو بيئة تشغيل متقدمة لا تعتمد على جهاز واحد مركزي.</p>
+                <div class="method-box" style="border-inline-start-color: var(--success);">
+                    <strong>مفهوم النظام الموزع:</strong><br>
+                    هو نظام يتكون من مجموعة أجهزة (عُقد Nodes) منفصلة مادياً/مكانياً، متصلة معاً من خلال <strong>شبكة اتصالات (Communication network)</strong>. يتم تبادل البيانات بينها باستخدام <strong>البروتوكول (Protocol)</strong>.
                 </div>
-                <div class="method-box">
-                    <strong>2. الاختناق / الجمود (Deadlock):</strong><br>
-                    هي حالة "قفل" يتوقف فيها النظام تماماً. تحدث عندما تكون هناك عمليتان (أو أكثر)، كل واحدة منهما تحتفظ بمورد (Resource) وتنتظر المورد الذي تحتفظ به العملية الأخرى (دائرة مغلقة من الانتظار).
+                <p>يتيح النظام الموزع للمستخدمين الوصول إلى موارد مشتركة، وهذا يمنحنا 3 مزايا جوهرية:</p>
+                <ol>
+                    <li><strong>تسريع الحوسبة (Computation speed-up):</strong> توزيع المهام الثقيلة على عدة أجهزة لإنجازها في وقت قياسي.</li>
+                    <li><strong>زيادة توفر البيانات (Increased data availability):</strong> البيانات تكون متاحة في أكثر من مكان لسهولة الوصول.</li>
+                    <li><strong>تعزيز الموثوقية (Enhanced reliability):</strong> النظام لا يعتمد على جهاز واحد، فإذا تعطل جهاز، تستمر الشبكة بالعمل.</li>
+                </ol>
+            `,
+            content_en: `
+                <p>A distributed system is an advanced computing environment that does not rely on a single centralized machine.</p>
+                <div class="method-box" style="border-inline-start-color: var(--success);">
+                    <strong>Distributed System Concept:</strong><br>
+                    A collection of physically separate, possibly heterogeneous, computer systems (nodes) that are networked to provide the users with access to the various resources that the system maintains. Communication takes place using a <strong>Protocol</strong>.
+                </div>
+                <p>Access to shared resources allows for three core benefits:</p>
+                <ol>
+                    <li><strong>Computation speed-up:</strong> Distributing heavy tasks across multiple machines to finish faster.</li>
+                    <li><strong>Increased data availability:</strong> Data is accessible from multiple locations.</li>
+                    <li><strong>Enhanced reliability:</strong> The system doesn't rely on a single node; if one fails, the network continues to operate.</li>
+                </ol>
+            `
+        },
+        {
+            title: "4. مستكشف مفاهيم التشغيل ⚙️",
+            title_en: "4. OS Concepts Explorer ⚙️",
+            badge: "أداة ذكية",
+            badge_en: "Smart Tool",
+            isToolSlide: true,
+            content: `
+                <p>اختر المصطلح من القائمة لتستكشف معناه ووظيفته داخل نظام التشغيل:</p>
+                <div class="converter-box" style="text-align:center;">
+                    <select id="osSelect" class="logic-sel" onchange="updateExplorer('ar')">
+                        <option value="protection">Protection System (نظام الحماية)</option>
+                        <option value="shell">Shell / CLI (الصدفة / مفسر الأوامر)</option>
+                        <option value="distributed">Distributed System (النظام الموزع)</option>
+                        <option value="protocol">Protocol (البروتوكول)</option>
+                    </select>
+                    <div id="explorerRes" style="margin-top:15px; padding:15px; background:rgba(255,255,255,0.8); border-radius:8px; border:2px solid var(--accent); color:var(--text-main-light); font-weight:bold; line-height: 1.6;">
+                        يرجى اختيار مصطلح من القائمة.
+                    </div>
                 </div>
             `,
             content_en: `
-                <div class="method-box">
-                    <strong>1. Virtual Memory:</strong><br>
-                    Allows the execution of processes that are not completely in memory. It provides the illusion of a very large main memory by using disk space as an extension of RAM.
-                </div>
-                <div class="method-box">
-                    <strong>2. Deadlock:</strong><br>
-                    A situation where a set of processes are blocked because each process is holding a resource and waiting for another resource acquired by some other process in the set (a circular wait).
+                <p>Select a term from the list to explore its meaning and function in the OS:</p>
+                <div class="converter-box" style="text-align:center;">
+                    <select id="osSelect" class="logic-sel" onchange="updateExplorer('en')">
+                        <option value="protection">Protection System</option>
+                        <option value="shell">Shell / Command Interpreter</option>
+                        <option value="distributed">Distributed System</option>
+                        <option value="protocol">Protocol</option>
+                    </select>
+                    <div id="explorerRes" style="margin-top:15px; padding:15px; background:rgba(255,255,255,0.8); border-radius:8px; border:2px solid var(--accent); color:var(--text-main-light); font-weight:bold; line-height: 1.6;">
+                        Please select a term from the list.
+                    </div>
                 </div>
             `
         },
         {
-            title: "8. ساحة التدريب والمحاكاة ⚔️",
-            title_en: "8. Practice Arena ⚔️",
-            badge: "تطبيق عملي",
-            badge_en: "Practice",
-            isPracticeSlide: true,
-            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر معلوماتك في نظم التشغيل! (أجب باللغة الإنجليزية).</p>`,
-            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your knowledge on Operating Systems! (Answer in English).</p>`
-        },
-        {
-            title: "9. بنك الأسئلة الشامل 🎓",
-            title_en: "9. Comprehensive Quiz Bank 🎓",
-            badge: "مراجعة شاملة",
-            badge_en: "Review",
+            title: "5. أسئلة المراجعة (Quiz) 🎓",
+            title_en: "5. Review Quiz 🎓",
+            badge: "اختبر نفسك",
+            badge_en: "Test Yourself",
             isQuizSlide: true,
-            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">تجميعة لأسئلة الامتحان المتوقعة. اضغط على السؤال لإظهار الإجابة الدقيقة.</p>`,
-            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Collection of expected exam questions. Click to reveal the precise answer.</p>`
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">اختبر استيعابك لوظائف نظام التشغيل.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Test your understanding of Operating System functions.</p>`
         }
     ];
 
     // ==========================================
-    // 2. DATA: Practice & Quiz
+    // 2. DATA: Quiz (Bilingual)
     // ==========================================
-    const practiceQuestions = [
-        { q: "نظام التشغيل الذي ينفذ مجموعة من الوظائف معاً دون تدخل المستخدم هو نظام الـ ____؟", ans: "batch" },
-        { q: "الاحتفاظ بعدة برامج في الذاكرة لتجنب تعطل المعالج (CPU) أثناء انتظار الـ I/O يسمى؟", ans: "multiprogramming" },
-        { q: "العملية التي تنتظر دورها للدخول إلى المعالج تكون في حالة الـ ____؟", ans: "ready" },
-        { q: "خوارزمية الجدولة التي تعطي كل عملية وقتاً ثابتاً (Time Quantum) تسمى؟", ans: "round robin" },
-        { q: "تقنية تعطي النظام وهماً بوجود مساحة رامات (RAM) أكبر من الحقيقية باستخدام الهارد ديسك تسمى ____ Memory؟", ans: "virtual" },
-        { q: "الحالة التي تتوقف فيها العمليات بسبب انتظار كل واحدة لمورد تحجزه العملية الأخرى؟", ans: "deadlock" }
-    ];
-
     const solvedQuizData = [
-        { q_en: "Why is Multiprogramming needed in an Operating System?", 
-          a_ar: "الحل: لزيادة كفاءة استغلال المعالج (CPU Utilization). إذا كان لدينا برنامج واحد واحتاج لعملية إدخال/إخراج، سيتوقف المعالج. البرمجة المتعددة تسمح للمعالج بالانتقال لبرنامج آخر فوراً.", 
-          a_en: "Answer: To maximize CPU utilization. It keeps several jobs in memory, so when one waits for I/O, the CPU switches to another instead of sitting idle." },
-        { q_en: "What is the difference between FCFS and SJF scheduling?", 
-          a_ar: "الحل: الـ FCFS يخدم العمليات حسب ترتيب وصولها، بينما الـ SJF يخدم العملية الأقصر زمناً أولاً لتقليل متوسط وقت الانتظار.", 
-          a_en: "Answer: FCFS serves processes based on arrival time. SJF serves the process with the shortest burst time first to minimize average waiting time." },
-        { q_en: "What happens to a process when it requests I/O (like reading from a disk)?", 
-          a_ar: "الحل: تنتقل العملية من حالة (Running) إلى حالة (Waiting/Blocked) حتى تنتهي عملية الإدخال/الإخراج.", 
-          a_en: "Answer: The process changes from the 'Running' state to the 'Waiting' (or Blocked) state until the I/O operation is complete." },
-        { q_en: "What is a Deadlock in an Operating System?", 
-          a_ar: "الحل: الاختناق (Deadlock) يحدث عندما تنتظر مجموعة عمليات إلى ما لا نهاية أحداثاً أو موارد لا يمكن أن تحررها إلا عمليات أخرى في نفس المجموعة.", 
-          a_en: "Answer: A situation where a set of processes are blocked forever because each is waiting for a resource held by another process." },
-        { q_en: "What is the main advantage of Virtual Memory?", 
-          a_ar: "الحل: السماح بتشغيل برامج حجمها أكبر من حجم الذاكرة الرئيسية (RAM) عن طريق تخزين أجزاء منها على القرص الصلب.", 
-          a_en: "Answer: It allows the execution of programs larger than physical memory by mapping logical memory into secondary storage (disk)." }
+        { 
+            q_en: "Which system function is responsible for reading and interpreting control statements?", 
+            a_en: "Command-Interpreter System (or Shell).",
+            a_ar: "نظام تفسير الأوامر (الصدفة / Shell)."
+        },
+        { 
+            q_en: "What must a protection mechanism provide to prevent system breaches?", 
+            a_en: "A means of enforcement, specifying controls, and distinguishing between authorized and unauthorized usage.",
+            a_ar: "وسيلة للتنفيذ الصارم، تحديد القيود، والتمييز بين الاستخدام المصرح به وغير المصرح به."
+        },
+        { 
+            q_en: "What type of system consists of physically separate nodes connected by a network?", 
+            a_en: "Distributed System.",
+            a_ar: "النظام الموزع (Distributed System)."
+        }
     ];
 
     // ==========================================
     // 3. LOGIC & CONTROLLERS
     // ==========================================
     let idx = 0;
-    let uiLang = localStorage.getItem('globalLang') || 'ar'; 
+    let uiLang = 'ar'; 
 
     const dom = {
         title: document.getElementById('slideHeader'),
@@ -547,14 +460,27 @@
         prev: document.querySelector('#prevBtn span:first-child'),
         next: document.querySelector('#nextBtn span:first-child'),
         sidebar: document.getElementById('sidebar'),
-        pracContainer: document.getElementById('practiceContainer'),
+        toolContainer: document.getElementById('toolContainer'),
         quizContainer: document.getElementById('quizContainer'),
         search: document.getElementById('searchInp'),
         langBtn: document.getElementById('langBtn')
     };
 
     function init() {
-        initGlobalSettings();
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            window.toggleLang();
+        }
+
         renderList();
         loadSlide(0);
     }
@@ -565,9 +491,9 @@
         slides.forEach((s, i) => {
             let li = document.createElement('li');
             li.className = 'list-item';
-            let icon = s.isPracticeSlide ? '⚔️' : (s.isQuizSlide ? '🎓' : (i+1));
+            let icon = s.isToolSlide ? '⚙️' : (s.isQuizSlide ? '🎓' : (i+1));
             let titleText = isAr ? s.title : s.title_en;
-            let shortTitle = titleText.split(':')[0].substring(0, 30); 
+            let shortTitle = titleText.split('(')[0].split(':')[0]; 
             li.innerHTML = `<span>${shortTitle}</span> <span style="opacity:0.6; font-size:0.8rem;">${icon}</span>`;
             li.onclick = () => { loadSlide(i); if(window.innerWidth <= 900) toggleSidebar(); };
             dom.list.appendChild(li);
@@ -584,13 +510,14 @@
         dom.badge.innerText = isAr ? s.badge : s.badge_en;
         dom.content.innerHTML = isAr ? s.content : s.content_en;
 
-        dom.pracContainer.style.display = 'none';
+        dom.toolContainer.style.display = 'none';
         dom.quizContainer.style.display = 'none';
 
-        if (s.isPracticeSlide) {
-            dom.pracContainer.style.display = 'block';
-            renderPractice();
+        if (s.isToolSlide) {
+            dom.toolContainer.style.display = 'block';
+            setTimeout(() => updateExplorer(uiLang), 100);
         }
+
         if (s.isQuizSlide) {
             dom.quizContainer.style.display = 'block';
             renderQuiz();
@@ -611,39 +538,20 @@
         });
     }
 
-    function renderPractice() {
-        dom.pracContainer.innerHTML = '';
-        const isAr = uiLang === 'ar';
-        practiceQuestions.forEach((item, i) => {
-            let div = document.createElement('div');
-            div.className = 'practice-item';
-            let btnText = isAr ? "تحقق" : "Check";
-            let plcHolder = isAr ? "اكتب الإجابة (إنجليزي)..." : "Type answer here...";
-            div.innerHTML = `
-                <div class="practice-q">س${i+1}: ${item.q}</div>
-                <div class="practice-controls">
-                    <input type="text" class="practice-input" id="prac_inp_${i}" placeholder="${plcHolder}" autocomplete="off" dir="ltr" style="text-align: left;">
-                    <button class="btn-check" onclick="window.checkAns(${i}, '${item.ans}')">${btnText}</button>
-                    <span class="feedback" id="prac_fb_${i}"></span>
-                </div>
-            `;
-            dom.pracContainer.appendChild(div);
-        });
-    }
-
     function renderQuiz() {
         dom.quizContainer.innerHTML = '';
         const isAr = uiLang === 'ar';
+        if(solvedQuizData.length === 0) return;
         solvedQuizData.forEach((item, i) => {
             let div = document.createElement('div');
             div.className = 'quiz-item';
             let ansText = isAr ? item.a_ar : item.a_en;
             div.innerHTML = `
                 <div class="quiz-q" onclick="this.parentElement.classList.toggle('revealed')">
-                    <span style="direction: ltr; display: inline-block;">${item.q_en}</span>
+                    <span style="direction: ltr; display: inline-block;">Q${i+1}: ${item.q_en}</span>
                     <span style="font-size:1.2rem;">▼</span>
                 </div>
-                <div class="quiz-a">${ansText}</div>
+                <div class="quiz-a" dir="ltr" style="text-align:left;">Answer: ${ansText}</div>
             `;
             dom.quizContainer.appendChild(div);
         });
@@ -661,24 +569,48 @@
         });
     }
 
-    window.toggleLang = function() {
-        uiLang = uiLang === 'ar' ? 'en' : 'ar';
-        localStorage.setItem('globalLang', uiLang);
-        applyLangStrings();
-        renderList();
-        loadSlide(idx);
+    // --- Interactive Tool Logic ---
+    window.updateExplorer = function(lang) {
+        const sel = document.getElementById('osSelect');
+        const res = document.getElementById('explorerRes');
+        if(!sel || !res) return;
+        
+        const val = sel.value;
+        const data = {
+            'protection': {
+                ar: '<strong>نظام الحماية (Protection System):</strong> الآلية التي تراقب وتتحكم في من يحق له الوصول إلى أي جزء من النظام، لضمان عدم عبث أي برنامج ببيانات برنامج آخر.',
+                en: '<strong>Protection System:</strong> The mechanism that monitors and controls who has access to which part of the system, ensuring no program interferes with another\'s data.'
+            },
+            'shell': {
+                ar: '<strong>الصدفة (Shell / CLI):</strong> واجهة التخاطب بينك وبين نظام التشغيل. تقوم بقراءة أوامرك النصية وترجمتها للغة يفهمها النظام لينفذها فوراً.',
+                en: '<strong>Shell / CLI:</strong> The interface between you and the OS. It reads your text commands, interprets them into a language the system understands, and executes them.'
+            },
+            'distributed': {
+                ar: '<strong>النظام الموزع (Distributed System):</strong> فكرة عبقرية تعتمد على توزيع الجهد والبيانات على عدة أجهزة حواسيب متصلة بالشبكة بدلاً من الاعتماد على حاسوب واحد ضخم.',
+                en: '<strong>Distributed System:</strong> A brilliant concept based on distributing effort and data across multiple networked computers instead of relying on one massive mainframe.'
+            },
+            'protocol': {
+                ar: '<strong>البروتوكول (Protocol):</strong> لغة التخاطب أو القواعد الموحدة التي تتفق عليها الأجهزة في النظام الموزع لضمان نقل البيانات بشكل صحيح ومفهوم للطرفين.',
+                en: '<strong>Protocol:</strong> The language or standardized rules agreed upon by devices in a distributed system to ensure data is transferred correctly and understandably.'
+            }
+        };
+
+        res.innerHTML = data[val][lang];
+        res.style.opacity = 0;
+        setTimeout(() => res.style.opacity = 1, 50);
     }
 
-    function applyLangStrings() {
+    window.toggleLang = function() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
         const isAr = uiLang === 'ar';
         
-        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
-        document.documentElement.lang = isAr ? 'ar' : 'en';
+        localStorage.setItem('globalLang', uiLang);
+        
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
 
-        dom.langBtn.innerText = isAr ? "🇺🇸 EN" : "🇪🇬 AR";
-        document.getElementById('pageTitle').innerText = isAr ? "نظم التشغيل 💻" : "Operating Systems 💻";
-        document.getElementById('pageSubTitle').innerText = isAr ? "OS Architecture & Concepts" : "Lec: Intro to OS";
-        document.getElementById('backBtnText').innerText = isAr ? "الرجوع" : "Back";
+        document.getElementById('pageTitle').innerText = isAr ? "نظم التشغيل | OS ⚙️" : "Operating Systems ⚙️";
+        document.getElementById('pageSubTitle').innerText = isAr ? "المهام والأنظمة الموزعة" : "Functions & Distributed Systems";
         
         dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
         document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
@@ -686,31 +618,13 @@
 
         dom.prev.innerText = isAr ? "السابق" : "Prev";
         dom.next.innerText = isAr ? "التالي" : "Next";
-    }
-
-    window.checkAns = function(index, correctAns) {
-        const inputEl = document.getElementById(`prac_inp_${index}`);
-        const fbEl = document.getElementById(`prac_fb_${index}`);
-        if(!inputEl || !fbEl) return;
         
-        const isAr = uiLang === 'ar';
-        let userAns = inputEl.value.trim().toLowerCase();
-        let targetAns = correctAns.trim().toLowerCase();
-
-        if (userAns === "") {
-            fbEl.innerText = isAr ? "اكتب إجابة أولاً!" : "Enter an answer first!";
-            fbEl.className = "feedback wrong";
-            return;
-        }
-
-        if (userAns.includes(targetAns) || targetAns.includes(userAns)) {
-            fbEl.innerText = isAr ? "إجابة صحيحة! ✔️" : "Correct Answer! ✔️";
-            fbEl.className = "feedback correct";
-        } else {
-            fbEl.innerText = isAr ? "حاول مرة أخرى ❌" : "Try again ❌";
-            fbEl.className = "feedback wrong";
-        }
-    };
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
 
     window.move = function(step) {
         const newIdx = idx + step;
@@ -725,22 +639,10 @@
         const newTheme = isLight ? 'dark' : 'light';
         body.setAttribute('data-theme', newTheme);
         localStorage.setItem('globalTheme', newTheme);
-        
-        const headerToggle = document.getElementById('themeCheckbox');
-        if(headerToggle) headerToggle.checked = (newTheme === 'dark');
-    }
-
-    function initGlobalSettings() {
-        const savedTheme = localStorage.getItem('globalTheme') || 'light';
-        document.body.setAttribute('data-theme', savedTheme);
-        const headerToggle = document.getElementById('themeCheckbox');
-        if(headerToggle) headerToggle.checked = (savedTheme === 'dark');
-
-        uiLang = localStorage.getItem('globalLang') || 'ar';
-        applyLangStrings();
     }
 
     window.onload = init;
 </script>
+
 </body>
 </html>
