@@ -13,8 +13,8 @@
             --glass-bg-light: rgba(255, 255, 255, 0.95);
             --glass-border-light: rgba(255, 255, 255, 0.6);
             --text-main-light: #1e293b;
-            --primary-light: #0284c7; /* أزرق داكن للقراءة */
-            --accent-light: #0ea5e9; /* سماوي */
+            --primary-light: #0284c7; 
+            --accent-light: #0ea5e9; 
             --header-bg-light: #ffffff;
             --success: #38a169;
             --error: #e53e3e;
@@ -230,7 +230,7 @@
             <i class="fa-solid fa-microchip" style="font-size: 2rem; color: var(--primary);"></i>
             <div>
                 <div class="header-title" id="pageTitle">الأنظمة الرقمية الشاملة 👑</div>
-                <div class="header-subtitle" id="pageSubTitle">د. سيون عزت | Dr. Sion Ezzat</div>
+                <div class="header-subtitle" id="pageSubTitle">د. سيمون عزت | Dr. Simon Ezzat</div>
             </div>
         </div>
 
@@ -309,70 +309,78 @@
             badge: "مفاهيم أساسية",
             badge_en: "Basic Concepts",
             content: `
-                <p>ليه عندنا أنظمة أرقام مختلفة؟</p>
+                <p>لماذا نستخدم أنظمة أعداد مختلفة في الحوسبة؟</p>
                 <ul>
-                    <li><strong>بالنسبة لنا كبشر:</strong> إحنا متعودين نعد على أصابع إيدينا الـ 10، عشان كده من زمان جداً وإحنا بنستخدم <strong>النظام العشري (Decimal)</strong>.</li>
-                    <li><strong>بالنسبة للكمبيوتر:</strong> الكمبيوتر عبارة عن آلة إلكترونية، مفيش جواه صوابع يعد عليها، جواه "دوائر كهربائية" مفاتيحها يا إما <strong>شغالة (On)</strong> يا إما <strong>مطفية (Off)</strong>.</li>
+                    <li><strong>بالنسبة لنا كبشر:</strong> نحن معتادون على العد باستخدام أصابعنا العشرة، لذلك نستخدم <strong>النظام العشري (Decimal)</strong>.</li>
+                    <li><strong>بالنسبة للكمبيوتر:</strong> الكمبيوتر آلة إلكترونية لا تمتلك أصابع للعد. هو يعتمد على "دوائر كهربائية" مفاتيحها إما <strong>شغالة (On)</strong> أو <strong>مطفية (Off)</strong>.</li>
                 </ul>
-                <p>عشان كده الكمبيوتر مبيفهمش غير رقمين: <strong>1</strong> (شغال) و <strong>0</strong> (مطفي)، وده اللي بنسميه <strong>النظام الثنائي (Binary)</strong>.</p>
+                <p>لذلك، الكمبيوتر لا يفهم سوى رقمين: <strong>1</strong> (شغال) و <strong>0</strong> (مطفي)، وهو ما نطلق عليه <strong>النظام الثنائي (Binary)</strong>.</p>
                 <div class="method-box">
-                    <strong>💡 الخلاصة:</strong> الأصفار والوحايد الكثيرة تُربك المبرمجين، لذلك تم ابتكار أنظمة أخرى (كالثماني والسداسي عشر) لاختصار هذه الأرقام الطويلة.
+                    <strong>💡 الخلاصة:</strong> الأصفار والوحايد الطويلة جداً تُربك المبرمجين. لذلك تم ابتكار أنظمة أخرى كالثماني (Octal) والسداسي عشر (Hexadecimal) لاختصار هذه الأرقام وتمثيلها بشكل أسهل للإنسان.
                 </div>
             `,
             content_en: `
-                <p>Why do we have different number systems?</p>
+                <p>Why do we use different number systems in computing?</p>
                 <ul>
-                    <li><strong>For Humans:</strong> We count on our 10 fingers, hence the <strong>Decimal</strong> system.</li>
-                    <li><strong>For Computers:</strong> Computers rely on electrical circuits which are either <strong>On (1)</strong> or <strong>Off (0)</strong>, forming the <strong>Binary</strong> system.</li>
+                    <li><strong>For Humans:</strong> We are used to counting on our 10 fingers, hence we use the <strong>Decimal</strong> system.</li>
+                    <li><strong>For Computers:</strong> Computers are electronic devices; they rely on electrical circuits that are either <strong>On (1)</strong> or <strong>Off (0)</strong>.</li>
                 </ul>
+                <p>This forms the foundation of the <strong>Binary</strong> system.</p>
                 <div class="method-box">
-                    <strong>💡 Summary:</strong> Long strings of 1s and 0s confuse programmers. Other systems (Octal, Hexadecimal) were invented to shorten binary numbers.
+                    <strong>💡 Summary:</strong> Long strings of 1s and 0s are prone to human error and confusing for programmers. Other systems like Octal and Hexadecimal were adopted to abbreviate binary numbers.
                 </div>
             `
         },
         {
-            title: "2. الأنظمة الأربعة بالتفصيل",
-            title_en: "2. The Four Systems in Detail",
-            badge: "مفاهيم أساسية",
-            badge_en: "Basic Concepts",
+            title: "2. الأنظمة الشائعة (حسب الملف)",
+            title_en: "2. Common Number Systems",
+            badge: "الأنظمة المشهورة",
+            badge_en: "Popular Systems",
             content: `
-                <p>إليك الأنظمة الأربعة الرئيسية التي نستخدمها في علوم الحاسب:</p>
-                <ol>
-                    <li><strong>النظام العشري (Decimal - Base 10):</strong>
-                        <ul><li>الأساس 10. الرموز: من <code>0</code> إلى <code>9</code>. بيستخدمه البشر.</li></ul>
-                    </li>
-                    <li><strong>النظام الثنائي (Binary - Base 2):</strong>
-                        <ul><li>الأساس 2. الرموز: <code>0</code> و <code>1</code> فقط. بيستخدمه الكمبيوتر.</li></ul>
-                    </li>
-                    <li><strong>النظام الثماني (Octal - Base 8):</strong>
-                        <ul><li>الأساس 8. الرموز: من <code>0</code> إلى <code>7</code> فقط (لا يوجد 8 ولا 9).</li></ul>
-                    </li>
-                    <li><strong>النظام السداسي عشر (Hexadecimal - Base 16):</strong>
-                        <ul><li>الأساس 16. الرموز: من <code>0</code> إلى <code>9</code>، ثم الحروف <code>A, B, C, D, E, F</code> (حيث A=10 و F=15).</li></ul>
-                    </li>
-                </ol>
-            `,
-            content_en: `
-                <p>Here are the four main systems used in Computer Science:</p>
-                <ol>
-                    <li><strong>Decimal (Base 10):</strong> Symbols 0-9. Used by humans.</li>
-                    <li><strong>Binary (Base 2):</strong> Symbols 0 and 1. Used by computers.</li>
-                    <li><strong>Octal (Base 8):</strong> Symbols 0-7.</li>
-                    <li><strong>Hexadecimal (Base 16):</strong> Symbols 0-9 and A-F (where A=10, F=15). Used to abbreviate binary.</li>
-                </ol>
-            `
-        },
-        {
-            title: "3. إزاي بنعد في الأنظمة دي؟",
-            title_en: "3. How Do We Count?",
-            badge: "مفاهيم أساسية",
-            badge_en: "Basic Concepts",
-            content: `
-                <p>القاعدة الذهبية للعد: <strong>"عندما تنتهي الرموز المتاحة في الخانة الحالية، نُصفرها ونضيف 1 للخانة التي تليها"</strong>.</p>
+                <p>بناءً على محاضرة د. سيمون، هذه هي الأنظمة الأربعة الرئيسية المستخدمة (Common Number Systems):</p>
                 <div style="overflow-x:auto;">
                     <table>
-                        <tr><th>العشري (10)</th><th>الثنائي (2)</th><th>الثماني (8)</th><th>السداسي عشر (16)</th></tr>
-                        <tr><td>7</td><td>0111</td><td>7</td><td>7</td></tr>
+                        <tr><th>النظام (System)</th><th>الأساس (Base)</th><th>الرموز (Symbols)</th><th>يستخدمه البشر؟</th><th>يستخدمه الكمبيوتر؟</th></tr>
+                        <tr><td><strong>العشري (Decimal)</strong></td><td>10</td><td>0, 1, 2, ... 9</td><td>نعم (Yes)</td><td>لا (No)</td></tr>
+                        <tr><td><strong>الثنائي (Binary)</strong></td><td>2</td><td>0, 1</td><td>لا (No)</td><td>نعم (Yes)</td></tr>
+                        <tr><td><strong>الثماني (Octal)</strong></td><td>8</td><td>0, 1, 2, ... 7</td><td>لا (No)</td><td>لا (No)</td></tr>
+                        <tr><td><strong>السداسي عشر (Hexadecimal)</strong></td><td>16</td><td>0, 1, ... 9, A, B, C, D, E, F</td><td>لا (No)</td><td>لا (No)</td></tr>
+                    </table>
+                </div>
+                <p><strong>ملاحظة:</strong> الأنظمة الثمانية والسداسية عشر تُستخدم كأداة لتبسيط الأرقام الثنائية للمبرمجين، ولكن الكمبيوتر لا يعالجها مباشرة.</p>
+            `,
+            content_en: `
+                <p>Based on Dr. Simon's lecture, these are the four main systems (Common Number Systems):</p>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <tr><th>System</th><th>Base</th><th>Symbols</th><th>Used by humans?</th><th>Used by computers?</th></tr>
+                        <tr><td><strong>Decimal</strong></td><td>10</td><td>0, 1, 2, ... 9</td><td>Yes</td><td>No</td></tr>
+                        <tr><td><strong>Binary</strong></td><td>2</td><td>0, 1</td><td>No</td><td>Yes</td></tr>
+                        <tr><td><strong>Octal</strong></td><td>8</td><td>0, 1, 2, ... 7</td><td>No</td><td>No</td></tr>
+                        <tr><td><strong>Hexadecimal</strong></td><td>16</td><td>0, 1, ... 9, A, B, C, D, E, F</td><td>No</td><td>No</td></tr>
+                    </table>
+                </div>
+                <p><strong>Note:</strong> Octal and Hexadecimal are used as shorthand to simplify binary strings for programmers; computers do not process them directly.</p>
+            `
+        },
+        {
+            title: "3. الكميات والعد (Quantities/Counting)",
+            title_en: "3. Quantities/Counting",
+            badge: "جداول العد",
+            badge_en: "Counting Tables",
+            content: `
+                <p>كيف يتم العد في كل نظام؟ القاعدة الذهبية: <strong>"عندما تنتهي الرموز المتاحة في الخانة الحالية، نُصفرها ونضيف 1 للخانة التي تليها"</strong>.</p>
+                <div style="overflow-x:auto;">
+                    <table dir="ltr">
+                        <tr><th>Decimal</th><th>Binary</th><th>Octal</th><th>Hexadecimal</th></tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td>2</td><td>10</td><td>2</td><td>2</td></tr>
+                        <tr><td>3</td><td>11</td><td>3</td><td>3</td></tr>
+                        <tr><td>4</td><td>100</td><td>4</td><td>4</td></tr>
+                        <tr><td>5</td><td>101</td><td>5</td><td>5</td></tr>
+                        <tr><td>6</td><td>110</td><td>6</td><td>6</td></tr>
+                        <tr><td>7</td><td>111</td><td>7</td><td>7</td></tr>
                         <tr style="background:rgba(2, 132, 199, 0.1);"><td>8</td><td>1000</td><td><strong>10</strong> (نفدت الأرقام)</td><td>8</td></tr>
                         <tr><td>9</td><td>1001</td><td>11</td><td>9</td></tr>
                         <tr><td>10</td><td>1010</td><td>12</td><td><strong>A</strong></td></tr>
@@ -384,57 +392,44 @@
             content_en: `
                 <p>The golden rule of counting: <strong>"When you run out of available symbols in a column, reset it to zero and add 1 to the next column."</strong></p>
                 <div style="overflow-x:auto;">
-                    <table>
-                        <tr><th>Decimal (10)</th><th>Binary (2)</th><th>Octal (8)</th><th>Hexadecimal (16)</th></tr>
-                        <tr><td>7</td><td>0111</td><td>7</td><td>7</td></tr>
+                    <table dir="ltr">
+                        <tr><th>Decimal</th><th>Binary</th><th>Octal</th><th>Hexadecimal</th></tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td>2</td><td>10</td><td>2</td><td>2</td></tr>
+                        <tr><td>3</td><td>11</td><td>3</td><td>3</td></tr>
+                        <tr><td>4</td><td>100</td><td>4</td><td>4</td></tr>
+                        <tr><td>5</td><td>101</td><td>5</td><td>5</td></tr>
+                        <tr><td>6</td><td>110</td><td>6</td><td>6</td></tr>
+                        <tr><td>7</td><td>111</td><td>7</td><td>7</td></tr>
                         <tr style="background:rgba(2, 132, 199, 0.1);"><td>8</td><td>1000</td><td><strong>10</strong> (Out of numbers)</td><td>8</td></tr>
+                        <tr><td>9</td><td>1001</td><td>11</td><td>9</td></tr>
                         <tr><td>10</td><td>1010</td><td>12</td><td><strong>A</strong></td></tr>
                         <tr><td>15</td><td>1111</td><td>17</td><td>F</td></tr>
-                        <tr style="background:rgba(2, 132, 199, 0.1);"><td>16</td><td>10000</td><td>20</td><td><strong>10</strong> (Out of letters)</td></tr>
+                        <tr style="background:rgba(2, 132, 199, 0.1);"><td>16</td><td>10000</td><td>20</td><td><strong>10</strong> (Out of symbols)</td></tr>
                     </table>
                 </div>
             `
         },
         {
-            title: "4. أوزان الخانات والكسور",
-            title_en: "4. Column Weights & Fractions",
-            badge: "مفاهيم أساسية",
-            badge_en: "Basic Concepts",
+            title: "4. المضاعفات والأسس (Common Powers)",
+            title_en: "4. Common Powers",
+            badge: "مفاهيم هامة",
+            badge_en: "Important Concepts",
             content: `
-                <p>أي نظام رقمي "موزون" (Weighted) تعتمد قيمة الرقم فيه على مكانه. مثال في النظام العشري:</p>
-                <ul>
-                    <li><strong>الأرقام الصحيحة:</strong> الآحاد 10<sup>0</sup>، العشرات 10<sup>1</sup>، المئات 10<sup>2</sup></li>
-                    <li><strong>الكسور:</strong> الجزء من عشرة 10<sup>-1</sup>، الجزء من مية 10<sup>-2</sup></li>
-                </ul>
-                <p><strong>مثال:</strong> الرقم 9240 قيمته الحقيقية تُحسب هكذا:</p>
-                <code dir="ltr" style="display:block; padding:10px; background:rgba(0,0,0,0.05); border-radius:8px; margin-top:5px; font-size:1.1rem; text-align:left;">
-                (9 × 10³) + (2 × 10²) + (4 × 10¹) + (0 × 10⁰)
-                </code>
-            `,
-            content_en: `
-                <p>In a Weighted system, a digit's value depends on its position:</p>
-                <ul>
-                    <li><strong>Whole Numbers:</strong> Units 10<sup>0</sup>, Tens 10<sup>1</sup>, Hundreds 10<sup>2</sup></li>
-                    <li><strong>Fractions:</strong> Tenths 10<sup>-1</sup>, Hundredths 10<sup>-2</sup></li>
-                </ul>
-                <p><strong>Example:</strong> The value of 9240 is calculated as:</p>
-                <code dir="ltr" style="display:block; padding:10px; background:rgba(0,0,0,0.05); border-radius:8px; margin-top:5px; font-size:1.1rem; text-align:left;">
-                (9 × 10³) + (2 × 10²) + (4 × 10¹) + (0 × 10⁰)
-                </code>
-            `
-        },
-        {
-            title: "5. الأسس (مضاعفات الأرقام)",
-            title_en: "5. Common Powers",
-            badge: "مفاهيم متقدمة",
-            badge_en: "Advanced",
-            content: `
+                <p>هناك اختلاف جوهري بين مضاعفات النظام العشري والثنائي في علم الحاسوب، كما شرح د. سيمون:</p>
                 <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
                     <div style="flex:1; min-width:250px; border:1px solid var(--border); padding:15px; border-radius:10px; background:rgba(0,0,0,0.02);">
                         <h3 style="color:var(--primary); text-align:center;">النظام العشري (Base 10)</h3>
                         <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
+                            <li>Pico (p) = 10⁻¹² = .000000000001</li>
+                            <li>Nano (n) = 10⁻⁹ = .000000001</li>
+                            <li>Micro (μ) = 10⁻⁶ = .000001</li>
+                            <li>Milli (m) = 10⁻³ = .001</li>
                             <li>Kilo (k) = 10³ = 1,000</li>
                             <li>Mega (M) = 10⁶ = 1,000,000</li>
+                            <li>Giga (G) = 10⁹ = 1,000,000,000</li>
+                            <li>Tera (T) = 10¹² = 1,000,000,000,000</li>
                         </ul>
                     </div>
                     <div style="flex:1; min-width:250px; border:1px solid var(--accent); padding:15px; border-radius:10px; background:rgba(14, 165, 233, 0.05);">
@@ -442,179 +437,69 @@
                         <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
                             <li>Kilo (K) = 2¹⁰ = 1,024</li>
                             <li>Mega (M) = 2²⁰ ≈ 1,048,576</li>
+                            <li>Giga (G) = 2³⁰ ≈ 1.07 × 10⁹</li>
+                            <li>Tera (T) = 2⁴⁰ ≈ 1.10 × 10¹²</li>
                         </ul>
                     </div>
                 </div>
                 <div class="method-box">
-                    <strong>💡 ملحوظة:</strong> الكيلو بايت في الكمبيوتر يساوي 1024 وليس 1000، وهذا ما يفسر نقصان مساحة التخزين الفعلية للفلاشات.
+                    <strong>💡 ملحوظة:</strong> الكيلو بايت في الكمبيوتر يساوي 1024 وليس 1000، وهذا ما يفسر نقصان مساحة التخزين الفعلية للذواكر (Flash drives) عما هو مكتوب عليها بالأسواق.
                 </div>
             `,
             content_en: `
+                <p>There is a fundamental difference between Base 10 and Base 2 multipliers in computer science, as Dr. Simon explained:</p>
                 <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
                     <div style="flex:1; min-width:250px; border:1px solid var(--border); padding:15px; border-radius:10px; background:rgba(0,0,0,0.02);">
-                        <h3 style="color:var(--primary); text-align:center;">Base 10 (Humans)</h3>
+                        <h3 style="color:var(--primary); text-align:center;">Base 10 (Decimal)</h3>
                         <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
+                            <li>Pico (p) = 10⁻¹² = .000000000001</li>
+                            <li>Nano (n) = 10⁻⁹ = .000000001</li>
+                            <li>Micro (μ) = 10⁻⁶ = .000001</li>
+                            <li>Milli (m) = 10⁻³ = .001</li>
                             <li>Kilo (k) = 10³ = 1,000</li>
                             <li>Mega (M) = 10⁶ = 1,000,000</li>
+                            <li>Giga (G) = 10⁹ = 1,000,000,000</li>
+                            <li>Tera (T) = 10¹² = 1,000,000,000,000</li>
                         </ul>
                     </div>
                     <div style="flex:1; min-width:250px; border:1px solid var(--accent); padding:15px; border-radius:10px; background:rgba(14, 165, 233, 0.05);">
-                        <h3 style="color:var(--accent); text-align:center;">Base 2 (Computers)</h3>
+                        <h3 style="color:var(--accent); text-align:center;">Base 2 (Binary)</h3>
                         <ul dir="ltr" style="list-style:none; padding:0; margin-top:10px; text-align:center; font-family:monospace; font-size:1.1rem;">
                             <li>Kilo (K) = 2¹⁰ = 1,024</li>
                             <li>Mega (M) = 2²⁰ ≈ 1,048,576</li>
+                            <li>Giga (G) = 2³⁰ ≈ 1.07 × 10⁹</li>
+                            <li>Tera (T) = 2⁴⁰ ≈ 1.10 × 10¹²</li>
                         </ul>
                     </div>
                 </div>
                 <div class="method-box">
-                    <strong>💡 Note:</strong> A computer's Kilo is 1024, not 1000. This is why flash drives show less space than advertised.
+                    <strong>💡 Note:</strong> A computer's Kilo is 1024, not 1000. This is why flash drives or hard disks always show slightly less formatted capacity than advertised.
                 </div>
             `
         },
         {
-            title: "6. بت الإشارة والـ Overflow",
-            title_en: "6. Sign Bit & Overflow",
-            badge: "مفاهيم متقدمة",
-            badge_en: "Advanced",
-            content: `
-                <ul>
-                    <li>الكمبيوتر يخصص <strong>آخر بت على اليسار (MSB)</strong> لتحديد الإشارة (Sign Bit).</li>
-                    <li>إذا كان Sign Bit = <strong>0</strong> ➔ <strong>موجب (Positive)</strong>.</li>
-                    <li>إذا كان Sign Bit = <strong>1</strong> ➔ <strong>سالب (Negative)</strong>.</li>
-                </ul>
-                <hr style="margin: 15px 0; border-color: var(--border);">
-                <p><strong>التدفق الزائد (Overflow):</strong></p>
-                <p>إذا قمنا بجمع رقمين موجبين كبيرين جداً، قد يتجاوز الناتج المساحة المخصصة، فيدخل الرقم الزائد في خانة الـ Sign bit ويجعلها 1.</p>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>⚠️ علامة الخطر:</strong> نعرف أنه حدث Overflow عندما نلاحظ <strong>تغيراً غير منطقي في بت الإشارة</strong>.
-                </div>
-            `,
-            content_en: `
-                <ul>
-                    <li>Computers use the <strong>leftmost bit (MSB)</strong> as the Sign Bit.</li>
-                    <li>If Sign Bit = <strong>0</strong> ➔ <strong>Positive</strong>.</li>
-                    <li>If Sign Bit = <strong>1</strong> ➔ <strong>Negative</strong>.</li>
-                </ul>
-                <hr style="margin: 15px 0; border-color: var(--border);">
-                <p><strong>Overflow:</strong></p>
-                <p>Adding two large positive numbers might exceed the allocated space, spilling into the sign bit and changing it to 1.</p>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>⚠️ Indicator:</strong> Overflow is indicated by an unexpected <strong>change in the sign bit</strong>.
-                </div>
-            `
-        },
-        {
-            title: "7. شفرة BCD",
-            title_en: "7. BCD Code",
-            badge: "شفرات وأكواد",
-            badge_en: "Codes",
-            content: `
-                <p>شفرة <strong>BCD (Binary Coded Decimal)</strong> هي طريقة لترجمة الأرقام العشرية لأصفار ووحايد. <strong>القاعدة:</strong> نأخذ <strong>كل رقم عشري بمفرده</strong>، ونحوله إلى <strong>4 بت ثنائي</strong>.</p>
-                <div class="example-box">
-                    تحويل الرقم (84) إلى BCD:<br>
-                    الرقم 4 = 0100<br>
-                    الرقم 8 = 1000<br>
-                    إذن 84 بالـ BCD = 1000 0100
-                </div>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>⛔ قاعدة صارمة للامتحان:</strong><br>
-                    شفرة BCD تتعامل فقط مع الأرقام المفردة من <strong>0 إلى 9</strong>. أي كود يعبر عن 10 فما فوق (مثل <code>1010</code>) يُعتبر <strong>غير صالح (Invalid)</strong>.
-                </div>
-            `,
-            content_en: `
-                <p><strong>BCD (Binary Coded Decimal)</strong> translates decimal digits directly. <strong>Rule:</strong> Convert <strong>each decimal digit</strong> separately into <strong>4 binary bits</strong>.</p>
-                <div class="example-box">
-                    Convert (84) to BCD:<br>
-                    Digit 4 = 0100<br>
-                    Digit 8 = 1000<br>
-                    Result = 1000 0100
-                </div>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>⛔ Exam Rule:</strong><br>
-                    BCD only handles digits <strong>0 to 9</strong>. Any code representing 10 or above (like <code>1010</code>) is <strong>Invalid</strong>.
-                </div>
-            `
-        },
-        {
-            title: "8. الشفرات غير الموزونة والأبجدية",
-            title_en: "8. Unweighted & Alpha Codes",
-            badge: "شفرات وأكواد",
-            badge_en: "Codes",
-            content: `
-                <p><strong>1. الشفرات غير الموزونة (Unweighted Codes):</strong></p>
-                <ul>
-                    <li>أنظمة لا تمتلك فيها الخانات "أوزان" ثابتة (مثل 1, 2, 4, 8).</li>
-                    <li><strong>أشهر مثال:</strong> كود جراي <strong>(Gray Code)</strong>. يتغير فيه <strong>"بت واحد فقط"</strong> بين كل رقمين، مما يقلل احتمالية الأخطاء.</li>
-                </ul>
-                <hr style="margin: 15px 0; border-color: var(--border);">
-                <p><strong>2. الشفرات الأبجدية الرقمية (Alphanumeric Codes):</strong></p>
-                <ul>
-                    <li>شفرات صُممت ليفهم الكمبيوتر الحروف (A, B) والرموز (@, $) بجانب الأرقام.</li>
-                    <li><strong>أشهر مثال:</strong> شفرة الآسكي <strong>(ASCII)</strong>.</li>
-                </ul>
-            `,
-            content_en: `
-                <p><strong>1. Unweighted Codes:</strong></p>
-                <ul>
-                    <li>Positions do not have fixed weights (like 1, 2, 4, 8).</li>
-                    <li><strong>Example:</strong> <strong>Gray Code</strong>. Only <strong>one bit changes</strong> between successive numbers, reducing hardware errors.</li>
-                </ul>
-                <hr style="margin: 15px 0; border-color: var(--border);">
-                <p><strong>2. Alphanumeric Codes:</strong></p>
-                <ul>
-                    <li>Designed to represent letters (A, B) and symbols (@, $) inside a computer.</li>
-                    <li><strong>Example:</strong> <strong>ASCII</strong> code.</li>
-                </ul>
-            `
-        },
-        {
-            title: "9. اكتشاف الأخطاء (Error Detection)",
-            title_en: "9. Error Detection",
-            badge: "مفاهيم متقدمة",
-            badge_en: "Advanced",
-            content: `
-                <p>عند نقل البيانات عبر الشبكات، قد يحدث تشويش. كيف نكتشف التلف؟</p>
-                <div class="method-box">
-                    <strong>1. فحص التطابق (Parity Check):</strong><br>
-                    إضافة بت إضافي (Parity bit) لجعل إجمالي عدد "الوحايد (1s)" إما دائماً زوجي (Even) أو دائماً فردي (Odd).
-                </div>
-                <div class="method-box">
-                    <strong>2. فحص التكرار الدائري (CRC):</strong><br>
-                    خوارزمية رياضية متقدمة تُضاف في نهاية كتل البيانات لاكتشاف الأخطاء بدقة عالية.
-                </div>
-            `,
-            content_en: `
-                <p>Data transmission can cause errors. How do we detect them?</p>
-                <div class="method-box">
-                    <strong>1. Parity Check:</strong><br>
-                    Adding an extra bit to make the total count of 1s always Even or Odd. If the count mismatches upon arrival, an error occurred.
-                </div>
-                <div class="method-box">
-                    <strong>2. CRC (Cyclic Redundancy Check):</strong><br>
-                    An advanced mathematical algorithm added at the end of data blocks to detect complex errors.
-                </div>
-            `
-        },
-        {
-            title: "10. التحويل من عشري لأي نظام",
-            title_en: "10. Dec to Any System",
+            title: "5. التحويل من النظام العشري لأي نظام",
+            title_en: "5. Decimal to Any Base",
             badge: "التحويلات 🔄",
             badge_en: "Conversions 🔄",
             content: `
-                <p>للتحويل <strong>من</strong> العشري لأي نظام، نستخدم <strong>القسمة المطولة</strong> على أساس النظام الجديد ونأخذ الباقي.</p>
+                <p>للتحويل <strong>من</strong> النظام العشري لأي نظام آخر، نستخدم طريقة <strong>القسمة المطولة المتكررة (Repeated Division)</strong> على أساس النظام الجديد ونأخذ الباقي (Remainder).</p>
                 <p><strong>مثال: من عشري إلى ثنائي (13)</strong></p>
                 <table style="max-width:400px; direction:ltr; margin: 10px auto;">
-                    <tr><th>Num / 2</th><th>Quotient</th><th>Remainder</th></tr>
+                    <tr><th>Num / 2</th><th>Quotient (الناتج)</th><th>Remainder (الباقي)</th></tr>
                     <tr><td>13 / 2</td><td>6</td><td><strong>1</strong> (First/LSB)</td></tr>
                     <tr><td>6 / 2</td><td>3</td><td><strong>0</strong></td></tr>
                     <tr><td>3 / 2</td><td>1</td><td><strong>1</strong></td></tr>
                     <tr><td>1 / 2</td><td>0</td><td><strong>1</strong> (Last/MSB)</td></tr>
                 </table>
                 <p dir="ltr" style="text-align:center; font-family:monospace; font-size:1.2rem; font-weight:bold;">13<sub>10</sub> = 1101<sub>2</sub></p>
+                <div class="method-box">
+                    نقوم بقراءة البواقي من أسفل إلى أعلى للحصول على الرقم من اليسار إلى اليمين.
+                </div>
             `,
             content_en: `
-                <p>To convert <strong>from</strong> Decimal, use <strong>Long Division</strong> by the new base and take the Remainders.</p>
-                <p><strong>Example: Dec to Bin (13)</strong></p>
+                <p>To convert <strong>from</strong> Decimal to any base, use <strong>Repeated Long Division</strong> by the new base and collect the Remainders.</p>
+                <p><strong>Example: Decimal 13 to Binary</strong></p>
                 <table style="max-width:400px; direction:ltr; margin: 10px auto;">
                     <tr><th>Num / 2</th><th>Quotient</th><th>Remainder</th></tr>
                     <tr><td>13 / 2</td><td>6</td><td><strong>1</strong> (First/LSB)</td></tr>
@@ -623,15 +508,18 @@
                     <tr><td>1 / 2</td><td>0</td><td><strong>1</strong> (Last/MSB)</td></tr>
                 </table>
                 <p dir="ltr" style="text-align:center; font-family:monospace; font-size:1.2rem; font-weight:bold;">13<sub>10</sub> = 1101<sub>2</sub></p>
+                <div class="method-box">
+                    Read the remainders from Bottom to Top to form the number from Left to Right (MSB to LSB).
+                </div>
             `
         },
         {
-            title: "11. التحويل من أي نظام لعشري",
-            title_en: "11. Any to Dec System",
+            title: "6. التحويل من أي نظام للنظام العشري",
+            title_en: "6. Any Base to Decimal",
             badge: "التحويلات 🔄",
             badge_en: "Conversions 🔄",
             content: `
-                <p>للتحويل <strong>إلى</strong> النظام العشري، نستخدم طريقة <strong>الضرب في الأوزان</strong> (Sum of Weights).</p>
+                <p>للتحويل <strong>إلى</strong> النظام العشري، نستخدم طريقة <strong>الضرب في الأوزان (Sum of Weights / Polynomial Expansion)</strong>.</p>
                 <div class="example-box">
                     <strong>من ثنائي إلى عشري: تحويل 1101</strong><br>
                     Weights: &nbsp; 2³(8) &nbsp; 2²(4) &nbsp; 2¹(2) &nbsp; 2⁰(1) <br>
@@ -639,40 +527,46 @@
                     = (1×8) + (1×4) + (0×2) + (1×1)<br>
                     = 8 + 4 + 0 + 1 = <strong>13<sub>10</sub></strong>
                 </div>
+                <div class="method-box">
+                    تُطبق نفس الفكرة على النظام الثماني (بالضرب في أوزان 8⁰, 8¹, 8²) والسداسي عشر (بالضرب في أوزان 16⁰, 16¹, 16²).
+                </div>
             `,
             content_en: `
-                <p>To convert <strong>to</strong> Decimal, multiply each digit by its <strong>Column Weight</strong>.</p>
+                <p>To convert <strong>to</strong> Decimal from any base, use the <strong>Sum of Weights (Polynomial Expansion)</strong> method. Multiply each digit by its positional weight.</p>
                 <div class="example-box">
-                    <strong>Bin to Dec: Convert 1101</strong><br>
+                    <strong>Binary to Decimal: Convert 1101</strong><br>
                     Weights: &nbsp; 2³(8) &nbsp; 2²(4) &nbsp; 2¹(2) &nbsp; 2⁰(1) <br>
                     Binary: &nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 <br>
                     = (1×8) + (1×4) + (0×2) + (1×1)<br>
                     = 8 + 4 + 0 + 1 = <strong>13<sub>10</sub></strong>
                 </div>
+                <div class="method-box">
+                    The same exact logic applies to Octal (multiply by 8⁰, 8¹, 8²) and Hexadecimal (multiply by 16⁰, 16¹, 16²).
+                </div>
             `
         },
         {
-            title: "12. التحويل المباشر (Shortcuts)",
-            title_en: "12. Direct Shortcuts",
+            title: "7. التحويلات المباشرة (الاختصارات)",
+            title_en: "7. Direct Shortcuts",
             badge: "التحويلات 🔄",
             badge_en: "Conversions 🔄",
             content: `
-                <p>لأن 8 هي 2³، و 16 هي 2⁴، يمكننا التحويل المباشر بمجرد تجميع البتات!</p>
+                <p>لأن الرقم 8 هو 2³، والرقم 16 هو 2⁴، يمكننا التحويل مباشرة من وإلى النظام الثنائي دون المرور بالنظام العشري بتاتاً!</p>
                 <div class="method-box">
-                    <strong>ثنائي ⟷ ثماني (مجموعات 3 بت):</strong><br>
+                    <strong>ثنائي ⟷ ثماني (تجميع كل 3 بت):</strong><br>
                     لتحويل <span dir="ltr">110101<sub>2</sub></span>:<br>
                     نقسمها لثلاثات: <span dir="ltr">(101) (110)</span><br>
                     نترجم: <span dir="ltr">5 &nbsp;&nbsp; 6</span> ➔ <span dir="ltr">65<sub>8</sub></span>
                 </div>
                 <div class="method-box">
-                    <strong>ثنائي ⟷ سداسي عشر (مجموعات 4 بت):</strong><br>
+                    <strong>ثنائي ⟷ سداسي عشر (تجميع كل 4 بت):</strong><br>
                     لتحويل <span dir="ltr">10101111<sub>2</sub></span>:<br>
                     نقسمها لأربعات: <span dir="ltr">(1111) (1010)</span><br>
                     نترجم: <span dir="ltr">F &nbsp;&nbsp;&nbsp;&nbsp; A</span> ➔ <span dir="ltr">AF<sub>16</sub></span>
                 </div>
             `,
             content_en: `
-                <p>Since 8 is 2³, and 16 is 2⁴, we can group bits for direct conversion!</p>
+                <p>Since 8 is exactly 2³, and 16 is 2⁴, we can group binary bits for direct conversion without going through decimal!</p>
                 <div class="method-box">
                     <strong>Bin ⟷ Oct (Groups of 3 Bits):</strong><br>
                     Convert <span dir="ltr">110101<sub>2</sub></span>:<br>
@@ -688,13 +582,13 @@
             `
         },
         {
-            title: "13. محول الأنظمة التفاعلي 🧮",
-            title_en: "13. Interactive Converter 🧮",
+            title: "8. محول الأنظمة التفاعلي 🧮",
+            title_en: "8. Interactive Converter 🧮",
             badge: "أداة ذكية",
             badge_en: "Smart Tool",
             isConverterSlide: true,
             content: `
-                <p id="convIntro">اكتب أي رقم في أي صندوق وسيتم تحديث باقي الأنظمة فوراً، عشان تفهم طريقة التحويل عملياً!</p>
+                <p id="convIntro">اكتب أي رقم في أي صندوق وسيتم تحديث باقي الأنظمة فوراً، هذه الأداة ستساعدك على التأكد من حساباتك وتدريب نفسك عملياً!</p>
                 <div class="converter-box">
                     <div class="input-group">
                         <label>Decimal (عشري - Base 10)</label>
@@ -716,7 +610,7 @@
                 </div>
             `,
             content_en: `
-                <p id="convIntro">Type a number in any box and the others will update instantly!</p>
+                <p id="convIntro">Type a number in any box and the others will update instantly. Use this tool to verify your calculations and train yourself!</p>
                 <div class="converter-box">
                     <div class="input-group">
                         <label>Decimal (Base 10)</label>
@@ -739,13 +633,13 @@
             `
         },
         {
-            title: "14. ساحة التدريب (Practice) ⚔️",
-            title_en: "14. Practice Arena ⚔️",
+            title: "9. ساحة التدريب (Practice) ⚔️",
+            title_en: "9. Practice Arena ⚔️",
             badge: "تطبيق عملي",
             badge_en: "Practice",
             isPracticeSlide: true,
-            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">استخدم الورقة والقلم لحل هذه التحويلات، ثم ادخل إجابتك للتحقق منها.</p>`,
-            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Use pen and paper to solve these conversions, then check your answers.</p>`
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">استخدم الورقة والقلم لحل هذه التحويلات، ثم ادخل إجابتك للتحقق منها. (يجب أن تتدرب قبل الاختبار!)</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Use pen and paper to solve these conversions manually, then check your answers below to verify your skills.</p>`
         }
     ];
 
@@ -760,7 +654,6 @@
         { q: "Convert  100<sub>10</sub>  to Hexadecimal", ans: "64" }
     ];
 
-    // مصفوفة فارغة عشان دالة الـ Quiz متبوظش لو مفيش أسئلة
     const solvedQuizData = [];
 
     // ==========================================
@@ -784,7 +677,6 @@
     };
 
     function init() {
-        // سحب اللغة والثيم من المنصة الرئيسية (localStorage)
         let globalTheme = localStorage.getItem('globalTheme') || 'light';
         let globalLang = localStorage.getItem('globalLang') || 'ar';
         
@@ -795,7 +687,7 @@
         }
 
         if (globalLang === 'en') {
-            uiLang = 'ar'; // عشان الدالة تعكسه لـ en صح
+            uiLang = 'ar'; 
             window.toggleLang();
         }
 
@@ -913,14 +805,13 @@
         uiLang = uiLang === 'ar' ? 'en' : 'ar';
         const isAr = uiLang === 'ar';
         
-        // حفظ اللغة في المنصة
         localStorage.setItem('globalLang', uiLang);
         
         dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
         dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
 
         document.getElementById('pageTitle').innerText = isAr ? "الأنظمة الرقمية الشاملة 👑" : "Number Systems Masterclass 👑";
-        document.getElementById('pageSubTitle').innerText = isAr ? "د. سيون عزت | Dr. Sion Ezzat" : "Dr. Sion Ezzat | د. سيون عزت";
+        document.getElementById('pageSubTitle').innerText = isAr ? "د. سيمون عزت | Dr. Simon Ezzat" : "Dr. Simon Ezzat | د. سيمون عزت";
         
         dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
         document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
@@ -1019,8 +910,6 @@
         const isLight = body.getAttribute('data-theme') === 'light';
         const newTheme = isLight ? 'dark' : 'light';
         body.setAttribute('data-theme', newTheme);
-        
-        // حفظ الثيم في المنصة
         localStorage.setItem('globalTheme', newTheme);
     }
 

@@ -124,20 +124,34 @@
             <div class="lec-card active-card" onclick="window.location.href='Lecture2/index.html'">
                 <div class="floating-icon">2</div>
                 <h3 class="lec-title">المحاضرة الثانية</h3>
-                <p class="lec-desc">البوابات المنطقية (Logic Gates).</p>
+                <p class="lec-desc">الحساب الثنائي والمتممات.</p>
                 <a href="Lecture2/index.html" class="btn-glass">دخول للمحاضرة</a>
             </div>
 
             <div class="lec-card active-card" onclick="window.location.href='Lecture3/index.html'">
                 <div class="floating-icon">3</div>
                 <h3 class="lec-title">المحاضرة الثالثة</h3>
-                <p class="lec-desc">التبسيط المنطقي (Simplifications).</p>
+                <p class="lec-desc">التبسيط والجبر المنطقي (Simplifications).</p>
                 <a href="Lecture3/index.html" class="btn-glass">دخول للمحاضرة</a>
             </div>
 
-            <div class="lec-card locked-card">
+            <div class="lec-card active-card" onclick="window.location.href='Lecture4/index.html'">
                 <div class="floating-icon">4</div>
                 <h3 class="lec-title">المحاضرة الرابعة</h3>
+                <p class="lec-desc">البوابات المنطقية الأساسية (Logic Gates).</p>
+                <a href="Lecture4/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card active-card" onclick="window.location.href='Lecture5/index.html'">
+                <div class="floating-icon">5</div>
+                <h3 class="lec-title">المحاضرة الخامسة</h3>
+                <p class="lec-desc">البوابات الشاملة والحصرية.</p>
+                <a href="Lecture5/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card locked-card">
+                <div class="floating-icon">6</div>
+                <h3 class="lec-title">المحاضرة السادسة</h3>
                 <div class="spinner-container">
                     <div class="spinner"><div class="spinnerin"></div></div>
                     <span style="font-weight:bold;" class="loading-text">جاري التجهيز...</span>
@@ -166,12 +180,16 @@
                 if(titles[1]) titles[1].innerText = 'Lecture 2';
                 if(titles[2]) titles[2].innerText = 'Lecture 3';
                 if(titles[3]) titles[3].innerText = 'Lecture 4';
+                if(titles[4]) titles[4].innerText = 'Lecture 5';
+                if(titles[5]) titles[5].innerText = 'Lecture 6';
 
                 // ترجمة الوصف
                 const descs = document.querySelectorAll('.lec-desc');
                 if(descs[0]) descs[0].innerText = 'Introduction to Number Systems and Coding.';
-                if(descs[1]) descs[1].innerText = 'Logic Gates.';
-                if(descs[2]) descs[2].innerText = 'Logic Simplifications.';
+                if(descs[1]) descs[1].innerText = 'Binary Arithmetic and Complements.';
+                if(descs[2]) descs[2].innerText = 'Boolean Algebra and Simplifications.';
+                if(descs[3]) descs[3].innerText = 'Basic Logic Gates.';
+                if(descs[4]) descs[4].innerText = 'Universal & Exclusive Gates.';
 
                 // ترجمة الأزرار
                 const btns = document.querySelectorAll('.btn-glass');

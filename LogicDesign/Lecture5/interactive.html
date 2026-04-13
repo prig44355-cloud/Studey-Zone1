@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Number Systems | Lecture 3 - Simplifications</title>
+    <title>Number Systems | Logic Gates (Dr. Simon)</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- ألوان مادة الدوائر الرقمية (أزرق وسماوي) --- */
+        /* --- ألوان مادة الدوائر الرقمية --- */
         :root {
             --bg-gradient-light: #f0f4f8;
             --glass-bg-light: rgba(255, 255, 255, 0.95);
@@ -134,7 +134,6 @@
         .quiz-a { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); color: var(--text); font-weight:bold;}
         .quiz-item.revealed .quiz-a { display: block; animation: fadeIn 0.3s; }
 
-        /* --- Select Drops for Tool --- */
         select.logic-sel { padding: 8px; font-size: 1.1rem; border-radius: 6px; border: 1px solid var(--border); background: var(--glass); color: var(--text); outline: none;}
 
         /* --- BB8 Toggle CSS --- */
@@ -225,8 +224,8 @@
         <div class="header-title-container">
             <i class="fa-solid fa-microchip" style="font-size: 2rem; color: var(--primary);"></i>
             <div>
-                <div class="header-title" id="pageTitle">الأنظمة الرقمية | L3 👑</div>
-                <div class="header-subtitle" id="pageSubTitle">التبسيط والجبر المنطقي (Simplifications)</div>
+                <div class="header-title" id="pageTitle">الأنظمة الرقمية | البوابات 👑</div>
+                <div class="header-subtitle" id="pageSubTitle">د. سيمون عزت | Dr. Simon Ezzat</div>
             </div>
         </div>
 
@@ -297,228 +296,289 @@
 
 <script>
     // ==========================================
-    // 1. DATA: Bilingual Slides Data (Lecture 3)
+    // 1. DATA: Bilingual Slides Data (Logic Gates - Dr. Simon)
     // ==========================================
     const slides = [
         {
-            title: "1. المتغيرات والرموز المنطقية",
-            title_en: "1. Boolean Variables & Literals",
+            title: "1. البوابات المنطقية",
+            title_en: "1. Logic Gates",
             badge: "مفاهيم أساسية",
             badge_en: "Basic Concepts",
             content: `
-                <p>في الجبر المنطقي (Boolean Algebra)، نستخدم بعض المصطلحات الأساسية لتمثيل البيانات:</p>
+                <p>البوابة المنطقية (Logic Gate) هي جهاز يُعتبر <strong>وحدة البناء الأساسية للدوائر الرقمية</strong>.</p>
                 <ul>
-                    <li><strong>المتغير (Variable):</strong> هو رمز يمثل حالة أو بيانات، وله قيمتان فقط (0 أو 1).</li>
-                    <li><strong>المكمل (Complement):</strong> هو عكس المتغير، ويُشار إليه بشرطة علوية أو علامة (') مثل $\\overline{A}$ أو A'.</li>
-                    <li><strong>الحرف أو العنصر (Literal):</strong> هو مصطلح يطلق على المتغير سواء كان بشكله العادي أو بشكله المكمل.</li>
+                    <li>تقوم بأداء وظائف منطقية أساسية.</li>
+                    <li>تتخذ القرارات بناءً على تركيبة الإشارات الرقمية القادمة من مداخلها.</li>
                 </ul>
-            `,
-            content_en: `
-                <p>In Boolean Algebra, we use basic terminology to represent data and conditions:</p>
-                <ul>
-                    <li><strong>Variable:</strong> A symbol used to represent a condition or data. It can only have a value of 0 or 1.</li>
-                    <li><strong>Complement:</strong> The inverse of a variable, indicated by an overbar or prime symbol (e.g., $\\overline{A}$ or A').</li>
-                    <li><strong>Literal:</strong> A term that refers to either a variable or its complement.</li>
-                </ul>
-            `
-        },
-        {
-            title: "2. الجمع المنطقي (Boolean Addition)",
-            title_en: "2. Boolean Addition (OR)",
-            badge: "عمليات منطقية",
-            badge_en: "Logic Operations",
-            content: `
-                <p>الجمع في الجبر المنطقي يُكافئ عملية <strong>(OR)</strong>.</p>
-                <p>يسمى الناتج <strong>(Sum Term)</strong>. ويكون الناتج <strong>1</strong> إذا كان أيٌ من المتغيرات (Literals) يساوي 1. ويكون <strong>0</strong> فقط إذا كانت <strong>كل المتغيرات تساوي 0</strong>.</p>
-                <div class="example-box">
-                    <strong>مثال:</strong> حدد قيم A, B, C التي تجعل المعادلة التالية تساوي صفر؟<br>
-                    <span style="font-size: 1.5rem;">$\\overline{A} + B + \\overline{C} = 0$</span><br><br>
-                    <strong>الحل:</strong> بما أن العملية جمع (OR)، لكي يكون الناتج 0 يجب أن يكون كل حد يساوي 0.<br>
-                    إذن: $\\overline{A}=0 \\rightarrow A=1$<br>
-                    $B=0$<br>
-                    $\\overline{C}=0 \\rightarrow C=1$
-                </div>
-            `,
-            content_en: `
-                <p>Boolean addition is equivalent to the <strong>OR</strong> operation.</p>
-                <p>The result is called a <strong>Sum Term</strong>. It evaluates to <strong>1</strong> if one or more of its literals are 1. It is <strong>0</strong> ONLY if <strong>all literals are 0</strong>.</p>
-                <div class="example-box">
-                    <strong>Example:</strong> Determine the values of A, B, and C that make the sum term 0?<br>
-                    <span style="font-size: 1.5rem;">$\\overline{A} + B + \\overline{C} = 0$</span><br><br>
-                    <strong>Solution:</strong> Since it's an OR operation, every literal must be 0 for the result to be 0.<br>
-                    Therefore: $\\overline{A}=0 \\rightarrow A=1$<br>
-                    $B=0$<br>
-                    $\\overline{C}=0 \\rightarrow C=1$
-                </div>
-            `
-        },
-        {
-            title: "3. الضرب المنطقي (Boolean Multiplication)",
-            title_en: "3. Boolean Multiplication (AND)",
-            badge: "عمليات منطقية",
-            badge_en: "Logic Operations",
-            content: `
-                <p>الضرب في الجبر المنطقي يُكافئ عملية <strong>(AND)</strong>.</p>
-                <p>يسمى الناتج <strong>(Product Term)</strong>. ويكون الناتج <strong>1</strong> فقط وحصرياً إذا كانت <strong>كل المتغيرات تساوي 1</strong>.</p>
-                <div class="example-box">
-                    <strong>مثال:</strong> حدد قيم A, B, C التي تجعل المعادلة التالية تساوي 1؟<br>
-                    <span style="font-size: 1.5rem;">$A \\cdot \\overline{B} \\cdot \\overline{C} = 1$</span><br><br>
-                    <strong>الحل:</strong> بما أن العملية ضرب (AND)، لكي يكون الناتج 1 يجب أن يكون كل حد يساوي 1.<br>
-                    إذن: $A=1$<br>
-                    $\\overline{B}=1 \\rightarrow B=0$<br>
-                    $\\overline{C}=1 \\rightarrow C=0$
-                </div>
-            `,
-            content_en: `
-                <p>Boolean multiplication is equivalent to the <strong>AND</strong> operation.</p>
-                <p>The result is called a <strong>Product Term</strong>. It evaluates to <strong>1</strong> ONLY if <strong>all of the literals are 1</strong>.</p>
-                <div class="example-box">
-                    <strong>Example:</strong> What are the values of A, B, and C if the product term is 1?<br>
-                    <span style="font-size: 1.5rem;">$A \\cdot \\overline{B} \\cdot \\overline{C} = 1$</span><br><br>
-                    <strong>Solution:</strong> Since it's an AND operation, every literal must be 1.<br>
-                    Therefore: $A=1$<br>
-                    $\\overline{B}=1 \\rightarrow B=0$<br>
-                    $\\overline{C}=1 \\rightarrow C=0$
-                </div>
-            `
-        },
-        {
-            title: "4. الصيغ القياسية (SOP Form)",
-            title_en: "4. Standard Forms (SOP)",
-            badge: "صيغ التعبير",
-            badge_en: "Expression Forms",
-            content: `
-                <p><strong>مجموع المضروبات القياسي (Standard SOP - Sum Of Products):</strong></p>
-                <p>التعبير المنطقي يكون في صيغة (Standard SOP) إذا كان <strong>يحتوي كل "حد مضروب" فيه على جميع متغيرات المجال (Domain) الخاصة بالدالة.</strong></p>
                 <div class="method-box">
-                    <strong>لماذا نستخدمها؟</strong><br>
-                    تُعد صيغة SOP القياسية الخطوة الأساسية والمطلوبة قبل التمكن من رسم المعادلة على <strong>خرائط كارنوف (K-Maps)</strong> للتبسيط.
+                    <strong>الأنواع الأساسية (TYPES OF LOGIC GATES):</strong><br>
+                    هناك ثلاثة أنواع رئيسية من البوابات المنطقية الأساسية: <strong>OR</strong> و <strong>AND</strong> و <strong>NOT</strong>.
                 </div>
-                <p>مثال لمعادلة في صيغة Standard SOP (لمجال A, B, C):<br>
-                <code dir="ltr">$X = (A \\cdot \\overline{B} \\cdot C) + (A \\cdot B \\cdot \\overline{C})$</code>
-                </p>
             `,
             content_en: `
-                <p><strong>Standard Sum of Products (SOP):</strong></p>
-                <p>A Boolean expression is in standard SOP form if <strong>every product term contains every variable in the domain of the function.</strong></p>
+                <p>A logic gate is a device that acts as a <strong>building block for digital circuits</strong>.</p>
+                <ul>
+                    <li>They perform basic logical functions fundamental to digital circuits.</li>
+                    <li>They make decisions based on a combination of digital signals coming from inputs.</li>
+                </ul>
                 <div class="method-box">
-                    <strong>Why use it?</strong><br>
-                    Converting an expression to standard SOP is the required first step before mapping it onto a <strong>Karnaugh Map (K-Map)</strong> for simplification.
+                    <strong>TYPES OF LOGIC GATES:</strong><br>
+                    There are three types of basic Logic Gates: <strong>OR Gate</strong>, <strong>AND Gate</strong>, and <strong>NOT Gate</strong>.
                 </div>
-                <p>Example of a standard SOP expression (Domain: A, B, C):<br>
-                <code dir="ltr">$X = (A \\cdot \\overline{B} \\cdot C) + (A \\cdot B \\cdot \\overline{C})$</code>
-                </p>
             `
         },
         {
-            title: "5. خرائط كارنوف (Karnaugh Maps)",
-            title_en: "5. Karnaugh Maps (K-Maps)",
-            badge: "التبسيط البصري",
-            badge_en: "Visual Simplification",
+            title: "2. بوابة (أو - OR)",
+            title_en: "2. OR Gate",
+            badge: "البوابات الأساسية",
+            badge_en: "Basic Gates",
             content: `
-                <p><strong>خريطة كارنوف (K-Map):</strong> هي طريقة بصرية ومنهجية لتبسيط التعبيرات المنطقية للوصول إلى "أبسط صورة ممكنة" (Minimum Expression).</p>
+                <p>بوابة <strong>OR</strong> تنفذ عملية (الفصل المنطقي - Logical Disjunction).</p>
                 <ul>
-                    <li>تتكون الخريطة من <strong>خلايا (Cells)</strong>، حيث تمثل كل خلية احتمالاً من احتمالات جدول الحقيقة (Truth Table).</li>
-                    <li>عدد الخلايا يساوي $2^n$ حيث $n$ هو عدد المتغيرات (مثلاً 3 متغيرات = 8 خلايا).</li>
+                    <li>تُنتج <strong>مخرجاً عالياً (1)</strong> عندما يكون <strong>أي مدخل</strong> (أو كلاهما) عالياً (1).</li>
+                    <li>تُنتج <strong>مخرجاً منخفضاً (0)</strong> فقط عندما تكون <strong>كل المداخل منخفضة (0)</strong>.</li>
                 </ul>
+                <div class="example-box">
+                    <strong>المعادلة:</strong> <span style="font-family: monospace;">X = A + B</span>
+                </div>
             `,
             content_en: `
-                <p><strong>Karnaugh Map (K-Map):</strong> is a systematic visual method used for simplifying Boolean expressions to their minimum form.</p>
+                <p>The <strong>OR gate</strong> is a digital logic that implements logical disjunction.</p>
                 <ul>
-                    <li>The map consists of <strong>cells</strong>, where each cell represents a possible combination from a truth table.</li>
-                    <li>The number of cells is $2^n$, where $n$ is the number of variables (e.g., 3 variables = 8 cells).</li>
+                    <li>It produces a <strong>HIGH output (1)</strong> when <strong>ANY one</strong> of the inputs is high.</li>
+                    <li>It produces a <strong>LOW output (0)</strong> only when <strong>ALL</strong> the inputs are low.</li>
                 </ul>
+                <div class="example-box">
+                    <strong>Equation:</strong> <span style="font-family: monospace;">X = A + B</span>
+                </div>
             `
         },
         {
-            title: "6. قاعدة التجاور (Cell Adjacency)",
-            title_en: "6. Cell Adjacency",
-            badge: "قواعد كارنوف",
-            badge_en: "K-Map Rules",
+            title: "3. بوابة (و - AND)",
+            title_en: "3. AND Gate",
+            badge: "البوابات الأساسية",
+            badge_en: "Basic Gates",
             content: `
-                <p>السر وراء قدرة خريطة كارنوف على التبسيط يكمن في قاعدة <strong>التجاور (Adjacency)</strong>.</p>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>💡 القاعدة الذهبية:</strong><br>
-                    أي خليتين متجاورتين أفقياً أو رأسياً في خريطة كارنوف تختلفان عن بعضهما في <strong>متغير واحد فقط (One Variable)</strong>.
+                <p>بوابة <strong>AND</strong> تنفذ عملية (الضرب المنطقي).</p>
+                <div class="method-box" style="border-inline-start-color: var(--accent);">
+                    تُنتج <strong>مخرجاً عالياً (1)</strong> فقط وحصرياً عندما تكون <strong>جميع المداخل عالية (1)</strong>. بخلاف ذلك، يكون المخرج منخفضاً (0).
                 </div>
-                <p>بفضل هذه القاعدة، عندما نجمع خليتين متجاورتين تحتويان على القيمة (1)، يتم <strong>حذف</strong> المتغير الذي تتغير قيمته، ونحتفظ بالمتغيرات التي ظلت ثابتة، مما يؤدي إلى تبسيط المعادلة!</p>
+                <div class="example-box">
+                    <strong>المعادلة:</strong> <span style="font-family: monospace;">X = A . B</span>
+                </div>
             `,
             content_en: `
-                <p>The secret behind K-Map simplification lies in the rule of <strong>Adjacency</strong>.</p>
-                <div class="method-box" style="border-inline-start-color: var(--error);">
-                    <strong>💡 The Golden Rule:</strong><br>
-                    Adjacent cells (horizontally or vertically) on a Karnaugh map differ from each other by <strong>exactly ONE variable</strong>.
+                <p>The <strong>AND gate</strong> implements logical conjunction.</p>
+                <div class="method-box" style="border-inline-start-color: var(--accent);">
+                    It produces a <strong>HIGH output (1)</strong> ONLY when <strong>ALL</strong> the inputs are high. Otherwise, the output is low (0).
                 </div>
-                <p>Because of this rule, when we group adjacent cells containing 1s, the variable that changes its state is <strong>eliminated</strong>, while the constant variables are kept. This directly simplifies the expression!</p>
+                <div class="example-box">
+                    <strong>Equation:</strong> <span style="font-family: monospace;">X = A . B</span>
+                </div>
             `
         },
         {
-            title: "7. أداة التقييم المنطقي 🧮",
-            title_en: "7. Logic Evaluator Tool 🧮",
+            title: "4. بوابة (النفي - NOT)",
+            title_en: "4. NOT Gate (Inverter)",
+            badge: "البوابات الأساسية",
+            badge_en: "Basic Gates",
+            content: `
+                <p>بوابة <strong>NOT</strong> تسمى أيضاً بـ <strong>العاكس (Inverter)</strong>.</p>
+                <ul>
+                    <li>تُنتج مخرجاً عالياً (1) عندما يكون المدخل منخفضاً (0).</li>
+                    <li>تُنتج مخرجاً منخفضاً (0) عندما يكون المدخل عالياً (1).</li>
+                </ul>
+                <div class="example-box">
+                    <strong>المعادلة:</strong> <span style="font-family: monospace;">Y = A'</span> (أو <span style="font-family: monospace;">$\\overline{A}$</span>)
+                </div>
+            `,
+            content_en: `
+                <p>The <strong>NOT gate</strong> is also called an <strong>inverter</strong>.</p>
+                <ul>
+                    <li>It produces a HIGH output (1) when the input is low (0).</li>
+                    <li>It produces a LOW output (0) when the input is high (1).</li>
+                </ul>
+                <div class="example-box">
+                    <strong>Equation:</strong> <span style="font-family: monospace;">Y = A'</span> (or <span style="font-family: monospace;">$\\overline{A}$</span>)
+                </div>
+            `
+        },
+        {
+            title: "5. البوابات الشاملة (Universal)",
+            title_en: "5. Universal Gates",
+            badge: "البوابات الشاملة",
+            badge_en: "Universal Gates",
+            content: `
+                <p><strong>البوابة الشاملة (Universal Gate)</strong> هي البوابة التي يمكن من خلالها تصميم وتنفيذ <strong>أي دالة منطقية</strong> (Boolean function) دون الحاجة لاستخدام أي نوع آخر من البوابات.</p>
+                <p>يوجد نوعان من البوابات الشاملة:</p>
+                <ol>
+                    <li><strong>بوابة NAND</strong></li>
+                    <li><strong>بوابة NOR</strong></li>
+                </ol>
+            `,
+            content_en: `
+                <p>A <strong>Universal Gate</strong> is a gate which can implement <strong>any Boolean function</strong> without needing to use any other gate type.</p>
+                <p>There are two types of Universal Gates:</p>
+                <ol>
+                    <li><strong>NAND Gate</strong></li>
+                    <li><strong>NOR Gate</strong></li>
+                </ol>
+            `
+        },
+        {
+            title: "6. بوابات NAND و NOR",
+            title_en: "6. NAND & NOR Gates",
+            badge: "البوابات الشاملة",
+            badge_en: "Universal Gates",
+            content: `
+                <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
+                    <div style="flex:1; min-width:250px; border:1px solid var(--border); padding:15px; border-radius:10px; background:rgba(0,0,0,0.02);">
+                        <h3 style="color:var(--primary); text-align:center;">بوابة NAND</h3>
+                        <p>هي عبارة عن بوابة AND متبوعة بـ NOT.</p>
+                        <p style="text-align:center; font-size:1.2rem; font-family:monospace;">Q = (A . B)'</p>
+                    </div>
+                    <div style="flex:1; min-width:250px; border:1px solid var(--accent); padding:15px; border-radius:10px; background:rgba(14, 165, 233, 0.05);">
+                        <h3 style="color:var(--accent); text-align:center;">بوابة NOR</h3>
+                        <p>هي عبارة عن بوابة OR متبوعة بـ NOT.</p>
+                        <p style="text-align:center; font-size:1.2rem; font-family:monospace;">X = (A + B)'</p>
+                    </div>
+                </div>
+            `,
+            content_en: `
+                <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
+                    <div style="flex:1; min-width:250px; border:1px solid var(--border); padding:15px; border-radius:10px; background:rgba(0,0,0,0.02);">
+                        <h3 style="color:var(--primary); text-align:center;">NAND Gate</h3>
+                        <p>NAND gate is an AND gate followed by a NOT gate.</p>
+                        <p style="text-align:center; font-size:1.2rem; font-family:monospace;">Q = (A . B)'</p>
+                    </div>
+                    <div style="flex:1; min-width:250px; border:1px solid var(--accent); padding:15px; border-radius:10px; background:rgba(14, 165, 233, 0.05);">
+                        <h3 style="color:var(--accent); text-align:center;">NOR Gate</h3>
+                        <p>NOR gate is an OR gate followed by a NOT gate.</p>
+                        <p style="text-align:center; font-size:1.2rem; font-family:monospace;">X = (A + B)'</p>
+                    </div>
+                </div>
+            `
+        },
+        {
+            title: "7. بوابة (XOR الحصرية)",
+            title_en: "7. Exclusive-OR (XOR) Gate",
+            badge: "بوابات متقدمة",
+            badge_en: "Advanced Gates",
+            content: `
+                <p>بوابة <strong>Exclusive-OR</strong> (وتُعرف اختصاراً بـ XOR).</p>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <ul>
+                        <li>تُعطي <strong>مخرجاً منخفضاً (0)</strong> عندما تكون المداخل <strong>متشابهة</strong> (مثلاً 0,0 أو 1,1).</li>
+                        <li>تُعطي <strong>مخرجاً عالياً (1)</strong> عندما تكون المداخل <strong>مختلفة</strong> (مثلاً 0,1 أو 1,0).</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <strong>المعادلة:</strong><br>
+                    <span style="font-family: monospace;">Y = (A ⊕ B) = A' . B + A . B'</span>
+                </div>
+            `,
+            content_en: `
+                <p>The <strong>Exclusive-OR (XOR) gate</strong>.</p>
+                <div class="method-box" style="border-inline-start-color: var(--error);">
+                    <ul>
+                        <li>It gives a <strong>LOW output (0)</strong> when both inputs are the <strong>same</strong> (e.g., 0,0 or 1,1).</li>
+                        <li>It gives a <strong>HIGH output (1)</strong> when the inputs are <strong>different</strong> (e.g., 0,1 or 1,0).</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <strong>Equation:</strong><br>
+                    <span style="font-family: monospace;">Y = (A ⊕ B) = A' . B + A . B'</span>
+                </div>
+            `
+        },
+        {
+            title: "8. محاكي البوابات التفاعلي 🧮",
+            title_en: "8. Logic Gate Simulator 🧮",
             badge: "أداة ذكية",
             badge_en: "Smart Tool",
             isToolSlide: true,
             content: `
-                <p id="toolIntro">قم بتغيير قيم المتغيرات A, B, C ولاحظ كيف تتغير نواتج بوابات الجمع والضرب المنطقي!</p>
+                <p id="toolIntro">اختر البوابة المنطقية من القائمة، ثم قم بتغيير قيم المداخل (A و B) لتلاحظ كيف يتغير الخرج بناءً على قواعد البوابة المحددة.</p>
                 <div class="converter-box" dir="ltr" style="text-align:left;">
-                    <div style="display:flex; gap:15px; margin-bottom:15px; align-items:center;">
-                        <label style="color:var(--primary); font-weight:bold;">A: <select id="valA" class="logic-sel"><option>0</option><option>1</option></select></label>
-                        <label style="color:var(--primary); font-weight:bold;">B: <select id="valB" class="logic-sel"><option>0</option><option>1</option></select></label>
-                        <label style="color:var(--primary); font-weight:bold;">C: <select id="valC" class="logic-sel"><option>0</option><option>1</option></select></label>
-                        <button onclick="window.calcLogic()" class="btn-check">Evaluate (احسب)</button>
+                    <div style="display:flex; gap:15px; margin-bottom:15px; align-items:center; flex-wrap:wrap;">
+                        <label style="color:var(--primary); font-weight:bold;">Gate: 
+                            <select id="gateType" class="logic-sel" onchange="window.calcGate()">
+                                <option value="AND">AND (و)</option>
+                                <option value="OR">OR (أو)</option>
+                                <option value="NOT">NOT (نفي)</option>
+                                <option value="NAND">NAND (شاملة)</option>
+                                <option value="NOR">NOR (شاملة)</option>
+                                <option value="XOR">XOR (حصرية)</option>
+                            </select>
+                        </label>
+                        <label style="color:var(--primary); font-weight:bold;">A: 
+                            <select id="gateA" class="logic-sel" onchange="window.calcGate()"><option>0</option><option>1</option></select>
+                        </label>
+                        <label style="color:var(--primary); font-weight:bold;" id="lblB">B: 
+                            <select id="gateB" class="logic-sel" onchange="window.calcGate()"><option>0</option><option>1</option></select>
+                        </label>
                     </div>
-                    <div id="logicResult" style="font-family:monospace; font-size:1.1rem; color:var(--text); background:rgba(0,0,0,0.05); padding:15px; border-radius:8px; display:none;">
-                        </div>
+                    <div id="gateResult" style="font-family:monospace; font-size:1.5rem; color:var(--text); background:rgba(0,0,0,0.05); padding:15px; border-radius:8px; text-align:center; border: 2px dashed var(--accent);">
+                        Output (الخرج) = <span id="outX" style="color:var(--error); font-weight:bold; font-size: 2rem;">0</span>
+                    </div>
                 </div>
             `,
             content_en: `
-                <p id="toolIntro">Change the values of variables A, B, and C to observe how the outputs of Boolean Addition and Multiplication change!</p>
+                <p id="toolIntro">Select a logic gate from the list, then change the input values (A and B) to observe how the output behaves according to the gate's rules.</p>
                 <div class="converter-box" dir="ltr" style="text-align:left;">
-                    <div style="display:flex; gap:15px; margin-bottom:15px; align-items:center;">
-                        <label style="color:var(--primary); font-weight:bold;">A: <select id="valA" class="logic-sel"><option>0</option><option>1</option></select></label>
-                        <label style="color:var(--primary); font-weight:bold;">B: <select id="valB" class="logic-sel"><option>0</option><option>1</option></select></label>
-                        <label style="color:var(--primary); font-weight:bold;">C: <select id="valC" class="logic-sel"><option>0</option><option>1</option></select></label>
-                        <button onclick="window.calcLogic()" class="btn-check">Evaluate</button>
+                    <div style="display:flex; gap:15px; margin-bottom:15px; align-items:center; flex-wrap:wrap;">
+                        <label style="color:var(--primary); font-weight:bold;">Gate: 
+                            <select id="gateType" class="logic-sel" onchange="window.calcGate()">
+                                <option value="AND">AND</option>
+                                <option value="OR">OR</option>
+                                <option value="NOT">NOT</option>
+                                <option value="NAND">NAND</option>
+                                <option value="NOR">NOR</option>
+                                <option value="XOR">XOR</option>
+                            </select>
+                        </label>
+                        <label style="color:var(--primary); font-weight:bold;">A: 
+                            <select id="gateA" class="logic-sel" onchange="window.calcGate()"><option>0</option><option>1</option></select>
+                        </label>
+                        <label style="color:var(--primary); font-weight:bold;" id="lblB">B: 
+                            <select id="gateB" class="logic-sel" onchange="window.calcGate()"><option>0</option><option>1</option></select>
+                        </label>
                     </div>
-                    <div id="logicResult" style="font-family:monospace; font-size:1.1rem; color:var(--text); background:rgba(0,0,0,0.05); padding:15px; border-radius:8px; display:none;">
-                        </div>
+                    <div id="gateResult" style="font-family:monospace; font-size:1.5rem; color:var(--text); background:rgba(0,0,0,0.05); padding:15px; border-radius:8px; text-align:center; border: 2px dashed var(--accent);">
+                        Output = <span id="outX" style="color:var(--error); font-weight:bold; font-size: 2rem;">0</span>
+                    </div>
                 </div>
             `
         },
         {
-            title: "8. أسئلة امتحانات (Quiz) 🎓",
-            title_en: "8. Exam Quiz 🎓",
+            title: "9. أسئلة سريعة (Practice) 🎓",
+            title_en: "9. Quick Practice 🎓",
             badge: "اختبر نفسك",
             badge_en: "Test Yourself",
             isQuizSlide: true,
-            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">هذه الأسئلة مأخوذة مباشرة من امتحانات (Quiz) المحاضرة الثالثة. فكر فيها قبل إظهار الإجابة!</p>`,
-            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">These questions are taken directly from the Lecture 3 Quiz. Think before revealing the answers!</p>`
+            content: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">راجع المفاهيم الأساسية من خلال هذه الأسئلة المباشرة المستمدة من المحاضرة.</p>`,
+            content_en: `<p style="margin-bottom: 20px; font-weight: bold; color: var(--primary);">Review the core concepts using these direct questions from the lecture.</p>`
         }
     ];
 
     // ==========================================
-    // 2. DATA: Quiz (Bilingual) based on PDF
+    // 2. DATA: Quiz (Bilingual)
     // ==========================================
     const solvedQuizData = [
         { 
-            q_en: "A Boolean expression that is in standard SOP form...", 
-            a_en: "Has every variable in the domain in every term. (يحتوي على كل متغيرات المجال في كل حد من الحدود)",
-            a_ar: "Has every variable in the domain in every term. (يحتوي على كل متغيرات المجال في كل حد من الحدود)"
+            q_en: "Which gates are considered 'Universal Gates'?", 
+            a_en: "NAND and NOR gates. (They can implement any Boolean function).",
+            a_ar: "بوابات NAND و NOR. (لأنه يمكن من خلالهما تنفيذ أي دالة منطقية)."
         },
         { 
-            q_en: "Adjacent cells on a Karnaugh map differ from each other by...", 
-            a_en: "One variable. (متغير واحد فقط)",
-            a_ar: "One variable. (متغير واحد فقط)"
+            q_en: "If the inputs to an XOR gate are A=1 and B=1, what is the output?", 
+            a_en: "Output = 0. (XOR produces a low output when inputs are the same).",
+            a_ar: "الخرج = 0. (بوابة XOR تعطي 0 عندما تكون المداخل متشابهة)."
         },
         { 
-            q_en: "Determine the values of A, B, and C that make the sum term of the expression A' + B + C' = 0", 
-            a_en: "A=1, B=0, C=1",
-            a_ar: "A=1, B=0, C=1"
-        },
-        { 
-            q_en: "What are the values of A, B and C if the product term of A . B' . C' = 1 ?", 
-            a_en: "A=1, B=0, C=0",
-            a_ar: "A=1, B=0, C=0"
+            q_en: "Which gate represents the Boolean expression Q = (A.B)' ?", 
+            a_en: "NAND Gate.",
+            a_ar: "بوابة NAND."
         }
     ];
 
@@ -559,6 +619,8 @@
 
         renderList();
         loadSlide(0);
+        
+        if(window.calcGate) window.calcGate();
     }
 
     function renderList() {
@@ -599,6 +661,8 @@
 
         updateActiveItem(index);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        if(s.isToolSlide) window.calcGate();
     }
 
     function updateActiveItem(index) {
@@ -649,8 +713,8 @@
         dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
         dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
 
-        document.getElementById('pageTitle').innerText = isAr ? "الأنظمة الرقمية | L3 👑" : "Number Systems | L3 👑";
-        document.getElementById('pageSubTitle').innerText = isAr ? "التبسيط والجبر المنطقي (Simplifications)" : "Boolean Algebra & Simplifications";
+        document.getElementById('pageTitle').innerText = isAr ? "الأنظمة الرقمية | البوابات 👑" : "Number Systems | Gates 👑";
+        document.getElementById('pageSubTitle').innerText = isAr ? "د. سيمون عزت | Dr. Simon Ezzat" : "Dr. Simon Ezzat | د. سيمون عزت";
         
         dom.search.placeholder = isAr ? "ابحث في الشرح..." : "Search in slides...";
         document.getElementById('searchIcon').style.right = isAr ? "15px" : "auto";
@@ -666,33 +730,38 @@
         loadSlide(idx);
     }
 
-    // --- Logic Tool ---
-    window.calcLogic = function() {
-        const a = parseInt(document.getElementById('valA').value);
-        const b = parseInt(document.getElementById('valB').value);
-        const c = parseInt(document.getElementById('valC').value);
+    // --- Logic Gate Simulator Tool ---
+    window.calcGate = function() {
+        const typeSelect = document.getElementById('gateType');
+        if(!typeSelect) return; 
         
-        const andRes = (a && b && c) ? 1 : 0;
-        const orRes = (a || b || c) ? 1 : 0;
-        const notA = a ? 0 : 1;
-        const notB = b ? 0 : 1;
-        const notC = c ? 0 : 1;
+        const type = typeSelect.value;
+        const a = parseInt(document.getElementById('gateA').value);
+        const bSel = document.getElementById('gateB');
+        const lblB = document.getElementById('lblB');
+        let b = parseInt(bSel.value);
+        
+        if(type === 'NOT') {
+            bSel.style.display = 'none';
+            lblB.style.display = 'none';
+        } else {
+            bSel.style.display = 'inline-block';
+            lblB.style.display = 'inline-block';
+        }
 
-        // A' + B + C'
-        const customSum = (notA || b || notC) ? 1 : 0;
-        // A . B' . C'
-        const customProd = (a && notB && notC) ? 1 : 0;
+        let res = 0;
+        switch(type) {
+            case 'AND': res = (a && b) ? 1 : 0; break;
+            case 'OR': res = (a || b) ? 1 : 0; break;
+            case 'NOT': res = a ? 0 : 1; break;
+            case 'NAND': res = !(a && b) ? 1 : 0; break;
+            case 'NOR': res = !(a || b) ? 1 : 0; break;
+            case 'XOR': res = (a !== b) ? 1 : 0; break;
+        }
 
-        const resBox = document.getElementById('logicResult');
-        resBox.style.display = 'block';
-        resBox.innerHTML = `
-            <strong>Inputs:</strong> A=${a}, B=${b}, C=${c} <hr style="margin:10px 0; border-color:var(--border);">
-            <div style="margin-bottom:8px;"><strong>A AND B AND C</strong> (Product Term) = <span style="color:${andRes ? 'var(--success)' : 'var(--error)'}">${andRes}</span></div>
-            <div style="margin-bottom:8px;"><strong>A OR B OR C</strong> (Sum Term) = <span style="color:${orRes ? 'var(--success)' : 'var(--error)'}">${orRes}</span></div>
-            <br>
-            <div style="margin-bottom:8px;"><strong>A' + B + C'</strong> = <span style="color:${customSum ? 'var(--success)' : 'var(--error)'}">${customSum}</span></div>
-            <div style="margin-bottom:8px;"><strong>A . B' . C'</strong> = <span style="color:${customProd ? 'var(--success)' : 'var(--error)'}">${customProd}</span></div>
-        `;
+        const outX = document.getElementById('outX');
+        outX.innerText = res;
+        outX.style.color = res ? 'var(--success)' : 'var(--error)';
     };
 
     window.move = function(step) {
