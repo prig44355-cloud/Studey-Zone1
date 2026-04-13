@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Master | L11</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <style>
+        /* ألوان مخصصة للمحاضرة الحادية عشرة (Regression Theme - Teal & Orange) */
+        :root {
+            --bg-gradient-light: #f0fdfa;
+            --glass-bg-light: rgba(255, 255, 255, 0.9);
+            --glass-border-light: rgba(255, 255, 255, 0.7);
+            --text-main-light: #042f2e;
+            --primary-light: #0d9488; /* أزرق مخضر (Teal) */
+            --accent-light: #f97316; /* برتقالي (Orange) */
+            --header-bg-light: #ffffff;
+
+            --bg-gradient-dark: #042f2e;
+            --glass-bg-dark: rgba(13, 148, 136, 0.15);
+            --glass-border-dark: rgba(20, 184, 166, 0.2);
+            --text-main-dark: #ccfbf1;
+            --primary-dark: #2dd4bf;
+            --accent-dark: #fdba74;
+            --header-bg-dark: #042f2e;
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(13, 148, 136, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        input, textarea, code, pre { -webkit-user-select: text !important; user-select: text !important; }
+
+        body {
+            font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text);
+            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+        header {
+            height: 80px; background: var(--header-bg); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 25px; z-index: 1000; box-shadow: var(--shadow);
+            flex-shrink: 0; 
+        }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        
+        .cta-back { 
+            display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; 
+            font-weight: bold; color: white; background: var(--primary); transition: 1s; 
+            box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; 
+            margin-right: 10px;
+        }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: var(--text-main-dark); }
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 20px; align-items: center; }
+        .lang-button {
+            height: 50px; width: 150px; border: none; border-radius: 10px; cursor: pointer;
+            position: relative; overflow: hidden; transition: all 0.5s ease-in-out;
+            background: transparent; font-family: 'Cairo', sans-serif;
+        }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after {
+            content: attr(data-hover); height: 50px; width: 150px; background-color: var(--primary);
+            color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+        .type1::before {
+            content: attr(data-main); height: 50px; width: 150px; background-color: var(--glass);
+            color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px;
+        }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .info-btn {
+            background: rgba(13, 148, 136, 0.1); color: var(--accent); border: 1px solid var(--accent);
+            padding: 5px 12px; font-size: 1.2rem; border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .info-btn:hover { background: var(--accent); color: white; transform: rotate(15deg); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; 
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--header-bg); padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 500px; width: 90%;
+            border: 2px solid var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text);
+        }
+        .modal-content h2 { margin-bottom: 15px; color: var(--primary); }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .btn-icon { background: var(--primary); color: white; padding: 10px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-family: 'Cairo'; font-size: 1.1rem; }
+        .btn-icon:hover { background: var(--accent); }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        
+        aside {
+            width: 340px; max-width: 100%; background: var(--glass); border-inline-end: 1px solid var(--border);
+            display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900;
+            transition: all 0.4s;
+        }
+        .search-area { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; height: 100px; flex-shrink: 0; }
+        .grid { height: 100%; width: 100%; background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px), linear-gradient(to bottom, #0f0f10 1px, transparent 1px); background-size: 1rem 1rem; position: absolute; z-index: -1; filter: blur(1px); opacity: 0.2; }
+        #poda { display: flex; align-items: center; justify-content: center; position: relative; transform: scale(0.9); transform-origin: center; width: 100%; max-width: 280px; }
+        .search-input-styled { background-color: #010201; border: none; width: 100%; height: 56px; border-radius: 10px; color: white; padding-inline: 59px; font-size: 14px; font-family: 'Cairo'; }
+        .search-input-styled:focus { outline: none; }
+        .white, .border, .darkBorderBg, .glow { max-height: 70px; max-width: 100%; height: 100%; width: 100%; position: absolute; overflow: hidden; z-index: -1; border-radius: 12px; filter: blur(3px); }
+        .white { max-height: 63px; width: 98%; border-radius: 10px; filter: blur(2px); }
+        .white::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(83deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.4); background-image: conic-gradient(rgba(0,0,0,0) 0%, #2dd4bf, rgba(0,0,0,0) 8%, rgba(0,0,0,0) 50%, #f97316, rgba(0,0,0,0) 58%); transition: all 2s; }
+        .border { max-height: 59px; width: 96%; border-radius: 11px; filter: blur(0.5px); }
+        .border::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(70deg); position: absolute; width: 600px; height: 600px; filter: brightness(1.3); background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#1c191c, var(--primary) 5%, #1c191c 14%, #1c191c 50%, var(--accent) 60%, #1c191c 64%); transition: all 2s; }
+        .darkBorderBg { max-height: 65px; width: 99%; }
+        .darkBorderBg::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(82deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(rgba(0,0,0,0), var(--primary), rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, var(--accent), rgba(0,0,0,0) 60%); transition: all 2s; }
+        #poda:hover > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(262deg); }
+        #poda:hover > .glow::before { transform: translate(-50%, -50%) rotate(240deg); }
+        #poda:hover > .white::before { transform: translate(-50%, -50%) rotate(263deg); }
+        #poda:hover > .border::before { transform: translate(-50%, -50%) rotate(250deg); }
+        #poda:focus-within > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(442deg); transition: all 4s; }
+        #poda:focus-within > .glow::before { transform: translate(-50%, -50%) rotate(420deg); transition: all 4s; }
+        #poda:focus-within > .white::before { transform: translate(-50%, -50%) rotate(443deg); transition: all 4s; }
+        #poda:focus-within > .border::before { transform: translate(-50%, -50%) rotate(430deg); transition: all 4s; }
+        .glow { overflow: hidden; filter: blur(30px); opacity: 0.4; max-height: 130px; width: 110%; }
+        .glow:before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg); position: absolute; width: 999px; height: 999px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#000, var(--primary) 5%, #000 38%, #000 50%, var(--accent) 60%, #000 87%); transition: all 2s; }
+        #filter-icon { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; justify-content: center; z-index: 2; max-height: 40px; max-width: 38px; height: 100%; width: 100%; isolation: isolate; overflow: hidden; border-radius: 10px; background: linear-gradient(180deg, #161329, black, #1d1b4b); border: 1px solid transparent; }
+        html[dir="ltr"] #filter-icon { right: auto; left: 8px; }
+        .filterBorder { height: 42px; width: 40px; position: absolute; overflow: hidden; top: 7px; right: 7px; border-radius: 10px; }
+        html[dir="ltr"] .filterBorder { right: auto; left: 7px; }
+        .filterBorder::before { content: ""; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.35); background-image: conic-gradient(rgba(0,0,0,0), #3d3a4f, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 50%, #3d3a4f, rgba(0,0,0,0) 100%); animation: rotate 4s linear infinite; }
+        #main-search { position: relative; width: 100%; }
+        #search-icon { position: absolute; left: 20px; top: 15px; }
+        html[dir="ltr"] #search-icon { left: auto; right: 20px; }
+        @keyframes rotate { 100% { transform: translate(-50%, -50%) rotate(450deg); } }
+        .slide-list { 
+            list-style: none; overflow-y: auto; flex: 1; padding: 10px; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .list-item { 
+            padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+        
+        .slide-check {
+            width: 18px; height: 18px; margin-inline-end: 10px; cursor: pointer; accent-color: var(--accent);
+            z-index: 2; flex-shrink: 0;
+        }
+
+        main { 
+            flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; 
+            scroll-behavior: smooth; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card { background: var(--glass); width: 100%; max-width: 850px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 40px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(13, 148, 136, 0.1); color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; margin-bottom: 25px; line-height: 1.5; color: var(--primary); }
+        .content { font-size: 1.2rem; line-height: 1.9; margin-bottom: 30px; color: var(--text); }
+        
+        /* Code Box */
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 12px; overflow-x: auto; direction: ltr; text-align: left; font-family: 'Fira Code', monospace; border: 1px solid var(--border); margin: 20px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); max-width: 100%; white-space: pre-wrap; word-break: break-word;}
+        code { background: rgba(249, 115, 22, 0.1); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code'; color: var(--accent); font-weight: bold; }
+
+        .info-box-general {
+            background: rgba(13, 148, 136, 0.08); border-inline-start: 4px solid var(--primary);
+            padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 1rem;
+            color: var(--text); display: flex; gap: 10px; align-items: start;
+        }
+        .info-box-icon { font-size: 1.5rem; }
+
+        .section-box { margin-top: 20px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
+        .section-header { background: rgba(255,255,255,0.03); padding: 18px 25px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-content { display: none; padding: 25px; border-top: 1px solid var(--border); }
+        .section-box.open .section-content { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Compiler --- */
+        .compiler-container { display: none; margin-top: 20px; direction: ltr; width: 100%; }
+        .compiler-box { background: #1e1e1e; border-radius: 16px; padding: 20px; border: 2px solid var(--primary); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; overflow-x: hidden; }
+        .compiler-header { color: var(--accent); font-family: 'Fira Code'; margin-bottom: 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        .syntax-hints {
+            background: #2d2d2d; color: #aaa; padding: 10px; margin-bottom: 10px; border-radius: 8px;
+            font-size: 0.85rem; font-family: 'Cairo'; border-left: 3px solid #f97316;
+            line-height: 1.6;
+        }
+        textarea#code-input { width: 100%; height: 300px; background: #2d2d2d; color: #f8f8f2; border: 1px solid #444; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 16px; resize: vertical; max-width: 100%; box-sizing: border-box; }
+        .run-btn { background: var(--accent); color: #fff; border: none; padding: 12px 30px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; font-family: 'Fira Code'; font-size: 1rem; width: 100%; transition: 0.3s; }
+        .run-btn:hover { background: var(--primary); transform: translateY(-2px); }
+        #output-area { background: #000; color: #0f0; padding: 15px; margin-top: 15px; border-radius: 8px; min-height: 100px; font-family: 'Fira Code'; white-space: pre-wrap; word-break: break-all; border-left: 5px solid var(--accent); max-width: 100%; overflow-x: auto; }
+        .error-output { color: #ff5555 !important; }
+        
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .styled-btn { position: relative; width: 11em; max-width: 45%; height: 4em; outline: none; transition: 0.1s; background-color: transparent; border: none; font-size: 13px; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(13, 148, 136, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; }
+        .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { animation: 0.2s ease-in-out 0.55s both greenLight8; --color: var(--accent); }
+        @keyframes greenLight8 { from { } to { box-shadow: inset 0px 0px 32px var(--accent); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        .bb8-toggle { --toggle-size: 6px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; flex-shrink: 0; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); color: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; padding: 5px; }
+        
+        /* التجاوب (Media Queries) */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; } 
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; text-align: center; flex: 1; margin: 0 10px; justify-content: center;}
+            .controls { gap: 10px; } 
+            .lang-button { width: 100px; height: 40px; }
+            .type1::after, .type1::before { width: 100px; height: 40px; font-size: 0.9rem; }
+            .bb8-toggle { --toggle-size: 4px; display: inline-block !important; }
+            
+            /* تعديل الـ Sidebar ليتجاوب مع LTR و RTL */
+            aside { position: fixed; height: calc(100vh - 80px); top: 80px; width: 280px; max-width: 85%; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+            html[dir="rtl"] aside { right: -320px; left: auto; border-left: 1px solid var(--border); }
+            html[dir="rtl"] aside.open { right: 0; }
+            html[dir="ltr"] aside { left: -320px; right: auto; border-right: 1px solid var(--border); }
+            html[dir="ltr"] aside.open { left: 0; }
+            
+            .menu-btn { display: block; }
+            #poda { transform: scale(0.85); }
+            main { padding: 15px; } 
+            .card { padding: 25px; margin-bottom: 20px; }
+            h1 { font-size: 1.4rem; } 
+            .content { font-size: 1rem; line-height: 1.7; }
+            .nav-actions { gap: 15px; flex-wrap: nowrap; } 
+            .styled-btn { font-size: 12px; max-width: 48%; }
+            .cta-back { display: none; }
+        }
+        @media (max-width: 480px) {
+            .header-title { display: none; } 
+            .header-title-container { justify-content: flex-start; }
+            .controls { flex: 1; justify-content: flex-end; } 
+            .styled-btn { width: 100%; max-width: 140px; font-size: 11px; }
+            .info-box-general { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="modal-overlay" id="infoModal" onclick="toggleInfo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">معلومات المادة</h2>
+            <p id="modalDesc">أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج.</p>
+            <button class="btn-icon" onclick="toggleInfo()" id="modalCloseBtn">إغلاق</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+
+            <button class="info-btn" onclick="toggleInfo()" title="معلومات عن المادة">ℹ</button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-brands fa-python" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">Python Master | L11</div>
+                <div class="header-subtitle">الانحدار (Regression)</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="الوضع الليلي">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                </div>
+                <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                </div>
+                <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div class="grid"></div>
+                <div id="poda">
+                    <div class="glow"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
+                    <div class="white"></div><div class="border"></div>
+                    <div id="main-search">
+                        <input placeholder="Search..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                        <div class="filterBorder"></div>
+                        <div id="filter-icon">🔍</div>
+                        <div id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" height="24" fill="none"><circle stroke="#b6a9b7" r="8" cy="11" cx="11"></circle><line stroke="#b6a9b7" y2="16.65" y1="22" x2="16.65" x1="22"></line></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">Intro</span>
+                <h1 id="slideHeader">...</h1>
+                
+                <div id="normalSlideContent">
+                    <div class="info-box-general">
+                        <span class="info-box-icon">🧩</span>
+                        <div id="generalInfoText">...</div>
+                    </div>
+
+                    <div class="content" id="slideHtml">...</div>
+                    <div class="section-box" onclick="toggleSection(this)">
+                        <div class="section-header">
+                            <span id="labelExpl">💡 الشرح المبسط</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="section-content" id="explText">...</div>
+                    </div>
+                </div>
+
+                <div class="compiler-container" id="compilerContainer">
+                    <div class="section-box open" style="margin-bottom: 20px;">
+                        <div class="section-header" style="background: rgba(13, 148, 136, 0.1);">
+                            👨‍💻 Python Code Lab
+                        </div>
+                        <div class="section-content" style="display: block;">
+                            <div class="compiler-box">
+                                <div class="compiler-header"><span>>_ Terminal</span><span>v3.x</span></div>
+                                <div class="syntax-hints" id="syntaxHints">
+                                    ⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                                    1. <strong>بيئة المتصفح:</strong> مكتبة `scikit-learn` لا تعمل بشكل مباشر داخل المتصفح هنا.<br>
+                                    2. <strong>البديل:</strong> لتطبيق نماذج الانحدار، يرجى استخدام بيئة احترافية مثل <a href="https://colab.research.google.com/" target="_blank" style="color:var(--primary);">Google Colab</a>.<br>
+                                    3. <strong>التدريب:</strong> يمكنك كتابة دوال يدوية هنا لحساب مقاييس مثل MAE أو MSE كتدريب برمجي.
+                                </div>
+                                <textarea id="code-input" placeholder="# Use Google Colab to run scikit-learn models. \n# Write some manual python math logic here..."></textarea>
+                                <button class="run-btn" onclick="runPython()">▶ RUN CODE</button>
+                                <div id="output-area">Output will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span id="txtPrev">السابق</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span id="txtNext">التالي</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // الشرائح بناءً على محتوى ملف: 09_ScikitLearn-Regression.pdf
+    const slides = [
+        {
+            title: "1. مقدمة في الانحدار (Regression)",
+            title_en: "1. Intro to Regression",
+            expl: "في المحاضرة اللي فاتت اتعلمنا (التصنيف) زي إننا نتوقع هل المريض سليم ولا مريض. الانحدار (Regression) بقى بنستخدمه عشان نتوقع أرقام، زي نتوقع سعر شقة بناءً على مساحتها وعدد الغرف.",
+            expl_en: "Last lecture we learned Classification (predicting categories like Sick/Healthy). Regression is used to predict continuous numbers, like predicting the price of a house based on its size.",
+            content: `<p><strong>الانحدار (Regression):</strong> هو أحد أنواع التعلم الخاضع للإشراف (Supervised Learning).</p>
+<p>بينما يُستخدم <strong>التصنيف (Classification)</strong> لتوقع فئات محددة، يُستخدم <strong>الانحدار</strong> لتوقع <strong>قيم رقمية مستمرة (Continuous Values)</strong>، مثل:</p>
+<ul>
+    <li>توقع أسعار المنازل.</li>
+    <li>توقع درجات الحرارة غداً.</li>
+    <li>توقع حجم المبيعات الشهر القادم.</li>
+</ul>`,
+            content_en: `<p><strong>Regression:</strong> is a type of Supervised Learning.</p>
+<p>While <strong>Classification</strong> is used to predict discrete categories, <strong>Regression</strong> is used to predict <strong>continuous numerical values</strong>, such as:</p>
+<ul>
+    <li>Predicting house prices.</li>
+    <li>Predicting tomorrow's temperature.</li>
+    <li>Predicting next month's sales volume.</li>
+</ul>`,
+            general_info: "الهدف في الانحدار هو إيجاد أفضل خط (أو منحنى) يمر بين نقاط البيانات ليمثل العلاقة بينها.",
+            general_info_en: "The goal in regression is to find the best-fitting line (or curve) through the data points."
+        },
+        {
+            title: "2. الانحدار الخطي (Linear Regression)",
+            title_en: "2. Linear Regression",
+            expl: "دي أبسط وأشهر خوارزمية. بتحاول ترسم خط مستقيم يمر في نص النقط بالظبط، عشان لما تديلها رقم جديد، تتوقع الرقم التاني من على الخط.",
+            expl_en: "The simplest and most popular algorithm. It tries to draw a straight line through the middle of the data points to make future predictions.",
+            content: `<p>خوارزمية <strong>الانحدار الخطي (Linear Regression)</strong> في Scikit-learn تُنفذ كالتالي:</p>
+<pre>from sklearn.linear_model import LinearRegression
+
+# 1. استدعاء النموذج
+reg = LinearRegression()
+
+# 2. تدريب النموذج
+reg.fit(X_train, y_train)
+
+# 3. استخدام النموذج للتنبؤ
+y_test_pred = reg.predict(X_test)</pre>`,
+            content_en: `<p>The <strong>Linear Regression</strong> algorithm in Scikit-learn is implemented as follows:</p>
+<pre>from sklearn.linear_model import LinearRegression
+
+# 1. Instantiate the model
+reg = LinearRegression()
+
+# 2. Train the model
+reg.fit(X_train, y_train)
+
+# 3. Predict using the model
+y_test_pred = reg.predict(X_test)</pre>`,
+            general_info: "الانحدار الخطي يفترض دائماً أن العلاقة بين المتغيرات هي علاقة خطية (طردية أو عكسية منتظمة).",
+            general_info_en: "Linear regression always assumes that the relationship between variables is strictly linear."
+        },
+        {
+            title: "3. مقاييس التقييم (Evaluation Metrics)",
+            title_en: "3. Evaluation Metrics",
+            expl: "مفيش هنا Confusion Matrix! هنا بنقيس الموديل غلط بكام درجة. مثلاً لو توقع سعر الشقة مليون وهي بمليون و١٠٠ ألف، يبقى الخطأ ١٠٠ ألف. بنحسب بقى متوسط الأخطاء دي كلها.",
+            expl_en: "No Confusion Matrix here! Instead, we measure how far off the prediction was from the real number. Then we average these errors.",
+            content: `<p>مقاييس التقييم المستخدمة لمسائل الانحدار تختلف عن التصنيف:</p>
+<ul>
+    <li><strong>MAE (Mean Absolute Error):</strong> متوسط الخطأ المطلق (الفرق بين التوقع والحقيقة).</li>
+    <li><strong>MSE (Mean Squared Error):</strong> متوسط الخطأ التربيعي (يربع الأخطاء لمعاقبة الأخطاء الكبيرة بشدة).</li>
+    <li><strong>R² (R-squared):</strong> نسبة التباين المفسر (كلما اقترب من 1.0 كان النموذج أفضل).</li>
+</ul>
+<pre>from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+
+r2 = r2_score(y_test, y_test_pred)
+mae = mean_absolute_error(y_test, y_test_pred)
+mse = mean_squared_error(y_test, y_test_pred)</pre>`,
+            content_en: `<p>Evaluation metrics for regression are different from classification:</p>
+<ul>
+    <li><strong>MAE (Mean Absolute Error):</strong> The average of absolute differences between predictions and actual values.</li>
+    <li><strong>MSE (Mean Squared Error):</strong> The average of squared errors (penalizes large errors heavily).</li>
+    <li><strong>R² (R-squared):</strong> Proportion of variance explained (closer to 1.0 is better).</li>
+</ul>
+<pre>from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+
+r2 = r2_score(y_test, y_test_pred)
+mae = mean_absolute_error(y_test, y_test_pred)
+mse = mean_squared_error(y_test, y_test_pred)</pre>`,
+            general_info: "نفضل استخدام MSE عندما نكون قلقين من وجود أخطاء ضخمة (Outliers) نريد تجنبها بشدة.",
+            general_info_en: "We prefer MSE when we want to heavily penalize and avoid large prediction errors (Outliers)."
+        },
+        {
+            title: "4. التحقق المتقاطع في الانحدار",
+            title_en: "4. CV in Regression",
+            expl: "زي ما عملنا في التصنيف بالظبط، نقدر نستخدم دالة التحقق المتقاطع (cross_val_score) عشان نجرب الموديل كذا مرة ونتأكد من دقته.",
+            expl_en: "Just like in classification, we use cross_val_score to test the model multiple times across different data folds to ensure robustness.",
+            content: `<p>التقييم باستخدام التحقق المتقاطع (Cross-Validation):</p>
+<pre>from sklearn.model_selection import cross_val_score
+
+reg = LinearRegression()
+
+# حساب R2 عبر 5 أجزاء
+r2_scores = cross_val_score(reg, X, y, cv=5, scoring='r2')
+
+# حساب MSE (ملاحظة: scikit-learn يرجعها بالسالب)
+mse_scores = cross_val_score(reg, X, y, cv=5, scoring='neg_mean_squared_error')</pre>`,
+            content_en: `<p>Evaluation with Cross-Validation:</p>
+<pre>from sklearn.model_selection import cross_val_score
+
+reg = LinearRegression()
+
+# Calculate R2 across 5 folds
+r2_scores = cross_val_score(reg, X, y, cv=5, scoring='r2')
+
+# Calculate MSE (Note: scikit-learn returns negative MSE)
+mse_scores = cross_val_score(reg, X, y, cv=5, scoring='neg_mean_squared_error')</pre>`,
+            general_info: "دالة cross_val_score ترجع دائماً المقياس بحيث يكون 'الرقم الأكبر هو الأفضل'، لذلك ترجع الخطأ (MSE) بقيمة سالبة.",
+            general_info_en: "cross_val_score always assumes 'higher is better', so it returns error metrics like MSE as negative values."
+        },
+        {
+            title: "5. الانحدار الحدودي (Polynomial Regression)",
+            title_en: "5. Polynomial Regression",
+            expl: "لو الداتا شكلها عامل زي حرف U أو منحنية، الخط المستقيم هيفشل تماماً. هنا لازم نستخدم معادلة فيها تربيع وتكعيب عشان الخط يتني ويمشي مع الداتا.",
+            expl_en: "If data looks like a U-shape or is curved, a straight line will fail miserably. We must use squared/cubed math equations to curve the line.",
+            content: `<p>ماذا لو لم تكن البيانات في شكل خط مستقيم (Non-linear)؟</p>
+<p>استخدام <strong>الانحدار الخطي البسيط</strong> مع بيانات منحنية سيؤدي إلى <strong>نقص التخصيص (Underfitting)</strong>.</p>
+<p>الحل هو <strong>الانحدار الحدودي (Polynomial Regression)</strong>، حيث نقوم بإضافة ميزات جديدة (Features) عبارة عن تربيع (x²) أو تكعيب (x³) للميزات الأصلية، مما يسمح للخط بالانحناء!</p>`,
+            content_en: `<p>What if the data is not a straight line (Non-linear)?</p>
+<p>Using <strong>simple Linear Regression</strong> on curved data will cause <strong>Underfitting</strong>.</p>
+<p>The solution is <strong>Polynomial Regression</strong>, where we add new features representing the square (x²) or cube (x³) of original features, allowing the line to curve!</p>`,
+            general_info: "لا توجد خوارزمية منفصلة باسم Polynomial Regression، بل نعدل البيانات أولاً ثم ندخلها لنفس خوارزمية الانحدار الخطي.",
+            general_info_en: "There is no separate 'Polynomial Regression' algorithm. We transform the data first, then feed it to standard Linear Regression."
+        },
+        {
+            title: "6. تطبيق PolynomialFeatures",
+            title_en: "6. Applying PolynomialFeatures",
+            expl: "ببساطة بنجيب دالة من المكتبة تاخد عمود الـ x، وتخلق جنبه عمود جديد اسمه x تربيع. وبعدين ندي الجدول الجديد للموديل العادي.",
+            expl_en: "We simply use a function to take column x, and generate a new column x-squared next to it. Then we feed this new table to the normal model.",
+            content: `<p>خطوات تحويل البيانات في Scikit-learn:</p>
+<pre>from sklearn.preprocessing import PolynomialFeatures
+
+# تحديد الدرجة 2 (أي إضافة x تربيع)
+poly_features = PolynomialFeatures(degree=2, include_bias=False)
+
+# تحويل البيانات الأصلية
+X_poly = poly_features.fit_transform(X)
+
+# الآن نستخدم الانحدار الخطي العادي
+lin_reg = LinearRegression()
+lin_reg.fit(X_poly, y)</pre>`,
+            content_en: `<p>Data transformation steps in Scikit-learn:</p>
+<pre>from sklearn.preprocessing import PolynomialFeatures
+
+# Set degree to 2 (add x-squared)
+poly_features = PolynomialFeatures(degree=2, include_bias=False)
+
+# Transform the original data
+X_poly = poly_features.fit_transform(X)
+
+# Now use standard Linear Regression
+lin_reg = LinearRegression()
+lin_reg.fit(X_poly, y)</pre>`,
+            general_info: "إذا زدت الدرجة (degree) بشكل كبير جداً (مثلاً degree=300)، سيحفظ النموذج البيانات ويصاب بفرط التخصيص (Overfitting).",
+            general_info_en: "If you set the degree too high (e.g., degree=300), the model will memorize the data leading to severe Overfitting."
+        },
+        {
+            title: "7. مشكلة فرط التخصيص والتنظيم",
+            title_en: "7. Overfitting & Regularization",
+            expl: "الموديل لو بقى ذكي زيادة عن اللزوم (معادلاته معقدة)، بيمشي ورا كل نقطة شاذة في الداتا ويرسم خط متعرج جداً. الحل؟ نربط أوزانه عشان نهديه شوية (Regularization).",
+            expl_en: "If the model gets too complex, it aggressively follows every single outlier creating a crazy zigzag line. Solution? Constrain its weights (Regularization).",
+            content: `<p>لتجنب <strong>فرط التخصيص (Overfitting)</strong>، نحتاج إلى تبسيط النموذج. تقييد النموذج لجعله أبسط يُسمى <strong>التنظيم (Regularization)</strong>.</p>
+<p>بالنسبة للانحدار، يتم تحقيق التنظيم عن طريق إجبار "الأوزان" (Weights/Coefficients) الخاصة بالمعادلة على أن تكون صغيرة جداً.</p>
+<p>يوجد نوعان مشهوران للانحدار المُنَظَّم:</p>
+<ul>
+    <li>Ridge Regression</li>
+    <li>Lasso Regression</li>
+</ul>`,
+            content_en: `<p>To avoid <strong>Overfitting</strong>, we need to simplify the model. Constraining a model to make it simpler is called <strong>Regularization</strong>.</p>
+<p>For a regression model, regularization is typically achieved by constraining the "weights" (coefficients) of the model to be as small as possible.</p>
+<p>There are two famous regularized regression models:</p>
+<ul>
+    <li>Ridge Regression</li>
+    <li>Lasso Regression</li>
+</ul>`,
+            general_info: "كلما كان وزن الميزة (Weight) صغيراً، كلما كان تأثيرها على النتيجة أضعف، مما يجعل النموذج أكثر استقراراً.",
+            general_info_en: "The smaller the weight of a feature, the less impact it has, making the model more stable."
+        },
+        {
+            title: "8. خوارزميات Ridge و Lasso",
+            title_en: "8. Ridge vs Lasso Regression",
+            expl: "ميزة Lasso إنها ممكن تخلي أوزان الحاجات اللي ملهاش لازمة صفر تماماً! يعني بتعمل فلترة للداتا (Feature Selection) من نفسها.",
+            expl_en: "Lasso has a cool feature: it can shrink weights of useless features exactly to zero! It acts as an automatic Feature Selector.",
+            content: `<p><strong>1. Ridge Regression:</strong></p>
+<ul>
+    <li>يضيف عقوبة (Penalty) تساوي نصف مربع الأوزان (L2 norm).</li>
+    <li>يبقي جميع الميزات، ولكن يقلل أوزانها جداً.</li>
+</ul>
+<p><strong>2. Lasso Regression:</strong></p>
+<ul>
+    <li>يضيف عقوبة تساوي القيمة المطلقة للأوزان (L1 norm).</li>
+    <li>يميل إلى <strong>إلغاء أوزان الميزات الأقل أهمية تماماً (يساويها بالصفر)</strong>، مما يجعله مفيداً في تقليل الميزات.</li>
+</ul>`,
+            content_en: `<p><strong>1. Ridge Regression:</strong></p>
+<ul>
+    <li>Adds a penalty equal to half the square of the weights (L2 norm).</li>
+    <li>Keeps all features but aggressively shrinks their weights.</li>
+</ul>
+<p><strong>2. Lasso Regression:</strong></p>
+<ul>
+    <li>Adds a penalty equal to the absolute value of the weights (L1 norm).</li>
+    <li>Tends to <strong>completely eliminate the weights of the least important features (sets them to zero)</strong>.</li>
+</ul>`,
+            general_info: "يمكن استدعاءهما بسهولة في بايثون عبر: from sklearn.linear_model import Ridge, Lasso",
+            general_info_en: "They can be easily imported in Python via: from sklearn.linear_model import Ridge, Lasso"
+        },
+        {
+            title: "9. المعلمات الفائقة (Hyperparameters)",
+            title_en: "9. Hyperparameters",
+            expl: "وأنت بتبني الموديل، فيه إعدادات إنت اللي بتحددها بإيدك (زي قوة العقوبة alpha). الإعدادات دي مش الموديل اللي بيتعلمها، إنت اللي بتظبطها.",
+            expl_en: "When building a model, there are settings you manually configure (like the penalty strength 'alpha'). The model doesn't learn these; you set them.",
+            content: `<p><strong>المعلمات الفائقة (Hyperparameters):</strong> هي الإعدادات التي نمررها للنموذج قبل بدء التدريب.</p>
+<p>مثال في خوارزمية Ridge:</p>
+<pre>reg1 = Ridge(alpha=0.1, fit_intercept=True)
+reg2 = Ridge(alpha=0.2, fit_intercept=False)</pre>
+<ul>
+    <li><strong>alpha:</strong> يتحكم في مقدار التنظيم (كلما زاد، أصبح النموذج أبسط).</li>
+    <li><strong>fit_intercept:</strong> يحدد ما إذا كان يجب حساب نقطة التقاطع مع محور الصادات.</li>
+</ul>`,
+            content_en: `<p><strong>Hyperparameters:</strong> are the settings passed to the model before training starts.</p>
+<p>Example in Ridge Regression:</p>
+<pre>reg1 = Ridge(alpha=0.1, fit_intercept=True)
+reg2 = Ridge(alpha=0.2, fit_intercept=False)</pre>
+<ul>
+    <li><strong>alpha:</strong> Controls the amount of regularization (higher = simpler model).</li>
+    <li><strong>fit_intercept:</strong> Determines whether to calculate the y-intercept for this model.</li>
+</ul>`,
+            general_info: "كيف نعرف أي قيمة لـ alpha هي الأفضل؟ هنا يأتي دور التجربة والخطأ أو استخدام GridSearchCV.",
+            general_info_en: "How do we know which alpha is best? That's where trial and error or GridSearchCV comes in."
+        },
+        {
+            title: "10. البحث الشبكي (GridSearchCV)",
+            title_en: "10. GridSearchCV",
+            expl: "بدل ما تجرب الإعدادات بنفسك وتضيع وقت، GridSearchCV بتديها لستة بالخيارات وهي بتجربهم كلهم واحد واحد وتطلعلك أحسن نتيجة.",
+            expl_en: "Instead of manually testing settings, you give GridSearchCV a dictionary of options. It tests every combination and returns the absolute best one.",
+            content: `<p><strong>GridSearchCV</strong> هي أداة تختبر جميع التركيبات الممكنة للإعدادات لتجد الأفضل:</p>
+<pre>from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import Ridge
+
+# 1. تعريف الإعدادات المطلوب تجربتها
+param_grid = { 'alpha': [0.1, 0.2, 0.5], 'fit_intercept': [True, False] }
+
+# 2. إنشاء البحث الشبكي
+gridsearch = GridSearchCV(Ridge(), param_grid, scoring='r2', cv=5)
+
+# 3. تدريب جميع التركيبات
+gridsearch.fit(X_train, y_train)
+
+# طباعة أفضل إعدادات تم العثور عليها
+print(gridsearch.best_params_)</pre>`,
+            content_en: `<p><strong>GridSearchCV</strong> tests all possible combinations of hyperparameters to find the best one:</p>
+<pre>from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import Ridge
+
+# 1. Define the parameter grid to test
+param_grid = { 'alpha': [0.1, 0.2, 0.5], 'fit_intercept': [True, False] }
+
+# 2. Initialize Grid Search
+gridsearch = GridSearchCV(Ridge(), param_grid, scoring='r2', cv=5)
+
+# 3. Fit all combinations
+gridsearch.fit(X_train, y_train)
+
+# Print the best parameters found
+print(gridsearch.best_params_)</pre>`,
+            general_info: "بمجرد انتهاء البحث، سيحتوي الكائن gridsearch.best_estimator_ على أفضل نموذج جاهز للاستخدام مباشرة.",
+            general_info_en: "Once finished, gridsearch.best_estimator_ holds the best trained model ready for direct use."
+        },
+        {
+            title: "11. استراتيجيات بحث أخرى",
+            title_en: "11. Other Search Strategies",
+            expl: "لو عندك مئات الإعدادات، GridSearchCV هياخد سنين عشان يخلص! الحل نستخدم البحث العشوائي اللي بيختار شوية تركيبات بس ويجربهم.",
+            expl_en: "If you have hundreds of hyperparameters, GridSearchCV will take years! The solution is Random Search which tests a fixed number of random combinations.",
+            content: `<p>ماذا لو كانت مساحة البحث (Parameter Space) كبيرة جداً؟</p>
+<ul>
+    <li><strong>RandomizedSearchCV:</strong> بدلاً من تجربة <em>كل</em> التركيبات الممكنة، يختبر عدداً محدداً عشوائياً (n_iter). هذا يوفر الكثير من وقت الحوسبة ويكون فعالاً جداً.</li>
+    <li><strong>BayesSearchCV:</strong> تقنية متقدمة تستخدم الاحتمالات لاختيار الإعدادات التالية بناءً على نتائج الإعدادات السابقة (موجودة في مكتبة scikit-optimize).</li>
+</ul>`,
+            content_en: `<p>What if the Parameter Space is extremely large?</p>
+<ul>
+    <li><strong>RandomizedSearchCV:</strong> Instead of trying <em>all</em> combinations, it evaluates a given number of random combinations (n_iter). Saves a lot of computation time.</li>
+    <li><strong>BayesSearchCV:</strong> Advanced technique that uses probability to pick the next hyperparameters based on previous results (found in scikit-optimize).</li>
+</ul>`,
+            general_info: "في المشاريع الكبيرة والواقعية، يُفضل دائماً استخدام RandomizedSearchCV لبدء الاستكشاف وتوفير الموارد.",
+            general_info_en: "In large real-world projects, it is highly recommended to start with RandomizedSearchCV to save compute resources."
+        },
+        {
+            title: "12. معمل الأكواد - الانحدار",
+            title_en: "12. Regression Code Lab",
+            expl: "عظيم جداً! كده إنت جاهز تتوقع أرقام وتحلل بيانات معقدة باستخدام الانحدار في سايكت-ليرن.",
+            expl_en: "Awesome! You are now ready to predict continuous values and analyze complex data using Regression in Scikit-Learn.",
+            content: `<p>🎉 <strong>أحسنت!</strong> لقد أتممت المحاضرة الحادية عشرة الخاص بخوارزميات الانحدار.</p><p>نظراً لأن بيئة المتصفح لا تدعم Scikit-learn بشكل كامل، قم بفتح <a href="https://colab.research.google.com/" target="_blank" style="color:var(--accent); font-weight:bold;">Google Colab</a> لتدريب نماذج الـ Linear Regression و Ridge واختبارها بنفسك!</p>`,
+            content_en: `<p>🎉 <strong>Well done!</strong> You have finished Lecture 11 on Regression algorithms.</p><p>Since the browser environment lacks full Scikit-learn support, please open <a href="https://colab.research.google.com/" target="_blank" style="color:var(--accent); font-weight:bold;">Google Colab</a> to actually train your Linear Regression and Ridge models!</p>`,
+            general_info: "يمكنك استخدام المعمل أدناه لكتابة بعض الدوال الرياضية البسيطة التي تحاكي دوال التكلفة (Cost Functions) كنوع من التدريب.",
+            general_info_en: "You can use the lab below to write simple math functions simulating Cost Functions as a coding exercise.",
+            isTerminalSlide: true
+        }
+    ];
+
+    let idx = 0;
+    let uiLang = 'ar'; 
+    
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        normalContainer: document.getElementById('normalSlideContent'),
+        compilerContainer: document.getElementById('compilerContainer'),
+        expl: document.getElementById('explText'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn'),
+        lblExpl: document.getElementById('labelExpl'),
+        pageTitle: document.getElementById('pageTitle'),
+        sidebar: document.getElementById('sidebar'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn'),
+        txtPrev: document.getElementById('txtPrev'),
+        txtNext: document.getElementById('txtNext'),
+        generalInfo: document.getElementById('generalInfoText'),
+        syntaxHints: document.getElementById('syntaxHints')
+    };
+
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+        
+        document.ondragstart = null; 
+    }
+
+    function toggleSlideCheck(index, event) {
+        event.stopPropagation(); 
+        const checkbox = event.target;
+        // حفظ التقدم بشكل مستقل للمحاضرة الحادية عشرة
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress_L11') || '{}');
+        savedProgress[index] = checkbox.checked;
+        localStorage.setItem('pythonCourseProgress_L11', JSON.stringify(savedProgress));
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress_L11') || '{}');
+
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            
+            let chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'slide-check';
+            chk.checked = savedProgress[i] || false;
+            chk.onclick = (e) => toggleSlideCheck(i, e);
+
+            let num = i === slides.length - 1 ? '💻' : i + 1;
+            let displayTitle = uiLang === 'ar' ? s.title : s.title_en;
+            let cleanTitle = displayTitle.includes('.') ? displayTitle.split('.')[1] : displayTitle;
+            
+            let textSpan = document.createElement('span');
+            textSpan.innerHTML = `${cleanTitle} <span style="font-size:0.8rem; opacity:0.7;">${num}</span>`;
+            textSpan.style.flex = "1";
+
+            li.appendChild(chk);
+            li.appendChild(textSpan);
+            
+            li.onclick = () => loadSlide(i);
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? `درس ${index + 1}` : `Lesson ${index + 1}`;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.expl.innerHTML = isAr ? s.expl : s.expl_en;
+        
+        dom.generalInfo.innerText = isAr ? (s.general_info || "...") : (s.general_info_en || "...");
+
+        if (s.isTerminalSlide) {
+            dom.compilerContainer.style.display = 'block';
+            setTimeout(() => {
+                dom.compilerContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            dom.compilerContainer.style.display = 'none';
+        }
+
+        dom.prev.disabled = index === 0;
+        dom.next.disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        document.querySelectorAll('.section-box').forEach(b => b.classList.remove('open'));
+        if(window.innerWidth <= 768) dom.sidebar.classList.remove('open');
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function move(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    function toggleSection(el) { el.classList.toggle('open'); }
+    function toggleSidebar() { dom.sidebar.classList.toggle('open'); }
+    function toggleInfo() { 
+        const modal = document.getElementById('infoModal'); 
+        if(modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        slides.forEach((s, i) => {
+            const t = uiLang === 'ar' ? s.title : s.title_en;
+            if(t.toLowerCase().includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    function toggleLang() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        dom.pageTitle.innerText = isAr ? "Python Master | L11" : "Python Master | L11";
+        dom.txtPrev.innerText = isAr ? "السابق" : "Prev";
+        dom.txtNext.innerText = isAr ? "التالي" : "Next";
+        dom.lblExpl.innerText = isAr ? "💡 الشرح المبسط" : "💡 Simple Explanation";
+        dom.search.placeholder = isAr ? "بحث..." : "Search...";
+        
+        const arHint = `⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                        1. <strong>بيئة المتصفح:</strong> مكتبة \`scikit-learn\` لا تعمل بشكل مباشر داخل المتصفح هنا.<br>
+                        2. <strong>البديل:</strong> لتطبيق نماذج الانحدار، يرجى استخدام بيئة احترافية مثل <a href="https://colab.research.google.com/" target="_blank" style="color:var(--primary);">Google Colab</a>.<br>
+                        3. <strong>التدريب:</strong> يمكنك كتابة دوال يدوية هنا لحساب مقاييس مثل MAE أو MSE كتدريب برمجي.`;
+        const enHint = `⚠️ <strong>Coder Hints:</strong><br>
+                        1. <strong>Browser Env:</strong> The \`scikit-learn\` library does not run directly in this browser lab.<br>
+                        2. <strong>Alternative:</strong> To train regression models, use a professional environment like <a href="https://colab.research.google.com/" target="_blank" style="color:var(--primary);">Google Colab</a>.<br>
+                        3. <strong>Practice:</strong> You can write custom manual math functions here to simulate calculating MAE or MSE.`;
+        dom.syntaxHints.innerHTML = isAr ? arHint : enHint;
+        
+        document.getElementById('modalTitle').innerText = isAr ? "معلومات المادة" : "Course Info";
+        document.getElementById('modalDesc').innerText = isAr ? "أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج." : "Welcome to the interactive Python course. Browse slides, read simplified explanations, and test your code directly via the built-in Terminal.";
+        document.getElementById('modalCloseBtn').innerText = isAr ? "إغلاق" : "Close";
+
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        
+        localStorage.setItem('globalTheme', newTheme);
+        
+        const chk = document.getElementById('themeCheckbox');
+        if(chk) chk.checked = !isLight;
+    }
+
+    function outf(text) { 
+        const output = document.getElementById("output-area");
+        if (output.innerText === "Output will appear here...") output.innerText = "";
+        output.innerText += text; 
+    } 
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+    function runPython() {
+        const prog = document.getElementById("code-input").value; 
+        const mypre = document.getElementById("output-area"); 
+        mypre.innerHTML = ''; 
+        mypre.classList.remove('error-output');
+
+        Sk.pre = "output-area";
+        Sk.configure({output:outf, read:builtinRead}); 
+
+        const myPromise = Sk.misceval.asyncToPromise(function() {
+            return Sk.importMainWithBody("<stdin>", false, prog);
+        });
+        myPromise.then(function(mod) { console.log('success'); }, function(err) {
+            mypre.classList.add('error-output');
+            mypre.innerHTML = err.toString();
+        });
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

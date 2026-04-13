@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>عرض الـ PDF | المحاضرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* الألوان الأساسية */
+            --bg-gradient-light: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --text-main-light: #2d3748; 
+            --primary-light: #2b6cb0; 
+            --accent-light: #38b2ac; 
+            --header-bg-light: rgba(255, 255, 255, 0.95);
+            --header-border-light: rgba(43, 108, 176, 0.2);
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        [data-theme="dark"] {
+            --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --text-main-dark: #f1f5f9; 
+            --primary-dark: #63b3ed; 
+            --accent-dark: #4fd1c5; 
+            --header-bg-dark: rgba(15, 23, 42, 0.95);
+            --header-border-dark: rgba(99, 179, 237, 0.2);
+            --shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        body { 
+            --bg-body: var(--bg-gradient-light); 
+            --text: var(--text-main-light); 
+            --primary: var(--primary-light); 
+            --accent: var(--accent-light); 
+            --header-bg: var(--header-bg-light); 
+            --header-border: var(--header-border-light);
+            --shadow: var(--shadow-light); 
+        }
+        [data-theme="dark"] body { 
+            --bg-body: var(--bg-gradient-dark); 
+            --text: var(--text-main-dark); 
+            --primary: var(--primary-dark); 
+            --accent: var(--accent-dark); 
+            --header-bg: var(--header-bg-dark); 
+            --header-border: var(--header-border-dark);
+            --shadow: var(--shadow-dark); 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        html, body { height: 100%; overflow: hidden; display: flex; flex-direction: column; background: var(--bg-body); color: var(--text); }
+
+        /* ================= الهيدر (متجاوب وواقعي) ================= */
+        header { 
+            height: 75px; 
+            background: var(--header-bg); 
+            backdrop-filter: blur(15px); 
+            border-bottom: 2px solid var(--header-border); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 5%; 
+            z-index: 1000; 
+            box-shadow: var(--shadow); 
+            flex-shrink: 0; 
+        }
+        
+        .header-title-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex: 1; 
+        }
+        
+        .header-title { 
+            font-weight: 900; 
+            font-size: 1.2rem; 
+            color: var(--primary); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+
+        /* حاوية وهمية لضبط التوازن بالـ Flexbox */
+        .spacer { width: 100px; }
+
+        /* زر الرجوع */
+        .cta-back { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            padding: 8px 20px; 
+            text-decoration: none; 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: white; 
+            background: var(--primary); 
+            transition: all 0.4s ease; 
+            box-shadow: -4px 4px 0 var(--text); 
+            transform: skewX(10deg); 
+            border: none; 
+            cursor: pointer; 
+            width: 100px;
+        }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; }
+        .cta-back:hover { box-shadow: -6px 6px 0 var(--accent); transform: skewX(10deg) translateY(-2px); }
+        .cta-back .span { transform: skewX(-10deg); }
+        .cta-back .second { margin-left: 0; margin-right: 10px; width: 18px; transform: rotate(180deg); transition: 0.5s; display: flex;}
+        .cta-back:hover .second { margin-right: 18px; }
+
+        /* ================= حاوية الـ PDF والموبايل ================= */
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            background: #2a2a2a; /* لون خلفية للابتوب ليكون مريح للعين حول الـ PDF */
+            position: relative; 
+            height: 100%; 
+            width: 100%;
+        }
+        
+        .pdf-iframe { 
+            flex: 1; 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
+
+        /* شاشة الموبايل البديلة (مخفية افتراضياً) */
+        .mobile-view {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-body);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .mobile-view i.main-icon {
+            font-size: 80px;
+            color: var(--accent);
+            margin-bottom: 25px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+        
+        .mobile-view h2 { font-size: 1.6rem; color: var(--primary); margin-bottom: 10px; font-weight: 900;}
+        .mobile-view p { font-size: 1rem; color: var(--text); opacity: 0.8; margin-bottom: 35px; line-height: 1.6;}
+        
+        .btn-direct {
+            display: inline-flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 15px 35px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 12px;
+            font-weight: 900; 
+            font-size: 1.1rem; 
+            box-shadow: 0 10px 25px rgba(43, 108, 176, 0.4); 
+            transition: 0.3s;
+        }
+        .btn-direct:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(56, 178, 172, 0.5); }
+
+        /* ================= التجاوب (Mobile Responsive) ================= */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; height: 70px; }
+            .header-title { font-size: 1rem; }
+            .cta-back { padding: 6px 15px; width: auto; font-size: 13px; transform: skewX(5deg); box-shadow: -3px 3px 0 var(--text); }
+            [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
+            .cta-back .span { transform: skewX(-5deg); display: none; } /* إخفاء كلمة رجوع لتوفير المساحة */
+            .cta-back .second { margin-right: 0; width: 16px; }
+            .cta-back:hover .second { margin-right: 0; }
+            .spacer { width: 40px; } /* تصغير الفراغ الوهمي */
+
+            /* السحر هنا: إخفاء الـ iframe وإظهار شاشة الموبايل */
+            .pdf-iframe { display: none !important; }
+            .mobile-view { display: flex !important; }
+        }
+    </style>
+</head> 
+<body>
+
+    <header>
+        <button class="cta-back" onclick="window.location.href='index.html'">
+            <span class="second">
+                <svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <path d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path>
+                        <path d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path>
+                        <path d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path>
+                    </g>
+                </svg>
+            </span>
+            <span class="span">رجوع</span>
+        </button>
+
+        <div class="header-title-container">
+            <div class="header-title" id="pageTitle"><i class="fa-solid fa-file-pdf"></i> ماتيريال المحاضرة</div>
+        </div>
+
+        <div class="spacer"></div>
+    </header>
+
+    <div class="container">
+        
+        <div class="mobile-view">
+            <i class="fa-regular fa-file-pdf main-icon"></i>
+            <h2 id="mobileMsg">الملف جاهز للعرض</h2>
+            <p id="mobileDesc">متصفحات الهواتف لا تدعم عرض الملفات هنا لضمان سرعة الجهاز.<br>يرجى فتحه مباشرة.</p>
+            <a href="08_ScikitLearn-Classification.pdf" target="_blank" class="btn-direct">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> <span id="mobileBtnTxt">فتح / تحميل الملف</span>
+            </a>
+        </div>
+        
+        <iframe src="08_ScikitLearn-Classification.pdf" class="pdf-iframe"></iframe>
+
+    </div>
+
+    <script>
+        function initSettings() {
+            const savedTheme = localStorage.getItem('globalTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const savedLang = localStorage.getItem('globalLang') || 'ar';
+            document.documentElement.lang = savedLang;
+            document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
+            
+            if (savedLang === 'en') {
+                document.title = "PDF Viewer | Material";
+                document.getElementById('pageTitle').innerHTML = '<i class="fa-solid fa-file-pdf"></i> Lecture Material';
+                document.querySelector('.cta-back .span').innerText = "Back";
+                document.getElementById('mobileMsg').innerText = "File Ready";
+                document.getElementById('mobileDesc').innerHTML = "Mobile browsers limit inline previews.<br>Please open it directly.";
+                document.getElementById('mobileBtnTxt').innerText = "Open / Download PDF";
+            }
+        }
+        window.onload = initSettings;
+    </script>
+</body> 
+</html>

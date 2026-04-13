@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python | L1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <style>
+        :root {
+            --bg-gradient-light: #f0f4f8;
+            --glass-bg-light: rgba(255, 255, 255, 0.85);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #1e293b;
+            --primary-light: #db2777;
+            --accent-light: #6225e6;
+            --header-bg-light: #ffffff;
+
+            --bg-gradient-dark: #05071b;
+            --glass-bg-dark: rgba(15, 23, 42, 0.85);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f8fafc;
+            --primary-dark: #db2777;
+            --accent-dark: #fbc638;
+            --header-bg-dark: #05071b;
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        input, textarea, code, pre { -webkit-user-select: text !important; user-select: text !important; }
+
+        body {
+            font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text);
+            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+        header {
+            height: 80px; background: var(--header-bg); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 25px; z-index: 1000; box-shadow: var(--shadow);
+            flex-shrink: 0; 
+        }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        
+        .cta-back { 
+            display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; 
+            font-weight: bold; color: white; background: var(--primary); transition: 1s; 
+            box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; 
+            margin-right: 10px;
+        }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: white;}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 20px; align-items: center; }
+        .lang-button {
+            height: 50px; width: 150px; border: none; border-radius: 10px; cursor: pointer;
+            position: relative; overflow: hidden; transition: all 0.5s ease-in-out;
+            background: transparent; font-family: 'Cairo', sans-serif;
+        }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after {
+            content: attr(data-hover); height: 50px; width: 150px; background-color: var(--primary);
+            color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+        .type1::before {
+            content: attr(data-main); height: 50px; width: 150px; background-color: var(--glass);
+            color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px;
+        }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .info-btn {
+            background: rgba(236, 72, 153, 0.1); color: var(--accent); border: 1px solid var(--accent);
+            padding: 5px 12px; font-size: 1.2rem; border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .info-btn:hover { background: var(--accent); color: white; transform: rotate(15deg); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; 
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--header-bg); padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 500px; width: 90%;
+            border: 2px solid var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text);
+        }
+        .modal-content h2 { margin-bottom: 15px; color: var(--primary); }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .btn-icon { background: var(--primary); color: white; padding: 10px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-family: 'Cairo'; font-size: 1.1rem; }
+        .btn-icon:hover { background: var(--accent); }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        
+        aside {
+            width: 340px; max-width: 100%; background: var(--glass); border-inline-end: 1px solid var(--border);
+            display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900;
+            transition: all 0.4s;
+        }
+        .search-area { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; height: 100px; flex-shrink: 0; }
+        .grid { height: 100%; width: 100%; background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px), linear-gradient(to bottom, #0f0f10 1px, transparent 1px); background-size: 1rem 1rem; position: absolute; z-index: -1; filter: blur(1px); opacity: 0.2; }
+        #poda { display: flex; align-items: center; justify-content: center; position: relative; transform: scale(0.9); transform-origin: center; width: 100%; max-width: 280px; }
+        .search-input-styled { background-color: #010201; border: none; width: 100%; height: 56px; border-radius: 10px; color: white; padding-inline: 59px; font-size: 14px; font-family: 'Cairo'; }
+        .search-input-styled:focus { outline: none; }
+        .white, .border, .darkBorderBg, .glow { max-height: 70px; max-width: 100%; height: 100%; width: 100%; position: absolute; overflow: hidden; z-index: -1; border-radius: 12px; filter: blur(3px); }
+        .white { max-height: 63px; width: 98%; border-radius: 10px; filter: blur(2px); }
+        .white::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(83deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.4); background-image: conic-gradient(rgba(0,0,0,0) 0%, #a099d8, rgba(0,0,0,0) 8%, rgba(0,0,0,0) 50%, #dfa2da, rgba(0,0,0,0) 58%); transition: all 2s; }
+        .border { max-height: 59px; width: 96%; border-radius: 11px; filter: blur(0.5px); }
+        .border::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(70deg); position: absolute; width: 600px; height: 600px; filter: brightness(1.3); background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#1c191c, var(--primary) 5%, #1c191c 14%, #1c191c 50%, var(--accent) 60%, #1c191c 64%); transition: all 2s; }
+        .darkBorderBg { max-height: 65px; width: 99%; }
+        .darkBorderBg::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(82deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(rgba(0,0,0,0), var(--primary), rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, var(--accent), rgba(0,0,0,0) 60%); transition: all 2s; }
+        #poda:hover > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(262deg); }
+        #poda:hover > .glow::before { transform: translate(-50%, -50%) rotate(240deg); }
+        #poda:hover > .white::before { transform: translate(-50%, -50%) rotate(263deg); }
+        #poda:hover > .border::before { transform: translate(-50%, -50%) rotate(250deg); }
+        #poda:focus-within > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(442deg); transition: all 4s; }
+        #poda:focus-within > .glow::before { transform: translate(-50%, -50%) rotate(420deg); transition: all 4s; }
+        #poda:focus-within > .white::before { transform: translate(-50%, -50%) rotate(443deg); transition: all 4s; }
+        #poda:focus-within > .border::before { transform: translate(-50%, -50%) rotate(430deg); transition: all 4s; }
+        .glow { overflow: hidden; filter: blur(30px); opacity: 0.4; max-height: 130px; width: 110%; }
+        .glow:before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg); position: absolute; width: 999px; height: 999px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#000, var(--primary) 5%, #000 38%, #000 50%, var(--accent) 60%, #000 87%); transition: all 2s; }
+        #filter-icon { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; justify-content: center; z-index: 2; max-height: 40px; max-width: 38px; height: 100%; width: 100%; isolation: isolate; overflow: hidden; border-radius: 10px; background: linear-gradient(180deg, #161329, black, #1d1b4b); border: 1px solid transparent; }
+        html[dir="ltr"] #filter-icon { right: auto; left: 8px; }
+        .filterBorder { height: 42px; width: 40px; position: absolute; overflow: hidden; top: 7px; right: 7px; border-radius: 10px; }
+        html[dir="ltr"] .filterBorder { right: auto; left: 7px; }
+        .filterBorder::before { content: ""; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.35); background-image: conic-gradient(rgba(0,0,0,0), #3d3a4f, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 50%, #3d3a4f, rgba(0,0,0,0) 100%); animation: rotate 4s linear infinite; }
+        #main-search { position: relative; width: 100%; }
+        #search-icon { position: absolute; left: 20px; top: 15px; }
+        html[dir="ltr"] #search-icon { left: auto; right: 20px; }
+        @keyframes rotate { 100% { transform: translate(-50%, -50%) rotate(450deg); } }
+        .slide-list { 
+            list-style: none; overflow-y: auto; flex: 1; padding: 10px; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .list-item { 
+            padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+        
+        .slide-check {
+            width: 18px; height: 18px; margin-inline-end: 10px; cursor: pointer; accent-color: var(--accent);
+            z-index: 2; flex-shrink: 0;
+        }
+
+        main { 
+            flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; 
+            scroll-behavior: smooth; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card { background: var(--glass); width: 100%; max-width: 850px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 40px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(236, 72, 153, 0.1); color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; margin-bottom: 25px; line-height: 1.5; color: var(--primary); }
+        .content { font-size: 1.2rem; line-height: 1.9; margin-bottom: 30px; color: var(--text); }
+        
+        /* Code Box */
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 12px; overflow-x: auto; direction: ltr; text-align: left; font-family: 'Fira Code', monospace; border: 1px solid var(--border); margin: 20px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); max-width: 100%; white-space: pre-wrap; word-break: break-word;}
+        code { background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code'; color: var(--accent); font-weight: bold; }
+
+        .info-box-general {
+            background: rgba(139, 92, 246, 0.08); border-inline-start: 4px solid var(--primary);
+            padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 1rem;
+            color: var(--text); display: flex; gap: 10px; align-items: start;
+        }
+        .info-box-icon { font-size: 1.5rem; }
+
+        .section-box { margin-top: 20px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
+        .section-header { background: rgba(255,255,255,0.03); padding: 18px 25px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-content { display: none; padding: 25px; border-top: 1px solid var(--border); }
+        .section-box.open .section-content { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Compiler --- */
+        .compiler-container { display: none; margin-top: 20px; direction: ltr; width: 100%; }
+        .compiler-box { background: #1e1e1e; border-radius: 16px; padding: 20px; border: 2px solid var(--primary); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; overflow-x: hidden; }
+        .compiler-header { color: var(--accent); font-family: 'Fira Code'; margin-bottom: 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        .syntax-hints {
+            background: #2d2d2d; color: #aaa; padding: 10px; margin-bottom: 10px; border-radius: 8px;
+            font-size: 0.85rem; font-family: 'Cairo'; border-left: 3px solid #f1c40f;
+            line-height: 1.6;
+        }
+        textarea#code-input { width: 100%; height: 300px; background: #2d2d2d; color: #f8f8f2; border: 1px solid #444; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 16px; resize: vertical; max-width: 100%; box-sizing: border-box; }
+        .run-btn { background: var(--accent); color: #fff; border: none; padding: 12px 30px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; font-family: 'Fira Code'; font-size: 1rem; width: 100%; transition: 0.3s; }
+        .run-btn:hover { background: var(--primary); transform: translateY(-2px); }
+        #output-area { background: #000; color: #0f0; padding: 15px; margin-top: 15px; border-radius: 8px; min-height: 100px; font-family: 'Fira Code'; white-space: pre-wrap; word-break: break-all; border-left: 5px solid var(--accent); max-width: 100%; overflow-x: auto; }
+        .error-output { color: #ff5555 !important; }
+        
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .styled-btn { position: relative; width: 11em; max-width: 45%; height: 4em; outline: none; transition: 0.1s; background-color: transparent; border: none; font-size: 13px; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(39, 97, 195, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; }
+        .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { animation: 0.2s ease-in-out 0.55s both greenLight8; --color: var(--accent); }
+        @keyframes greenLight8 { from { } to { box-shadow: inset 0px 0px 32px var(--accent); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        .bb8-toggle { --toggle-size: 6px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; flex-shrink: 0; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); color: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; padding: 5px; }
+        
+        /* التجاوب (Media Queries) */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; } 
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; text-align: center; flex: 1; margin: 0 10px; justify-content: center;}
+            .controls { gap: 10px; } 
+            .lang-button { width: 100px; height: 40px; }
+            .type1::after, .type1::before { width: 100px; height: 40px; font-size: 0.9rem; }
+            .bb8-toggle { --toggle-size: 4px; display: inline-block !important; }
+            
+            /* تعديل الـ Sidebar ليتجاوب مع LTR و RTL */
+            aside { position: fixed; height: calc(100vh - 80px); top: 80px; width: 280px; max-width: 85%; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+            html[dir="rtl"] aside { right: -320px; left: auto; border-left: 1px solid var(--border); }
+            html[dir="rtl"] aside.open { right: 0; }
+            html[dir="ltr"] aside { left: -320px; right: auto; border-right: 1px solid var(--border); }
+            html[dir="ltr"] aside.open { left: 0; }
+            
+            .menu-btn { display: block; }
+            #poda { transform: scale(0.85); }
+            main { padding: 15px; } 
+            .card { padding: 25px; margin-bottom: 20px; }
+            h1 { font-size: 1.4rem; } 
+            .content { font-size: 1rem; line-height: 1.7; }
+            .nav-actions { gap: 15px; flex-wrap: nowrap; } 
+            .styled-btn { font-size: 12px; max-width: 48%; }
+            .cta-back { display: none; }
+        }
+        @media (max-width: 480px) {
+            .header-title { display: none; } 
+            .header-title-container { justify-content: flex-start; }
+            .controls { flex: 1; justify-content: flex-end; } 
+            .styled-btn { width: 100%; max-width: 140px; font-size: 11px; }
+            .info-box-general { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="modal-overlay" id="infoModal" onclick="toggleInfo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">معلومات المادة</h2>
+            <p id="modalDesc">أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج.</p>
+            <button class="btn-icon" onclick="toggleInfo()" id="modalCloseBtn">إغلاق</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+
+            <button class="info-btn" onclick="toggleInfo()" title="معلومات عن المادة">ℹ</button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-brands fa-python" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">Python Master</div>
+                <div class="header-subtitle">د. محمود | Dr. Mahmoud</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="الوضع الليلي">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                </div>
+                <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                </div>
+                <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div class="grid"></div>
+                <div id="poda">
+                    <div class="glow"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
+                    <div class="white"></div><div class="border"></div>
+                    <div id="main-search">
+                        <input placeholder="Search..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                        <div class="filterBorder"></div>
+                        <div id="filter-icon">🔍</div>
+                        <div id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" height="24" fill="none"><circle stroke="#b6a9b7" r="8" cy="11" cx="11"></circle><line stroke="#b6a9b7" y2="16.65" y1="22" x2="16.65" x1="22"></line></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">Intro</span>
+                <h1 id="slideHeader">...</h1>
+                
+                <div id="normalSlideContent">
+                    <div class="info-box-general">
+                        <span class="info-box-icon">🧩</span>
+                        <div id="generalInfoText">...</div>
+                    </div>
+
+                    <div class="content" id="slideHtml">...</div>
+                    <div class="section-box" onclick="toggleSection(this)">
+                        <div class="section-header">
+                            <span id="labelExpl">💡 الشرح المبسط</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="section-content" id="explText">...</div>
+                    </div>
+                </div>
+
+                <div class="compiler-container" id="compilerContainer">
+                    <div class="section-box open" style="margin-bottom: 20px;">
+                        <div class="section-header" style="background: rgba(255, 255, 255, 0.1);">
+                            👨‍💻 Python Code Lab
+                        </div>
+                        <div class="section-content" style="display: block;">
+                            <div class="compiler-box">
+                                <div class="compiler-header"><span>>_ Terminal</span><span>v3.x</span></div>
+                                <div class="syntax-hints" id="syntaxHints">
+                                    ⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                                    1. <strong>الحروف:</strong> بايثون حساسة للحروف (Print تختلف عن print).<br>
+                                    2. <strong>المسافات:</strong> المسافة في بداية السطر (Indentation) تحدد بداية ونهاية الكود.<br>
+                                    3. <strong>التنصيص:</strong> تأكد من إغلاق الأقواس وعلامات التنصيص " " بشكل صحيح.<br>
+                                    4. <strong>الأسماء:</strong> لا تبدأ اسم متغير برقم.
+                                </div>
+                                <textarea id="code-input" placeholder="# Write your python code here..."></textarea>
+                                <button class="run-btn" onclick="runPython()">▶ RUN CODE</button>
+                                <div id="output-area">Output will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span id="txtPrev">السابق</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span id="txtNext">التالي</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // تم تصميم هذه الشرائح لتعكس ملف Lec_01_Python.pdf بالكامل 100%
+    const slides = [
+        {
+            title: "1. مقدمة عن بايثون",
+            title_en: "1. Intro to Python",
+            expl: "بايثون لغة برمجة سهلة ومشهورة جداً، صممها 'جايدو فان روسم' سنة 91 عشان تكون بسيطة وقريبة للغة البشر.",
+            expl_en: "Python is a very popular, easy programming language created by Guido van Rossum in 1991 for simplicity and readability.",
+            content: `<p><strong>ما هي بايثون؟</strong></p><ul><li>لغة عالية المستوى (High-level).</li><li>مفتوحة المصدر ومجانية.</li><li>تم إطلاقها عام 1991 بواسطة Guido van Rossum.</li></ul>`,
+            content_en: `<p><strong>What is Python?</strong></p><ul><li>High-level programming language.</li><li>Free and open-source.</li><li>Released in 1991 by Guido van Rossum.</li></ul>`,
+            general_info: "بايثون هي الخيار الأول حالياً لعلماء البيانات (Data Analysts) لسهولتها وكفاءتها[cite: 4].",
+            general_info_en: "Python is currently the #1 choice for data analysts due to its simplicity and efficiency[cite: 4]."
+        },
+        {
+            title: "2. خصائص وفلسفة اللغة",
+            title_en: "2. Characteristics & Philosophy",
+            expl: "بايثون ذكية بتفهم نوع البيانات لوحدها، وفلسفتها إن 'الكود الجميل والبسيط أحسن من المعقد'.",
+            expl_en: "Python is smart (dynamic typing), and its philosophy is 'Beautiful and simple is better than complex'.",
+            content: `<p><strong>خصائص بايثون:</strong></p><ul><li>Dynamic Typing: لا تحتاج لتحديد نوع المتغير [cite: 17].</li><li>Multi-paradigm: تدعم طرق برمجة متعددة [cite: 18].</li></ul><p><strong>فلسفة بايثون (Zen):</strong> Simple is better than complex[cite: 24].</p>`,
+            content_en: `<p><strong>Python Characteristics:</strong></p><ul><li>Dynamic Typing: Types change at run-time [cite: 17].</li><li>Multi-paradigm: procedural, OOP, functional [cite: 18].</li></ul><p><strong>Python Zen:</strong> Simple is better than complex[cite: 24].</p>`,
+            general_info: "يمكنك كتابة <code>import this</code> في بايثون لتقرأ قواعد فلسفة بايثون كاملة.",
+            general_info_en: "You can type <code>import this</code> in Python to read the full Zen of Python."
+        },
+        {
+            title: "3. قواعد بايثون الأساسية",
+            title_en: "3. Python Basic Rules",
+            expl: "بايثون دقيقة جداً: الحرف الكابيتال غير السمول، ومفيش فصلة منقوطة في آخر السطر، بس المسافات (Indentation) مهمة جداً!",
+            expl_en: "Python is strict: Case-sensitive, no semi-colons, but Indentation (spaces) is critical!",
+            content: `<ul><li><strong>حساسة للحروف:</strong> <code>Name</code> يختلف عن <code>name</code> [cite: 44].</li><li><strong>نهاية السطر:</strong> لا نستخدم الفاصلة المنقوطة <code>;</code> [cite: 46].</li><li><strong>المسافات (Whitespace):</strong> تستخدم المسافات لتنظيم البلوكات البرمجية (عادة 4 مسافات)[cite: 45, 47].</li></ul>`,
+            content_en: `<ul><li><strong>Case-sensitive:</strong> <code>Name</code> is different from <code>name</code> [cite: 44].</li><li><strong>Line ends:</strong> No semi-colons <code>;</code> used [cite: 46].</li><li><strong>Indentation:</strong> Crucial for defining blocks (usually 4 spaces)[cite: 45, 47].</li></ul>`,
+            general_info: "الخطأ في المسافات (IndentationError) هو أشهر خطأ يقع فيه المبتدئون في بايثون.",
+            general_info_en: "IndentationError is the most common mistake for Python beginners."
+        },
+        {
+            title: "4. التعليقات (Comments)",
+            title_en: "4. Comments",
+            expl: "التعليق ده ليك أنت عشان تفتكر الكود بيعمل إيه، الكمبيوتر بيتجاهله تماماً ومش بيشغله.",
+            expl_en: "Comments are for you to remember what code does; the computer completely ignores them.",
+            content: `<p><strong>سطر واحد:</strong> نستخدم علامة <code>#</code> [cite: 55].</p><pre>print(1) # هذا تعليق [cite: 60]</pre><p><strong>عدة أسطر:</strong> نستخدم <code>"""</code> في البداية والنهاية[cite: 56].</p><pre>"""\nتعليق طويل\nلعدة أسطر\n"""</pre>`,
+            content_en: `<p><strong>Single line:</strong> Use <code>#</code> [cite: 55].</p><pre>print(1) # This is a comment [cite: 60]</pre><p><strong>Multi-line:</strong> Use <code>"""</code> at start and end[cite: 56].</p><pre>"""\nLong comment\nMultiple lines\n"""</pre>`,
+            general_info: "التعليقات الجيدة تجعل الكود الخاص بك احترافياً ومفهوماً لزملائك[cite: 54].",
+            general_info_en: "Good comments make your code professional and understandable to colleagues[cite: 54]."
+        },
+        {
+            title: "5. بيئة العمل وجوبيتر",
+            title_en: "5. Environment & Jupyter",
+            expl: "البرنامج بيتقرأ من فوق لتحت سطر بسطر. وممكن نكتب الكود في محرر زي Jupyter Notebook.",
+            expl_en: "Programs are read top to bottom, line by line. We can write code in editors like Jupyter.",
+            content: `<p><strong>تنفيذ الكود (Execution):</strong> يعمل الكود من الأعلى للأسفل [cite: 67].</p><p><strong>Jupyter Notebook:</strong> محرر مرئي عبر المتصفح مشهور جداً في تحليل البيانات، يقسم الكود إلى خلايا (Cells)[cite: 76].</p>`,
+            content_en: `<p><strong>Execution flow:</strong> Runs top to bottom, line by line [cite: 67].</p><p><strong>Jupyter Notebook:</strong> A browser-based editor very popular in data analytics, uses cells[cite: 76].</p>`,
+            general_info: "في جوبيتر، يمكنك الضغط على Ctrl+Enter لتشغيل الخلية الحالية بسرعة[cite: 103].",
+            general_info_en: "In Jupyter, you can press Ctrl+Enter to quickly run the current cell[cite: 103]."
+        },
+        {
+            title: "6. جملة الطباعة (Hello World)",
+            title_en: "6. Print Statement",
+            expl: "أمر print هو وسيلة بايثون إنها تطلعلك النتيجة على الشاشة.",
+            expl_en: "The print command is Python's way of outputting results to the screen.",
+            content: `<p>أبسط برنامج في بايثون:</p><pre>print("Hello World!") [cite: 122]</pre><p>دالة <code>print</code> تطبع النصوص، الأرقام، والمتغيرات في شاشة المخرجات (Terminal)[cite: 123].</p>`,
+            content_en: `<p>The simplest Python program:</p><pre>print("Hello World!") [cite: 122]</pre><p>The <code>print</code> function outputs text, numbers, and variables to the Terminal[cite: 123].</p>`,
+            general_info: "إذا نسيت الأقواس () في بايثون 3، سيظهر لك خطأ SyntaxError.",
+            general_info_en: "If you forget the parentheses () in Python 3, you will get a SyntaxError."
+        },
+        {
+            title: "7. مفهوم المتغيرات (Variables)",
+            title_en: "7. Variables Concept",
+            expl: "المتغير هو مساحة في الذاكرة بنحط فيها قيمة (رقم أو نص) عشان نستخدمها بعدين.",
+            expl_en: "A variable is a location in memory where we store a value to use it later.",
+            content: `<p>المتغير هو اسم يشير لمكان يحفظ البيانات [cite: 145].</p><pre>Age = 18\nmessage = "Hello world!" [cite: 161, 163]</pre><p>يتم تعيين القيمة باستخدام علامة التساوي <code>=</code>[cite: 156].</p>`,
+            content_en: `<p>A variable is a name referring to a storage location [cite: 145].</p><pre>Age = 18\nmessage = "Hello world!" [cite: 161, 163]</pre><p>Value is assigned using the equals sign <code>=</code>[cite: 156].</p>`,
+            general_info: "بايثون ذكية (Dynamic Type)، يمكنك تخزين رقم ثم تخزين نص في نفس المتغير لاحقاً[cite: 170].",
+            general_info_en: "Python is Dynamically Typed, you can store a number then a string in the same variable later[cite: 170]."
+        },
+        {
+            title: "8. قواعد المتغيرات",
+            title_en: "8. Variable Rules",
+            expl: "اختار أي اسم للمتغير، بس ابدأ بحرف، بلاش مسافات، وبلاش كلمات محجوزة زي if و for.",
+            expl_en: "Pick any name, but start with a letter, no spaces, and avoid reserved words like if and for.",
+            content: `<ul><li>يجب أن يبدأ بحرف، ولا يمكن أن يبدأ برقم (مثل <code>2cool</code> خطأ) [cite: 180, 182, 191].</li><li>لا يحتوي على مسافات (استخدم <code>_</code> بدلاً منها) [cite: 180, 182].</li><li>تجنب الكلمات المحجوزة (مثل <code>if, else, for</code>)[cite: 184, 185].</li></ul>`,
+            content_en: `<ul><li>Must start with a letter, NOT a number (e.g., <code>2cool</code> is invalid) [cite: 180, 182, 191].</li><li>No spaces (use <code>_</code> instead) [cite: 180, 182].</li><li>Avoid reserved words (like <code>if, else, for</code>)[cite: 184, 185].</li></ul>`,
+            general_info: "المتغير 'name' مختلف تماماً عن 'Name' لأن بايثون حساسة لحالة الحروف[cite: 182].",
+            general_info_en: "The variable 'name' is completely different from 'Name' (case-sensitive)[cite: 182]."
+        },
+        {
+            title: "9. العمليات الحسابية",
+            title_en: "9. Math Expressions",
+            expl: "رياضيات عادية جداً: جمع + وطرح - وضرب *. بس ركز في علامة الأس وباقي القسمة.",
+            expl_en: "Standard math: Add +, Sub -, Mult *. Pay attention to Exponents and Modulus.",
+            content: `<ul><li><code>+ , - , *</code> : للجمع والطرح والضرب [cite: 203].</li><li><code>/</code> : قسمة (9/4 = 2.25) [cite: 203].</li><li><code>%</code> : باقي القسمة (9%4 = 1) [cite: 203].</li><li><code>**</code> : الأسس (5**2 = 25)[cite: 203].</li></ul>`,
+            content_en: `<ul><li><code>+ , - , *</code> : Add, Subtract, Multiply [cite: 203].</li><li><code>/</code> : Division (9/4 = 2.25) [cite: 203].</li><li><code>%</code> : Modulus / Remainder (9%4 = 1) [cite: 203].</li><li><code>**</code> : Exponent (5**2 = 25)[cite: 203].</li></ul>`,
+            general_info: "إذا استخدمت // بدلاً من / ، ستقوم بايثون بالقسمة وحذف الكسور (القسمة الصحيحة).",
+            general_info_en: "If you use // instead of / , Python drops the decimals (Integer Division)."
+        },
+        {
+            title: "10. أولويات العمليات الحسابية",
+            title_en: "10. Operator Precedence",
+            expl: "الكمبيوتر بيحسب الأقواس الأول، بعدين الأس، بعدين الضرب والقسمة، وفي الآخر الجمع والطرح.",
+            expl_en: "Computers calculate parentheses first, then exponents, then mult/div, then add/sub.",
+            content: `<p>الترتيب (مثل الرياضيات):</p><ol><li>الأقواس <code>()</code> [cite: 208].</li><li>الأسس <code>**</code> [cite: 210].</li><li>الضرب والقسمة وباقي القسمة <code>* / %</code> [cite: 211].</li><li>الجمع والطرح <code>+ -</code>[cite: 212].</li></ol>`,
+            content_en: `<p>Order (like regular math):</p><ol><li>Parentheses <code>()</code> [cite: 208].</li><li>Exponents <code>**</code> [cite: 210].</li><li>Mult/Div/Mod <code>* / %</code> [cite: 211].</li><li>Add/Subtract <code>+ -</code>[cite: 212].</li></ol>`,
+            general_info: "مثال: 8**2 + 12/4 * (3-1) ... القوس أولاً، ثم الأس، وهكذا ليكون الناتج 70.0[cite: 214].",
+            general_info_en: "Example: 8**2 + 12/4 * (3-1) ... Parentheses first, then exponent, giving 70.0[cite: 214]."
+        },
+        {
+            title: "11. النصوص (Strings)",
+            title_en: "11. Strings",
+            expl: "أي كلام جوه علامات تنصيص يعتبر String. لو عايز تكتب سطر طويل قوي استخدم 3 علامات تنصيص.",
+            expl_en: "Any text in quotes is a String. For a very long multi-line text, use 3 quotes.",
+            content: `<p>النصوص توضع بين علامات <code>" "</code> أو <code>' '</code> [cite: 229].</p><pre>name = "Joe Jones"\nstore = 'Joe\\'s Store' [cite: 233, 235]</pre><ul><li>استخدم <code>\\</code> كهروب (Escape) لكتابة علامة تنصيص داخل النص [cite: 230].</li><li>استخدم <code>"""</code> للنصوص متعددة الأسطر[cite: 231].</li></ul>`,
+            content_en: `<p>Strings are surrounded by <code>" "</code> or <code>' '</code> [cite: 229].</p><pre>name = "Joe Jones"\nstore = 'Joe\\'s Store' [cite: 233, 235]</pre><ul><li>Use <code>\\</code> as an escape character [cite: 230].</li><li>Use <code>"""</code> for multi-line strings[cite: 231].</li></ul>`,
+            general_info: "أصغر نص ممكن هو النص الفارغ \"\" (طوله صفر)[cite: 258].",
+            general_info_en: "The smallest possible string is the empty string \"\" (length zero)[cite: 258]."
+        },
+        {
+            title: "12. فهارس ودمج النصوص",
+            title_en: "12. String Indexing & Concat",
+            expl: "ممكن تلزق نصين ببعض بعلامة الزائد (+). وكل حرف في النص ليه رقم (Index) بيبدأ من صفر.",
+            expl_en: "You can glue strings with (+). Every char has an Index starting from zero.",
+            content: `<p><strong>الدمج (Concatenation):</strong></p><pre>print("Hello " + "World!") [cite: 288]</pre><p><strong>الفهرسة (Indexing):</strong> للوصول لحرف معين [cite: 241].</p><pre>st = "Hello"\nprint(st[1]) # e [cite: 244, 245]\nprint(st[-1]) # o (الحرف الأخير) [cite: 248]</pre>`,
+            content_en: `<p><strong>Concatenation:</strong></p><pre>print("Hello " + "World!") [cite: 288]</pre><p><strong>Indexing:</strong> Accessing a specific character [cite: 241].</p><pre>st = "Hello"\nprint(st[1]) # e [cite: 244, 245]\nprint(st[-1]) # o (last char) [cite: 248]</pre>`,
+            general_info: "لدمج رقم مع نص، يجب تحويل الرقم لنص أولاً باستخدام دالة str(num)[cite: 291].",
+            general_info_en: "To combine a number with a string, convert it first using str(num)[cite: 291]."
+        },
+        {
+            title: "13. دوال النصوص (String Functions)",
+            title_en: "13. String Functions",
+            expl: "بايثون فيها أدوات جاهزة مريحة بتخليك تعرف طول الكلمة أو تحول الحروف لكابيتال وسمول بسهولة.",
+            expl_en: "Python has built-in tools to easily find length, or convert to upper/lower case.",
+            content: `<ul><li><code>len(st)</code>: حساب طول النص [cite: 281].</li><li><code>st.upper()</code>: تحويل النص لحروف كبيرة [cite: 281].</li><li><code>st.lower()</code>: تحويل النص لحروف صغيرة [cite: 281].</li><li><code>int("99")</code>: تحويل نص إلى رقم صحيح[cite: 281].</li></ul>`,
+            content_en: `<ul><li><code>len(st)</code>: Length of string [cite: 281].</li><li><code>st.upper()</code>: Convert to ALL CAPS [cite: 281].</li><li><code>st.lower()</code>: Convert to all lowercase [cite: 281].</li><li><code>int("99")</code>: Convert string to integer[cite: 281].</li></ul>`,
+            general_info: "يوجد العديد من الدوال المفيدة الأخرى مثل replace و find[cite: 353].",
+            general_info_en: "There are many other useful functions like replace and find[cite: 353]."
+        },
+        {
+            title: "14. تقطيع النصوص (Substring)",
+            title_en: "14. Substring (Slicing)",
+            expl: "عشان تاخد حتة معينة من الكلمة، بتحدد البداية والنهاية. وبايثون مبتخدش الرقم الأخير معانا.",
+            expl_en: "To extract a part of a word, specify start and end. Python excludes the last number.",
+            content: `<p>القاعدة: <code>st[start:end]</code> [cite: 308]</p><pre>st = "Fantastic"\nprint(st[0:6]) # Fantas [cite: 313, 314]\nprint(st[4:])  # astic [cite: 315, 316]\nprint(st[:5])  # Fanta [cite: 317, 318]</pre>`,
+            content_en: `<p>Syntax: <code>st[start:end]</code> [cite: 308]</p><pre>st = "Fantastic"\nprint(st[0:6]) # Fantas [cite: 313, 314]\nprint(st[4:])  # astic [cite: 315, 316]\nprint(st[:5])  # Fanta [cite: 317, 318]</pre>`,
+            general_info: "إذا تركت خانة البداية فارغة ستفهم بايثون أنك تقصد البداية من الصفر (0).",
+            general_info_en: "If you leave the start index empty, Python assumes starting from zero (0)."
+        },
+        {
+            title: "15. تقسيم النصوص (Split)",
+            title_en: "15. String Split",
+            expl: "دالة split بتفصص الجملة لكلمات لوحدها وتحطهم في قائمة (List) بناءً على مسافة أو أي فاصل تاني.",
+            expl_en: "The split function breaks a sentence into individual words in a List.",
+            content: `<p>تقسيم النص بناءً على فاصل [cite: 333]:</p><pre>st = "Awesome coding!"\nprint(st.split()) \n# ['Awesome', 'coding!'] [cite: 337, 338, 339]\n\ncsv = "data,100,50"\nprint(csv.split(","))\n# ['data', '100', '50'] [cite: 342, 343, 344]</pre>`,
+            content_en: `<p>Splitting string based on a separator [cite: 333]:</p><pre>st = "Awesome coding!"\nprint(st.split()) \n# ['Awesome', 'coding!'] [cite: 337, 338, 339]\n\ncsv = "data,100,50"\nprint(csv.split(","))\n# ['data', '100', '50'] [cite: 342, 343, 344]</pre>`,
+            general_info: "تُستخدم split بكثرة عند استخراج البيانات من ملفات الـ CSV للمحللين.",
+            general_info_en: "Split is heavily used when extracting data from CSV files for analysts."
+        },
+        {
+            title: "16. تنسيق الطباعة (Formatting)",
+            title_en: "16. Print Formatting",
+            expl: "أشيك وأسهل طريقة لطباعة نص جواه متغيرات هي إننا نستخدم أقواس {} ونملاها بالترتيب.",
+            expl_en: "The cleanest way to print text with variables is to use {} placeholders.",
+            content: `<p>طريقة <code>.format()</code> تسمح بتنظيم المتغيرات داخل النص بسلاسة [cite: 357]:</p><pre>print("Hi {}, age is {}".format("Amy", 21))\n# Output: Hi Amy, age is 21 [cite: 359]</pre>`,
+            content_en: `<p>The <code>.format()</code> method allows injecting variables smoothly [cite: 357]:</p><pre>print("Hi {}, age is {}".format("Amy", 21))\n# Output: Hi Amy, age is 21 [cite: 359]</pre>`,
+            general_info: "يوجد طريقة أحدث وأسرع في بايثون تسمى f-strings: print(f'Hi {name}')",
+            general_info_en: "A newer and faster way in Python is f-strings: print(f'Hi {name}')"
+        },
+        {
+            title: "17. الوقت والتاريخ (Date & Clock)",
+            title_en: "17. Date & Time / Clock",
+            expl: "مكتبة datetime بتجيبلك تاريخ اليوم، ومكتبة time بتجيبلك الثواني عشان تحسب الكود أخد وقت قد إيه.",
+            expl_en: "datetime gets today's date, time gets seconds to measure code execution duration.",
+            content: `<p><strong>التاريخ (datetime):</strong></p><pre>from datetime import datetime\nnow = datetime.now()\nprint(now.year, now.month) [cite: 368, 370, 375, 376]</pre><p><strong>المؤقت (time):</strong> يعطي الوقت بالثواني [cite: 381].</p><pre>import time\nstart = time.time()\n# ... run code ...\nprint("Elapsed:", time.time() - start) [cite: 382, 384]</pre>`,
+            content_en: `<p><strong>Date (datetime):</strong></p><pre>from datetime import datetime\nnow = datetime.now()\nprint(now.year, now.month) [cite: 368, 370, 375, 376]</pre><p><strong>Clock (time):</strong> Returns seconds [cite: 381].</p><pre>import time\nstart = time.time()\n# ... run code ...\nprint("Elapsed:", time.time() - start) [cite: 382, 384]</pre>`,
+            general_info: "الوقت المسترجع بواسطة time.time() هو عدد الثواني منذ بداية حقبة اليونكس.",
+            general_info_en: "The time returned by time.time() is seconds since the Unix Epoch."
+        },
+        {
+            title: "18. الخلاصة ومعمل الكود",
+            title_en: "18. Summary & Lab",
+            expl: "عاش جداً يا بطل! المحاضرة الأولى كده خلصت وبقيت عارف أساسيات بايثون، جرب الكود بقى.",
+            expl_en: "Great job! Lecture 1 is done and you know Python basics, now try the code.",
+            content: `<p>🎉 <strong>تهانينا!</strong> لقد أنهيت محتوى المحاضرة الأولى بنجاح.</p><p>الآن، استخدم الـ Terminal بالأسفل لتجربة تعريف المتغيرات، طباعة النصوص، وتجربة أوامر التقطيع والدمج.</p>`,
+            content_en: `<p>🎉 <strong>Congratulations!</strong> You have successfully finished Lecture 1.</p><p>Now use the Terminal below to test variables, printing, slicing, and concatenating.</p>`,
+            general_info: "أفضل طريقة للتعلم هي الممارسة وكتابة الكود بيدك واكتشاف الأخطاء.",
+            general_info_en: "The best way to learn is by practicing, writing code, and discovering errors.",
+            isTerminalSlide: true
+        }
+    ];
+
+    let idx = 0;
+    let uiLang = 'ar'; 
+    
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        normalContainer: document.getElementById('normalSlideContent'),
+        compilerContainer: document.getElementById('compilerContainer'),
+        expl: document.getElementById('explText'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn'),
+        lblExpl: document.getElementById('labelExpl'),
+        pageTitle: document.getElementById('pageTitle'),
+        sidebar: document.getElementById('sidebar'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn'),
+        txtPrev: document.getElementById('txtPrev'),
+        txtNext: document.getElementById('txtNext'),
+        generalInfo: document.getElementById('generalInfoText'),
+        syntaxHints: document.getElementById('syntaxHints')
+    };
+
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+        
+        document.ondragstart = null; 
+    }
+
+    function toggleSlideCheck(index, event) {
+        event.stopPropagation(); 
+        const checkbox = event.target;
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress') || '{}');
+        savedProgress[index] = checkbox.checked;
+        localStorage.setItem('pythonCourseProgress', JSON.stringify(savedProgress));
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress') || '{}');
+
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            
+            let chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'slide-check';
+            chk.checked = savedProgress[i] || false;
+            chk.onclick = (e) => toggleSlideCheck(i, e);
+
+            let num = i === slides.length - 1 ? '💻' : i + 1;
+            let displayTitle = uiLang === 'ar' ? s.title : s.title_en;
+            let cleanTitle = displayTitle.includes('.') ? displayTitle.split('.')[1] : displayTitle;
+            
+            let textSpan = document.createElement('span');
+            textSpan.innerHTML = `${cleanTitle} <span style="font-size:0.8rem; opacity:0.7;">${num}</span>`;
+            textSpan.style.flex = "1";
+
+            li.appendChild(chk);
+            li.appendChild(textSpan);
+            
+            li.onclick = () => loadSlide(i);
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? `درس ${index + 1}` : `Lesson ${index + 1}`;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.expl.innerHTML = isAr ? s.expl : s.expl_en;
+        
+        dom.generalInfo.innerText = isAr ? (s.general_info || "...") : (s.general_info_en || "...");
+
+        if (s.isTerminalSlide) {
+            dom.compilerContainer.style.display = 'block';
+            setTimeout(() => {
+                dom.compilerContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            dom.compilerContainer.style.display = 'none';
+        }
+
+        dom.prev.disabled = index === 0;
+        dom.next.disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        document.querySelectorAll('.section-box').forEach(b => b.classList.remove('open'));
+        if(window.innerWidth <= 768) dom.sidebar.classList.remove('open');
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function move(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    function toggleSection(el) { el.classList.toggle('open'); }
+    function toggleSidebar() { dom.sidebar.classList.toggle('open'); }
+    function toggleInfo() { 
+        const modal = document.getElementById('infoModal'); 
+        if(modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        slides.forEach((s, i) => {
+            const t = uiLang === 'ar' ? s.title : s.title_en;
+            if(t.toLowerCase().includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    function toggleLang() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        dom.pageTitle.innerText = isAr ? "Python Master" : "Python Master";
+        dom.txtPrev.innerText = isAr ? "السابق" : "Prev";
+        dom.txtNext.innerText = isAr ? "التالي" : "Next";
+        dom.lblExpl.innerText = isAr ? "💡 الشرح المبسط" : "💡 Simple Explanation";
+        dom.search.placeholder = isAr ? "بحث..." : "Search...";
+        
+        const arHint = `⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                        1. <strong>الحروف:</strong> بايثون حساسة للحروف (Print تختلف عن print).<br>
+                        2. <strong>المسافات:</strong> المسافة في بداية السطر (Indentation) تحدد بداية ونهاية الكود.<br>
+                        3. <strong>التنصيص:</strong> تأكد من إغلاق الأقواس وعلامات التنصيص " " بشكل صحيح.<br>
+                        4. <strong>الأسماء:</strong> لا تبدأ اسم متغير برقم.`;
+        const enHint = `⚠️ <strong>Coder Hints:</strong><br>
+                        1. <strong>Case Sensitive:</strong> Python distinguishes between Print and print.<br>
+                        2. <strong>Indentation:</strong> Space at start of line determines code blocks.<br>
+                        3. <strong>Quotes:</strong> Ensure brackets and quotes " " are closed.<br>
+                        4. <strong>Naming:</strong> Variable names cannot start with a number.`;
+        dom.syntaxHints.innerHTML = isAr ? arHint : enHint;
+        
+        // تعديل نصوص النافذة المنبثقة للغتين
+        document.getElementById('modalTitle').innerText = isAr ? "معلومات المادة" : "Course Info";
+        document.getElementById('modalDesc').innerText = isAr ? "أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج." : "Welcome to the interactive Python course. Browse slides, read simplified explanations, and test your code directly via the built-in Terminal.";
+        document.getElementById('modalCloseBtn').innerText = isAr ? "إغلاق" : "Close";
+
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        
+        localStorage.setItem('globalTheme', newTheme);
+        
+        const chk = document.getElementById('themeCheckbox');
+        if(chk) chk.checked = !isLight;
+    }
+
+    function outf(text) { 
+        const output = document.getElementById("output-area");
+        if (output.innerText === "Output will appear here...") output.innerText = "";
+        output.innerText += text; 
+    } 
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+    function runPython() {
+        const prog = document.getElementById("code-input").value; 
+        const mypre = document.getElementById("output-area"); 
+        mypre.innerHTML = ''; 
+        mypre.classList.remove('error-output');
+
+        Sk.pre = "output-area";
+        Sk.configure({output:outf, read:builtinRead}); 
+
+        const myPromise = Sk.misceval.asyncToPromise(function() {
+            return Sk.importMainWithBody("<stdin>", false, prog);
+        });
+        myPromise.then(function(mod) { console.log('success'); }, function(err) {
+            mypre.classList.add('error-output');
+            mypre.innerHTML = err.toString();
+        });
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

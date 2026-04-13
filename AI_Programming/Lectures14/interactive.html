@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Master | L14</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <style>
+        /* ألوان مخصصة للمحاضرة الرابعة عشرة (Deep Learning Theme - Red & Orange) */
+        :root {
+            --bg-gradient-light: #fef2f2;
+            --glass-bg-light: rgba(255, 255, 255, 0.9);
+            --glass-border-light: rgba(255, 255, 255, 0.7);
+            --text-main-light: #7f1d1d;
+            --primary-light: #dc2626; /* أحمر كيرس (Keras Red) */
+            --accent-light: #ea580c; /* برتقالي تنسرفلو (TF Orange) */
+            --header-bg-light: #ffffff;
+
+            --bg-gradient-dark: #450a0a;
+            --glass-bg-dark: rgba(220, 38, 38, 0.15);
+            --glass-border-dark: rgba(239, 68, 68, 0.2);
+            --text-main-dark: #fef2f2;
+            --primary-dark: #f87171;
+            --accent-dark: #fb923c;
+            --header-bg-dark: #450a0a;
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        input, textarea, code, pre { -webkit-user-select: text !important; user-select: text !important; }
+
+        body {
+            font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text);
+            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+        header {
+            height: 80px; background: var(--header-bg); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 25px; z-index: 1000; box-shadow: var(--shadow);
+            flex-shrink: 0; 
+        }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        
+        .cta-back { 
+            display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; 
+            font-weight: bold; color: white; background: var(--primary); transition: 1s; 
+            box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; 
+            margin-right: 10px;
+        }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: var(--text-main-dark); }
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 20px; align-items: center; }
+        .lang-button {
+            height: 50px; width: 150px; border: none; border-radius: 10px; cursor: pointer;
+            position: relative; overflow: hidden; transition: all 0.5s ease-in-out;
+            background: transparent; font-family: 'Cairo', sans-serif;
+        }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after {
+            content: attr(data-hover); height: 50px; width: 150px; background-color: var(--primary);
+            color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+        .type1::before {
+            content: attr(data-main); height: 50px; width: 150px; background-color: var(--glass);
+            color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px;
+        }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .info-btn {
+            background: rgba(220, 38, 38, 0.1); color: var(--accent); border: 1px solid var(--accent);
+            padding: 5px 12px; font-size: 1.2rem; border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .info-btn:hover { background: var(--accent); color: white; transform: rotate(15deg); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; 
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--header-bg); padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 500px; width: 90%;
+            border: 2px solid var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text);
+        }
+        .modal-content h2 { margin-bottom: 15px; color: var(--primary); }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .btn-icon { background: var(--primary); color: white; padding: 10px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-family: 'Cairo'; font-size: 1.1rem; }
+        .btn-icon:hover { background: var(--accent); }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        
+        aside {
+            width: 340px; max-width: 100%; background: var(--glass); border-inline-end: 1px solid var(--border);
+            display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900;
+            transition: all 0.4s;
+        }
+        .search-area { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; height: 100px; flex-shrink: 0; }
+        .grid { height: 100%; width: 100%; background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px), linear-gradient(to bottom, #0f0f10 1px, transparent 1px); background-size: 1rem 1rem; position: absolute; z-index: -1; filter: blur(1px); opacity: 0.2; }
+        #poda { display: flex; align-items: center; justify-content: center; position: relative; transform: scale(0.9); transform-origin: center; width: 100%; max-width: 280px; }
+        .search-input-styled { background-color: #010201; border: none; width: 100%; height: 56px; border-radius: 10px; color: white; padding-inline: 59px; font-size: 14px; font-family: 'Cairo'; }
+        .search-input-styled:focus { outline: none; }
+        .white, .border, .darkBorderBg, .glow { max-height: 70px; max-width: 100%; height: 100%; width: 100%; position: absolute; overflow: hidden; z-index: -1; border-radius: 12px; filter: blur(3px); }
+        .white { max-height: 63px; width: 98%; border-radius: 10px; filter: blur(2px); }
+        .white::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(83deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.4); background-image: conic-gradient(rgba(0,0,0,0) 0%, #f87171, rgba(0,0,0,0) 8%, rgba(0,0,0,0) 50%, #fb923c, rgba(0,0,0,0) 58%); transition: all 2s; }
+        .border { max-height: 59px; width: 96%; border-radius: 11px; filter: blur(0.5px); }
+        .border::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(70deg); position: absolute; width: 600px; height: 600px; filter: brightness(1.3); background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#1c191c, var(--primary) 5%, #1c191c 14%, #1c191c 50%, var(--accent) 60%, #1c191c 64%); transition: all 2s; }
+        .darkBorderBg { max-height: 65px; width: 99%; }
+        .darkBorderBg::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(82deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(rgba(0,0,0,0), var(--primary), rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, var(--accent), rgba(0,0,0,0) 60%); transition: all 2s; }
+        #poda:hover > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(262deg); }
+        #poda:hover > .glow::before { transform: translate(-50%, -50%) rotate(240deg); }
+        #poda:hover > .white::before { transform: translate(-50%, -50%) rotate(263deg); }
+        #poda:hover > .border::before { transform: translate(-50%, -50%) rotate(250deg); }
+        #poda:focus-within > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(442deg); transition: all 4s; }
+        #poda:focus-within > .glow::before { transform: translate(-50%, -50%) rotate(420deg); transition: all 4s; }
+        #poda:focus-within > .white::before { transform: translate(-50%, -50%) rotate(443deg); transition: all 4s; }
+        #poda:focus-within > .border::before { transform: translate(-50%, -50%) rotate(430deg); transition: all 4s; }
+        .glow { overflow: hidden; filter: blur(30px); opacity: 0.4; max-height: 130px; width: 110%; }
+        .glow:before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg); position: absolute; width: 999px; height: 999px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#000, var(--primary) 5%, #000 38%, #000 50%, var(--accent) 60%, #000 87%); transition: all 2s; }
+        #filter-icon { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; justify-content: center; z-index: 2; max-height: 40px; max-width: 38px; height: 100%; width: 100%; isolation: isolate; overflow: hidden; border-radius: 10px; background: linear-gradient(180deg, #161329, black, #1d1b4b); border: 1px solid transparent; }
+        html[dir="ltr"] #filter-icon { right: auto; left: 8px; }
+        .filterBorder { height: 42px; width: 40px; position: absolute; overflow: hidden; top: 7px; right: 7px; border-radius: 10px; }
+        html[dir="ltr"] .filterBorder { right: auto; left: 7px; }
+        .filterBorder::before { content: ""; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.35); background-image: conic-gradient(rgba(0,0,0,0), #3d3a4f, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 50%, #3d3a4f, rgba(0,0,0,0) 100%); animation: rotate 4s linear infinite; }
+        #main-search { position: relative; width: 100%; }
+        #search-icon { position: absolute; left: 20px; top: 15px; }
+        html[dir="ltr"] #search-icon { left: auto; right: 20px; }
+        @keyframes rotate { 100% { transform: translate(-50%, -50%) rotate(450deg); } }
+        .slide-list { 
+            list-style: none; overflow-y: auto; flex: 1; padding: 10px; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .list-item { 
+            padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+        
+        .slide-check {
+            width: 18px; height: 18px; margin-inline-end: 10px; cursor: pointer; accent-color: var(--accent);
+            z-index: 2; flex-shrink: 0;
+        }
+
+        main { 
+            flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; 
+            scroll-behavior: smooth; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card { background: var(--glass); width: 100%; max-width: 850px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 40px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(220, 38, 38, 0.1); color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; margin-bottom: 25px; line-height: 1.5; color: var(--primary); }
+        .content { font-size: 1.2rem; line-height: 1.9; margin-bottom: 30px; color: var(--text); }
+        
+        /* Code Box */
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 12px; overflow-x: auto; direction: ltr; text-align: left; font-family: 'Fira Code', monospace; border: 1px solid var(--border); margin: 20px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); max-width: 100%; white-space: pre-wrap; word-break: break-word;}
+        code { background: rgba(220, 38, 38, 0.1); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code'; color: var(--primary); font-weight: bold; }
+
+        .info-box-general {
+            background: rgba(220, 38, 38, 0.08); border-inline-start: 4px solid var(--primary);
+            padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 1rem;
+            color: var(--text); display: flex; gap: 10px; align-items: start;
+        }
+        .info-box-icon { font-size: 1.5rem; }
+
+        .section-box { margin-top: 20px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
+        .section-header { background: rgba(255,255,255,0.03); padding: 18px 25px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-content { display: none; padding: 25px; border-top: 1px solid var(--border); }
+        .section-box.open .section-content { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Compiler --- */
+        .compiler-container { display: none; margin-top: 20px; direction: ltr; width: 100%; }
+        .compiler-box { background: #1e1e1e; border-radius: 16px; padding: 20px; border: 2px solid var(--primary); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; overflow-x: hidden; }
+        .compiler-header { color: var(--accent); font-family: 'Fira Code'; margin-bottom: 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        .syntax-hints {
+            background: #2d2d2d; color: #aaa; padding: 10px; margin-bottom: 10px; border-radius: 8px;
+            font-size: 0.85rem; font-family: 'Cairo'; border-left: 3px solid #ea580c;
+            line-height: 1.6;
+        }
+        textarea#code-input { width: 100%; height: 300px; background: #2d2d2d; color: #f8f8f2; border: 1px solid #444; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 16px; resize: vertical; max-width: 100%; box-sizing: border-box; }
+        .run-btn { background: var(--accent); color: #fff; border: none; padding: 12px 30px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; font-family: 'Fira Code'; font-size: 1rem; width: 100%; transition: 0.3s; }
+        .run-btn:hover { background: var(--primary); transform: translateY(-2px); }
+        #output-area { background: #000; color: #0f0; padding: 15px; margin-top: 15px; border-radius: 8px; min-height: 100px; font-family: 'Fira Code'; white-space: pre-wrap; word-break: break-all; border-left: 5px solid var(--accent); max-width: 100%; overflow-x: auto; }
+        .error-output { color: #ff5555 !important; }
+        
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .styled-btn { position: relative; width: 11em; max-width: 45%; height: 4em; outline: none; transition: 0.1s; background-color: transparent; border: none; font-size: 13px; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(220, 38, 38, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; }
+        .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { animation: 0.2s ease-in-out 0.55s both greenLight8; --color: var(--accent); }
+        @keyframes greenLight8 { from { } to { box-shadow: inset 0px 0px 32px var(--accent); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        .bb8-toggle { --toggle-size: 6px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; flex-shrink: 0; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); color: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; padding: 5px; }
+        
+        /* التجاوب (Media Queries) */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; } 
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; text-align: center; flex: 1; margin: 0 10px; justify-content: center;}
+            .controls { gap: 10px; } 
+            .lang-button { width: 100px; height: 40px; }
+            .type1::after, .type1::before { width: 100px; height: 40px; font-size: 0.9rem; }
+            .bb8-toggle { --toggle-size: 4px; display: inline-block !important; }
+            
+            /* تعديل الـ Sidebar ليتجاوب مع LTR و RTL */
+            aside { position: fixed; height: calc(100vh - 80px); top: 80px; width: 280px; max-width: 85%; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+            html[dir="rtl"] aside { right: -320px; left: auto; border-left: 1px solid var(--border); }
+            html[dir="rtl"] aside.open { right: 0; }
+            html[dir="ltr"] aside { left: -320px; right: auto; border-right: 1px solid var(--border); }
+            html[dir="ltr"] aside.open { left: 0; }
+            
+            .menu-btn { display: block; }
+            #poda { transform: scale(0.85); }
+            main { padding: 15px; } 
+            .card { padding: 25px; margin-bottom: 20px; }
+            h1 { font-size: 1.4rem; } 
+            .content { font-size: 1rem; line-height: 1.7; }
+            .nav-actions { gap: 15px; flex-wrap: nowrap; } 
+            .styled-btn { font-size: 12px; max-width: 48%; }
+            .cta-back { display: none; }
+        }
+        @media (max-width: 480px) {
+            .header-title { display: none; } 
+            .header-title-container { justify-content: flex-start; }
+            .controls { flex: 1; justify-content: flex-end; } 
+            .styled-btn { width: 100%; max-width: 140px; font-size: 11px; }
+            .info-box-general { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="modal-overlay" id="infoModal" onclick="toggleInfo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">معلومات المادة</h2>
+            <p id="modalDesc">أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج.</p>
+            <button class="btn-icon" onclick="toggleInfo()" id="modalCloseBtn">إغلاق</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+
+            <button class="info-btn" onclick="toggleInfo()" title="معلومات عن المادة">ℹ</button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-brands fa-python" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">Python Master | L14</div>
+                <div class="header-subtitle">التعلم العميق (Deep Learning)</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="الوضع الليلي">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                </div>
+                <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                </div>
+                <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div class="grid"></div>
+                <div id="poda">
+                    <div class="glow"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
+                    <div class="white"></div><div class="border"></div>
+                    <div id="main-search">
+                        <input placeholder="Search..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                        <div class="filterBorder"></div>
+                        <div id="filter-icon">🔍</div>
+                        <div id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" height="24" fill="none"><circle stroke="#b6a9b7" r="8" cy="11" cx="11"></circle><line stroke="#b6a9b7" y2="16.65" y1="22" x2="16.65" x1="22"></line></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">Intro</span>
+                <h1 id="slideHeader">...</h1>
+                
+                <div id="normalSlideContent">
+                    <div class="info-box-general">
+                        <span class="info-box-icon">🧩</span>
+                        <div id="generalInfoText">...</div>
+                    </div>
+
+                    <div class="content" id="slideHtml">...</div>
+                    <div class="section-box" onclick="toggleSection(this)">
+                        <div class="section-header">
+                            <span id="labelExpl">💡 الشرح المبسط</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="section-content" id="explText">...</div>
+                    </div>
+                </div>
+
+                <div class="compiler-container" id="compilerContainer">
+                    <div class="section-box open" style="margin-bottom: 20px;">
+                        <div class="section-header" style="background: rgba(220, 38, 38, 0.1);">
+                            👨‍💻 Python Code Lab
+                        </div>
+                        <div class="section-content" style="display: block;">
+                            <div class="compiler-box">
+                                <div class="compiler-header"><span>>_ Terminal</span><span>v3.x</span></div>
+                                <div class="syntax-hints" id="syntaxHints">
+                                    ⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                                    1. <strong>بيئة المتصفح:</strong> مكتبات `tensorflow` و `keras` لا تعمل مباشرة داخل المتصفح هنا لحجمها الضخم.<br>
+                                    2. <strong>البديل:</strong> لتطبيق نماذج التعلم العميق الحقيقية وتدريبها، يرجى استخدام بيئة <a href="https://colab.research.google.com/" target="_blank" style="color:var(--primary);">Google Colab</a> التي توفر لك معالجات رسومية (GPU) مجانية.<br>
+                                    3. <strong>التدريب:</strong> يمكنك استخدام هذا الـ Terminal لكتابة هياكل شبكات وهمية أو دوال رياضية بايثون عادية كتدريب.
+                                </div>
+                                <textarea id="code-input" placeholder="# Use Google Colab to run real Keras / TensorFlow deep learning models. \n# Write some python logic here..."></textarea>
+                                <button class="run-btn" onclick="runPython()">▶ RUN CODE</button>
+                                <div id="output-area">Output will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span id="txtPrev">السابق</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span id="txtNext">التالي</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // الشرائح بناءً على محتوى ملف: 12_DeepLearning.pdf
+    const slides = [
+        {
+            title: "1. مقدمة في التعلم العميق",
+            title_en: "1. Intro to Deep Learning",
+            expl: "التعلم العميق (Deep Learning) هو فرع متطور من الذكاء الاصطناعي بيحاكي طريقة عمل مخ الإنسان باستخدام شبكات عصبية ضخمة. بنستخدمه عشان نتعرف على الصور، نفهم الكلام، ونترجم اللغات.",
+            expl_en: "Deep Learning is an advanced branch of AI that mimics the human brain using artificial neural networks. We use it for image recognition, natural language processing, and translation.",
+            content: `<p><strong>التعلم العميق (Deep Learning)</strong>: يعتمد على بناء "شبكات عصبية اصطناعية" (Artificial Neural Networks) مكونة من عدة طبقات (Layers).</p>
+<p>لماذا نستخدم التعلم العميق؟</p>
+<ul>
+    <li>قادر على التعامل مع البيانات غير المهيكلة (الصور، الصوت، النصوص) ببراعة غير مسبوقة.</li>
+    <li>يستطيع استخراج الميزات (Feature Extraction) تلقائياً دون الحاجة لتدخل المبرمج في تفاصيلها.</li>
+</ul>`,
+            content_en: `<p><strong>Deep Learning</strong> relies on building "Artificial Neural Networks" consisting of multiple layers.</p>
+<p>Why use Deep Learning?</p>
+<ul>
+    <li>It excels at handling unstructured data (images, audio, text) with unprecedented accuracy.</li>
+    <li>It can automatically extract features without requiring manual feature engineering by the programmer.</li>
+</ul>`,
+            general_info: "كلما زاد حجم البيانات المستخدمة في التدريب، زادت كفاءة وذكاء الشبكة العصبية بشكل ملحوظ.",
+            general_info_en: "The more data you feed into a neural network, the smarter and more efficient it becomes."
+        },
+        {
+            title: "2. ما هو إطار عمل TensorFlow؟",
+            title_en: "2. What is TensorFlow?",
+            expl: "تنسرفلو هو مكتبة برمجية ضخمة جداً عملتها شركة جوجل. ميزتها إنها بتعرف تحسب معادلات رياضية معقدة بسرعة جداً باستخدام كروت الشاشة (GPU).",
+            expl_en: "TensorFlow is a massive open-source library created by Google. It computes complex math equations incredibly fast using graphics cards (GPUs).",
+            content: `<p><strong>TensorFlow:</strong> مكتبة مفتوحة المصدر (Open-source) طورتها (Google Brain Team) للحسابات الرقمية العالية باستخدام "الرسوم البيانية لتدفق البيانات" (Data Flow Graphs).</p>
+<ul>
+    <li><strong>مرونة عالية:</strong> تدعم تشغيل النماذج على أجهزة الكمبيوتر العادية (CPU) ومعالجات الرسوميات (GPU) والهواتف المحمولة.</li>
+    <li><strong>دعم الشركات:</strong> تستخدمها شركات كبرى مثل Uber و DeepMind و AirBnB لبناء أنظمتها الذكية.</li>
+</ul>`,
+            content_en: `<p><strong>TensorFlow:</strong> is an open-source library developed by the Google Brain Team for numerical computation using Data Flow Graphs.</p>
+<ul>
+    <li><strong>High Flexibility:</strong> It supports running models on standard CPUs, powerful GPUs, and even mobile devices.</li>
+    <li><strong>Corporate Adoption:</strong> Used by giants like Uber, DeepMind, and AirBnB to build their AI systems.</li>
+</ul>`,
+            general_info: "تنسرفلو قوي جداً لكن كتابة الكود الخاص به مباشرة قد تكون معقدة وطويلة، لذلك نستخدم معه مكتبة (Keras).",
+            general_info_en: "TensorFlow is extremely powerful but writing raw TF code can be tedious, which is why we use (Keras) on top of it."
+        },
+        {
+            title: "3. ما هي مكتبة Keras؟",
+            title_en: "3. What is Keras?",
+            expl: "كيرس (Keras) عاملة زي ريموت التلفزيون السهل اللي بيتحكم في جهاز معقد (TensorFlow). بتخليك تبني شبكة عصبية وتضيف طبقات بسطر كود واحد بدل ما تكتب تفاصيل رياضية معقدة.",
+            expl_en: "Keras is like an easy-to-use TV remote that controls a complex machine (TensorFlow). It lets you build a neural network layer by layer with single lines of code instead of complex math.",
+            content: `<p><strong>مكتبة Keras:</strong> هي واجهة برمجة تطبيقات عالية المستوى (High-level API) للتعلم العميق، وتعمل الآن كجزء مدمج داخل مكتبة TensorFlow <code>tf.keras</code>.</p>
+<ul>
+    <li>تتميز بالسهولة وسرعة بناء النماذج (Prototyping).</li>
+    <li>تعمل فوق TensorFlow لتسهيل بناء الشبكات العصبية باستخدام مفهوم "تكوين الطبقات" (Layer Stacking).</li>
+</ul>`,
+            content_en: `<p><strong>Keras:</strong> is a high-level Deep Learning API that is now integrated directly into TensorFlow as <code>tf.keras</code>.</p>
+<ul>
+    <li>It is famous for being user-friendly and enabling rapid prototyping.</li>
+    <li>It runs on top of TensorFlow, simplifying neural network construction through the concept of "Layer Stacking".</li>
+</ul>`,
+            general_info: "مكتبة Keras هي المكتبة الأكثر شيوعاً لبدء مشاريع التعلم العميق في بايثون للمبتدئين والمحترفين على حد سواء.",
+            general_info_en: "Keras is the most popular library for starting Deep Learning projects in Python for both beginners and professionals."
+        },
+        {
+            title: "4. تحضير بيانات الصور (Fashion MNIST)",
+            title_en: "4. Data Prep (Fashion MNIST)",
+            expl: "قبل ما ندي الصور للشبكة، لازم نجهزها. الصور دي بتكون أرقام من 0 لـ 9 بتعبر عن نوع اللبس (تيشيرت، بنطلون، إلخ). لازم نحول الأرقام دي لجدول أصفار ووحايد (One-Hot) عشان الموديل يفهمها صح.",
+            expl_en: "Before feeding images to the network, we prep them. Labels are 0-9 representing clothes (T-shirt, Trouser, etc). We convert these to a table of 0s and 1s (One-Hot Encoding) so the model understands them.",
+            content: `<p>لنفترض أننا سنقوم بتدريب شبكة للتعرف على صور الملابس (مجموعة Fashion MNIST).</p>
+<p>تحتوي هذه المجموعة على 10 أنواع من الملابس (من 0 إلى 9). يجب تحويل هذه التسميات إلى مصفوفات ثنائية (Binary Matrices) باستخدام دالة <code>to_categorical</code>:</p>
+<pre>import tensorflow as tf
+num_classes = 10
+
+# تحويل التسميات (Labels) لتشفير One-Hot
+y_train = tf.keras.utils.to_categorical(y_train, num_classes)
+y_test  = tf.keras.utils.to_categorical(y_test, num_classes)</pre>`,
+            content_en: `<p>Let's assume we are training a network to recognize clothing images (Fashion MNIST dataset).</p>
+<p>This dataset has 10 categories (labels 0 to 9). We must convert these labels into binary matrices using the <code>to_categorical</code> function:</p>
+<pre>import tensorflow as tf
+num_classes = 10
+
+# Convert labels to One-Hot Encoding
+y_train = tf.keras.utils.to_categorical(y_train, num_classes)
+y_test  = tf.keras.utils.to_categorical(y_test, num_classes)</pre>`,
+            general_info: "تشفير (One-Hot Encoding) يمنع الموديل من الاعتقاد بأن فئة رقم '8' أهم رياضياً من الفئة رقم '2'.",
+            general_info_en: "One-Hot Encoding prevents the model from mathematically assuming that category '8' is greater or more important than category '2'."
+        },
+        {
+            title: "5. بناء النموذج (Sequential Model)",
+            title_en: "5. The Sequential Model",
+            expl: "بناء الموديل في Keras عامل زي بناء بيت بمكعبات الليجو. بنبدأ بأساس اسمه (Sequential) يعني طبقات ورا بعضها، وكل شوية نضيف (add) طبقة جديدة فوق اللي قبلها.",
+            expl_en: "Building a model in Keras is like stacking Lego blocks. We start with a base called 'Sequential' (meaning layers follow each other), and we just 'add' new layers on top.",
+            content: `<p>نبدأ ببناء النموذج باستخدام واجهة <strong>Sequential</strong>، وهي تتيح لنا رص الطبقات (Layers) واحدة تلو الأخرى بشكل تتابعي:</p>
+<pre>from tensorflow.keras.models import Sequential
+
+# 1. إنشاء الحاوية الأساسية للنموذج
+model = Sequential()
+
+# (في الشرائح القادمة سنقوم بإضافة الطبقات بداخلها باستخدام model.add)
+</pre>`,
+            content_en: `<p>We start building the model using the <strong>Sequential</strong> API, which allows us to stack layers linearly, one after the other:</p>
+<pre>from tensorflow.keras.models import Sequential
+
+# 1. Create the base model container
+model = Sequential()
+
+# (In the next slides we will add layers inside it using model.add)
+</pre>`,
+            general_info: "نموذج Sequential يناسب معظم مهام التعلم العميق البسيطة التي تتكون من مدخل واحد ومخرج واحد.",
+            general_info_en: "The Sequential model is suitable for most simple deep learning tasks that have one single input and one single output."
+        },
+        {
+            title: "6. الطبقات التلافيفية (Conv2D)",
+            title_en: "6. Conv2D Layers",
+            expl: "الطبقة دي بتشتغل زي فلتر إنستجرام! بتمرر مربع صغير (مثلاً 3x3) على الصورة عشان تكتشف الملامح المهمة زي الحواف والزوايا والألوان، بدل ما تبص على بيكسلات عشوائية.",
+            expl_en: "This layer acts like an Instagram filter! It slides a small box (e.g. 3x3) over the image to detect important features like edges, corners, and shapes.",
+            content: `<p>الطبقات التلافيفية (Convolutional Layers) هي الأساس للتعرف على الصور. تقوم هذه الطبقات باستخراج الخصائص (Features) من الصورة مثل الحواف والأشكال.</p>
+<pre>from tensorflow.keras.layers import Conv2D
+
+# إضافة طبقة بها 32 فلتر بحجم 3x3
+model.add(Conv2D(32, kernel_size=(3, 3), 
+                 activation='relu', 
+                 input_shape=input_shape))
+
+# إضافة طبقة تلافيفية أخرى
+model.add(Conv2D(64, (3, 3), activation='relu'))</pre>`,
+            content_en: `<p>Convolutional Layers are the core of image recognition. They extract features from the image such as edges, textures, and shapes.</p>
+<pre>from tensorflow.keras.layers import Conv2D
+
+# Add a layer with 32 filters of size 3x3
+model.add(Conv2D(32, kernel_size=(3, 3), 
+                 activation='relu', 
+                 input_shape=input_shape))
+
+# Add another Conv layer
+model.add(Conv2D(64, (3, 3), activation='relu'))</pre>`,
+            general_info: "دالة التنشيط (ReLU) تُستخدم غالباً في هذه الطبقات لجعل الشبكة تتعلم الأنماط المعقدة وغير الخطية بتجاهل القيم السالبة.",
+            general_info_en: "The (ReLU) activation function is widely used here to help the network learn complex non-linear patterns by ignoring negative values."
+        },
+        {
+            title: "7. طبقات التجميع (MaxPooling2D)",
+            title_en: "7. MaxPooling2D Layers",
+            expl: "بعد ما استخرجنا الخصائص من الصورة، بيكون حجم البيانات كبير جداً. طبقة الـ MaxPool بتعمل زووم آوت (بتصغر الصورة) وبتاخد أهم وأقوى البيكسلات بس وترمي الباقي عشان تسرع الموديل.",
+            expl_en: "After extracting features, the data is huge. MaxPool acts like 'zooming out'. It shrinks the image by keeping only the strongest pixels and discarding the rest, speeding up the model.",
+            content: `<p>تُستخدم طبقة <strong>MaxPooling2D</strong> لتقليل الأبعاد المكانية للصورة (تصغير حجمها) مع الاحتفاظ بأهم المعلومات المكتشفة.</p>
+<pre>from tensorflow.keras.layers import MaxPooling2D, Dropout
+
+# تصغير حجم الصورة للنصف (2x2)
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+# إضافة Dropout لإطفاء 25% من العصبونات عشوائياً (لمنع الحفظ/الـ Overfitting)
+model.add(Dropout(0.25))</pre>`,
+            content_en: `<p>The <strong>MaxPooling2D</strong> layer is used to reduce the spatial dimensions (shrink) of the image while keeping the most critical detected features.</p>
+<pre>from tensorflow.keras.layers import MaxPooling2D, Dropout
+
+# Shrink the image by half (2x2)
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+# Add Dropout to randomly turn off 25% of neurons (Prevents Overfitting)
+model.add(Dropout(0.25))</pre>`,
+            general_info: "طبقة Dropout تعتبر تقنية رائعة للـ Regularization، حيث تمنع الشبكة من حفظ البيانات صمّاً، وتجبرها على التعميم.",
+            general_info_en: "The Dropout layer is an excellent Regularization technique; it prevents the network from memorizing the data and forces it to generalize."
+        },
+        {
+            title: "8. الطبقات المخفية (Flatten & Dense)",
+            title_en: "8. Flatten & Dense Layers",
+            expl: "الصورة بعد التلافيف عبارة عن مربعات (مصفوفات ثنائية). الدماغ الآلي في آخر الموديل مبتفهمش المربعات دي. الـ Flatten بتفرد المربعات وتخليها طابور طويل، وتدخلها على عصبونات كثيفة (Dense) تطلع القرار النهائي.",
+            expl_en: "After convolutions, the image is still in 2D matrices. The final decision brain only understands 1D arrays. Flatten turns the 2D matrix into a long 1D queue, feeding it to Dense neurons for the final decision.",
+            content: `<p>في النهاية، نحتاج لتمرير البيانات المستخرجة إلى "شبكة عصبية كثيفة" لاتخاذ قرار التصنيف النهائي.</p>
+<pre>from tensorflow.keras.layers import Flatten, Dense
+
+# 1. فرد المصفوفات ثنائية الأبعاد إلى متجه أحادي (1D)
+model.add(Flatten())
+
+# 2. طبقة عصبية كثيفة بها 128 خلية (للتفكير واتخاذ القرار)
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+
+# 3. طبقة الإخراج: 10 خلايا (بعدة فئات الملابس) مع دالة softmax لإنتاج الاحتمالات
+model.add(Dense(num_classes, activation='softmax'))</pre>`,
+            content_en: `<p>Finally, we need to pass the extracted data to a "Dense Neural Network" to make the final classification decision.</p>
+<pre>from tensorflow.keras.layers import Flatten, Dense
+
+# 1. Flatten the 2D arrays into a 1D vector
+model.add(Flatten())
+
+# 2. A dense layer with 128 neurons (the \"thinking\" brain)
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+
+# 3. Output layer: 10 neurons (for 10 classes) using Softmax for probabilities
+model.add(Dense(num_classes, activation='softmax'))</pre>`,
+            general_info: "دالة Softmax في الطبقة الأخيرة تقوم بتحويل الأرقام إلى نسب مئوية (احتمالات) مجموعها 100% لتحديد القرار الأكثر احتمالاً.",
+            general_info_en: "The Softmax function in the final layer converts raw numbers into probabilities that sum up to 100% to determine the final prediction."
+        },
+        {
+            title: "9. تجميع النموذج (Compilation)",
+            title_en: "9. Model Compilation",
+            expl: "بعد ما رصينا طبقات الموديل، لازم نحدد له 'نظام التعليم'. إيه هو الامتحان اللي هيتحاسب عليه (Loss)، ومين المدرس اللي هيصححله ويعدل مستواه (Optimizer)؟",
+            expl_en: "After stacking the layers, we must set its 'Learning System'. What is the exam it's graded on (Loss), and who is the teacher correcting its mistakes (Optimizer)?",
+            content: `<p>قبل بدء التدريب، يجب "تجميع" (Compile) النموذج لتحديد كيفية حساب الأخطاء وكيفية تحسين الأوزان.</p>
+<pre>from tensorflow.keras.optimizers import Adam
+
+model.compile(
+    # دالة حساب مقدار الخطأ (مناسبة للتصنيف المتعدد)
+    loss=tf.keras.losses.categorical_crossentropy,
+    
+    # خوارزمية التحسين (المدرس الذي يقلل الخطأ)
+    optimizer=Adam(), 
+    
+    # مقياس التقييم الذي نريد رؤيته
+    metrics=['accuracy']
+)</pre>`,
+            content_en: `<p>Before training, the model must be \"Compiled\" to define how to calculate errors and how to update its weights.</p>
+<pre>from tensorflow.keras.optimizers import Adam
+
+model.compile(
+    # The loss function (perfect for multi-class classification)
+    loss=tf.keras.losses.categorical_crossentropy,
+    
+    # The optimizer (the algorithm minimizing the error)
+    optimizer=Adam(), 
+    
+    # The metric we want to monitor
+    metrics=['accuracy']
+)</pre>`,
+            general_info: "مُحسِّن Adam يعتبر من أفضل المحسنات وأسرعها حالياً في عالم التعلم العميق ولا يحتاج لضبط معلمات فائقة معقدة.",
+            general_info_en: "The Adam optimizer is currently one of the best and fastest optimizers in Deep Learning, and requires minimal hyperparameter tuning."
+        },
+        {
+            title: "10. تدريب النموذج (Training - Fit)",
+            title_en: "10. Model Training (Fit)",
+            expl: "دلوقتي الموديل جاهز يذاكر الداتا. دالة fit بتخليه يبص على صور الملابس، يقارن توقعه بالإجابة الصح، ويتعلم من غلطه. بيكرر المذاكرة دي عدد معين من المرات (Epochs).",
+            expl_en: "Now the model is ready to study the data. The 'fit' function makes it look at clothes images, guess the label, check the answer, and learn. It repeats this study process for a set number of rounds (Epochs).",
+            content: `<p>نستخدم الدالة <code>fit()</code> لبدء تدريب النموذج على بيانات الصور:</p>
+<pre>model.fit(
+    x_train, y_train,         # بيانات التدريب (الصور وإجاباتها)
+    batch_size=128,           # عدد الصور التي يعالجها في الدفعة الواحدة
+    epochs=10,                # عدد مرات مراجعة المنهج بالكامل (الدورات)
+    verbose=1,                # إظهار شريط التقدم أثناء التدريب
+    validation_data=(x_test, y_test) # بيانات نختبره بها أثناء التدريب
+)</pre>`,
+            content_en: `<p>We use the <code>fit()</code> method to start training the model on the image dataset:</p>
+<pre>model.fit(
+    x_train, y_train,         # Training data (Images & Labels)
+    batch_size=128,           # Number of images processed at once
+    epochs=10,                # Number of full passes over the dataset
+    verbose=1,                # Show progress bar output
+    validation_data=(x_test, y_test) # Data used for testing while training
+)</pre>`,
+            general_info: "زيادة عدد الـ Epochs بشكل كبير قد يؤدي إلى Overfitting (حفظ البيانات بدلاً من فهمها).",
+            general_info_en: "Increasing the number of Epochs too much can lead to Overfitting (memorizing data instead of understanding patterns)."
+        },
+        {
+            title: "11. التقييم النهائي (Evaluation)",
+            title_en: "11. Final Evaluation",
+            expl: "بعد ما الموديل خلص مذاكرة وتدريب، بنعمله امتحان نهائي باستخدام دالة evaluate. دي بتدينا الدقة النهائية (Accuracy) للموديل على بيانات هو ماشافهاش قبل كده.",
+            expl_en: "After the model finishes studying, we give it a final exam using the evaluate function. This gives us the final Accuracy on unseen data.",
+            content: `<p>بعد انتهاء التدريب، نحتاج لمعرفة الأداء النهائي للشبكة العصبية باستخدام بيانات الاختبار.</p>
+<pre># تقييم النموذج النهائي
+score = model.evaluate(x_test, y_test, verbose=0)
+
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])</pre>
+<ul>
+    <li>الدقة (Accuracy) تعبر عن نسبة التوقعات الصحيحة من إجمالي الصور المعروضة على النموذج.</li>
+</ul>`,
+            content_en: `<p>After training concludes, we need to assess the neural network's final performance using the test dataset.</p>
+<pre># Evaluate the final model
+score = model.evaluate(x_test, y_test, verbose=0)
+
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])</pre>
+<ul>
+    <li>The Accuracy represents the percentage of correct predictions out of all test images.</li>
+</ul>`,
+            general_info: "إذا كانت دقة التدريب 99% ودقة الاختبار 70%، فهذا دليل قاطع على أن النموذج يعاني من فرط التخصيص (Overfitting).",
+            general_info_en: "If training accuracy is 99% but test accuracy is 70%, it is a definitive sign that the model is suffering from Overfitting."
+        },
+        {
+            title: "12. معمل الأكواد - التعلم العميق",
+            title_en: "12. Deep Learning Code Lab",
+            expl: "إنجاز رائع! إنت كده كملت دورة بايثون للذكاء الاصطناعي ووصلت لقمة الهرم: بناء شبكات عصبية عميقة تتعرف على الصور.",
+            expl_en: "Amazing achievement! You have completed the Python AI course and reached the pinnacle: Building Deep Neural Networks that recognize images.",
+            content: `<p>🎉 <strong>تهانينا الحارة!</strong> لقد أتممت المحاضرة الرابعة عشرة، وتعرفت على كيفية بناء شبكة تلافيفية للتعرف على الصور باستخدام <strong>TensorFlow & Keras</strong>.</p>
+<p>هذه هي الخطوة الأولى في عالم واسع من الذكاء الاصطناعي المتقدم. ننصحك بنسخ هذه الأكواد وتجربتها بشكل عملي على <a href="https://colab.research.google.com/" target="_blank" style="color:var(--accent); font-weight:bold;">Google Colab</a> حيث ستبهرك سرعة كروت الشاشة (GPU)!</p>`,
+            content_en: `<p>🎉 <strong>Huge Congratulations!</strong> You have finished Lecture 14 and learned how to build a Convolutional Neural Network for image recognition using <strong>TensorFlow & Keras</strong>.</p>
+<p>This is just the first step into the vast world of advanced AI. We highly recommend copying these codes and running them on <a href="https://colab.research.google.com/" target="_blank" style="color:var(--accent); font-weight:bold;">Google Colab</a>, where the GPU speed will amaze you!</p>`,
+            general_info: "في المعمل الوهمي بالأسفل، يمكنك التدرب على كتابة دوال وتراكيب برمجية بايثون استعداداً لكتابة خوارزميات الذكاء الاصطناعي.",
+            general_info_en: "In the virtual lab below, you can practice writing Python syntax and constructs in preparation for writing complex AI algorithms.",
+            isTerminalSlide: true
+        }
+    ];
+
+    let idx = 0;
+    let uiLang = 'ar'; 
+    
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        normalContainer: document.getElementById('normalSlideContent'),
+        compilerContainer: document.getElementById('compilerContainer'),
+        expl: document.getElementById('explText'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn'),
+        lblExpl: document.getElementById('labelExpl'),
+        pageTitle: document.getElementById('pageTitle'),
+        sidebar: document.getElementById('sidebar'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn'),
+        txtPrev: document.getElementById('txtPrev'),
+        txtNext: document.getElementById('txtNext'),
+        generalInfo: document.getElementById('generalInfoText'),
+        syntaxHints: document.getElementById('syntaxHints')
+    };
+
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+        
+        document.ondragstart = null; 
+    }
+
+    function toggleSlideCheck(index, event) {
+        event.stopPropagation(); 
+        const checkbox = event.target;
+        // حفظ التقدم بشكل مستقل للمحاضرة الرابعة عشرة
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress_L14') || '{}');
+        savedProgress[index] = checkbox.checked;
+        localStorage.setItem('pythonCourseProgress_L14', JSON.stringify(savedProgress));
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress_L14') || '{}');
+
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            
+            let chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'slide-check';
+            chk.checked = savedProgress[i] || false;
+            chk.onclick = (e) => toggleSlideCheck(i, e);
+
+            let num = i === slides.length - 1 ? '💻' : i + 1;
+            let displayTitle = uiLang === 'ar' ? s.title : s.title_en;
+            let cleanTitle = displayTitle.includes('.') ? displayTitle.split('.')[1] : displayTitle;
+            
+            let textSpan = document.createElement('span');
+            textSpan.innerHTML = `${cleanTitle} <span style="font-size:0.8rem; opacity:0.7;">${num}</span>`;
+            textSpan.style.flex = "1";
+
+            li.appendChild(chk);
+            li.appendChild(textSpan);
+            
+            li.onclick = () => loadSlide(i);
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? `درس ${index + 1}` : `Lesson ${index + 1}`;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.expl.innerHTML = isAr ? s.expl : s.expl_en;
+        
+        dom.generalInfo.innerText = isAr ? (s.general_info || "...") : (s.general_info_en || "...");
+
+        if (s.isTerminalSlide) {
+            dom.compilerContainer.style.display = 'block';
+            setTimeout(() => {
+                dom.compilerContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            dom.compilerContainer.style.display = 'none';
+        }
+
+        dom.prev.disabled = index === 0;
+        dom.next.disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        document.querySelectorAll('.section-box').forEach(b => b.classList.remove('open'));
+        if(window.innerWidth <= 768) dom.sidebar.classList.remove('open');
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function move(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    function toggleSection(el) { el.classList.toggle('open'); }
+    function toggleSidebar() { dom.sidebar.classList.toggle('open'); }
+    function toggleInfo() { 
+        const modal = document.getElementById('infoModal'); 
+        if(modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        slides.forEach((s, i) => {
+            const t = uiLang === 'ar' ? s.title : s.title_en;
+            if(t.toLowerCase().includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    function toggleLang() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        dom.pageTitle.innerText = isAr ? "Python Master | L14" : "Python Master | L14";
+        dom.txtPrev.innerText = isAr ? "السابق" : "Prev";
+        dom.txtNext.innerText = isAr ? "التالي" : "Next";
+        dom.lblExpl.innerText = isAr ? "💡 الشرح المبسط" : "💡 Simple Explanation";
+        dom.search.placeholder = isAr ? "بحث..." : "Search...";
+        
+        const arHint = `⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                        1. <strong>بيئة المتصفح:</strong> مكتبات \`tensorflow\` و \`keras\` لا تعمل مباشرة داخل المتصفح هنا لحجمها الضخم.<br>
+                        2. <strong>البديل:</strong> لتطبيق نماذج التعلم العميق الحقيقية وتدريبها، يرجى استخدام بيئة <a href="https://colab.research.google.com/" target="_blank" style="color:var(--primary);">Google Colab</a> التي توفر لك معالجات رسومية (GPU) مجانية.<br>
+                        3. <strong>التدريب:</strong> يمكنك استخدام هذا الـ Terminal لكتابة هياكل شبكات وهمية أو دوال رياضية بايثون عادية كتدريب.`;
+        const enHint = `⚠️ <strong>Coder Hints:</strong><br>
+                        1. <strong>Browser Env:</strong> The \`tensorflow\` and \`keras\` libraries do not run directly in this browser lab due to their massive size.<br>
+                        2. <strong>Alternative:</strong> To train real Deep Learning models, please use an environment like <a href="https://colab.research.google.com/" target="_blank" style="color:var(--primary);">Google Colab</a> which provides free GPUs.<br>
+                        3. <strong>Practice:</strong> You can practice standard Python logic or write dummy network architecture codes here.`;
+        dom.syntaxHints.innerHTML = isAr ? arHint : enHint;
+        
+        document.getElementById('modalTitle').innerText = isAr ? "معلومات المادة" : "Course Info";
+        document.getElementById('modalDesc').innerText = isAr ? "أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج." : "Welcome to the interactive Python course. Browse slides, read simplified explanations, and test your code directly via the built-in Terminal.";
+        document.getElementById('modalCloseBtn').innerText = isAr ? "إغلاق" : "Close";
+
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        
+        localStorage.setItem('globalTheme', newTheme);
+        
+        const chk = document.getElementById('themeCheckbox');
+        if(chk) chk.checked = !isLight;
+    }
+
+    function outf(text) { 
+        const output = document.getElementById("output-area");
+        if (output.innerText === "Output will appear here...") output.innerText = "";
+        output.innerText += text; 
+    } 
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+    function runPython() {
+        const prog = document.getElementById("code-input").value; 
+        const mypre = document.getElementById("output-area"); 
+        mypre.innerHTML = ''; 
+        mypre.classList.remove('error-output');
+
+        Sk.pre = "output-area";
+        Sk.configure({output:outf, read:builtinRead}); 
+
+        const myPromise = Sk.misceval.asyncToPromise(function() {
+            return Sk.importMainWithBody("<stdin>", false, prog);
+        });
+        myPromise.then(function(mod) { console.log('success'); }, function(err) {
+            mypre.classList.add('error-output');
+            mypre.innerHTML = err.toString();
+        });
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

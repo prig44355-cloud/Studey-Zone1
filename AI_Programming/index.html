@@ -74,7 +74,6 @@
             color: #db2777;
         }
 
-        /* تعديل اتجاه الأيقونة العائمة عند التبديل للغة الإنجليزية LTR */
         html[dir="ltr"] .floating-icon { right: auto; left: -15px; }
 
         .lec-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 900; }
@@ -105,37 +104,24 @@
             .navbar { justify-content: space-between; } 
             .page-title { font-size: 1.3rem; text-align: right; }
             .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-            
-            /* تظبيط البوردر والأيقونة للتابلت */
             .lec-card { border-radius: 25px 8px 25px 8px; margin-top: 15px; }
             .floating-icon { top: -25px; right: 15px; width: 55px; height: 55px; font-size: 20px;}
             html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
         }
 
         @media (max-width: 480px) {
-            /* تظبيط الهيدر والزراير للموبايل الصغير */
             .navbar { flex-direction: row; gap: 10px; padding: 15px; flex-wrap: nowrap;}
             .page-title { font-size: 1.1rem; gap: 5px; flex: 1;}
-            
-            /* تظبيط زرار الرجوع بحجم Auto عشان ميكسرش الشاشة */
             .cta-back { width: auto; font-size: 13px; padding: 6px 15px; transform: skewX(10deg); box-shadow: -3px 3px 0 var(--text-main);}
             [data-theme="dark"] .cta-back { box-shadow: -3px 3px 0 #ffffff; }
             .cta-back .span { transform: skewX(-10deg); }
             .cta-back .second { width: 18px; margin-right: 8px;}
             .cta-back:hover .second { margin-right: 15px; }
-
             .title { font-size: 1.4rem; margin-bottom: 35px; }
-            
-            /* جعل التصميم بعمود واحد وتجنب الخروج عن حواف الشاشة */
             .grid { grid-template-columns: 1fr; gap: 35px; }
-            
-            /* تصغير البوردر بشكل شيك وواقعي جداً للموبايل */
             .lec-card { border-radius: 20px 5px 20px 5px; padding: 35px 15px 20px; margin-top: 20px;}
-            
-            /* تظبيط الأيقونة العائمة عشان متعملش سكرول جانبي وتفضل محتفظة بشكلها */
             .floating-icon { width: 50px; height: 50px; font-size: 18px; top: -25px; right: 15px; border-width: 3px; }
             html[dir="ltr"] .floating-icon { left: 15px; right: auto; }
-            
             .lec-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
             .btn-glass { font-size: 1rem; padding: 10px 20px; }
         }
@@ -153,34 +139,7 @@
 
     <main class="container">
         <h1 class="title">قائمة المحاضرات 📚</h1>
-        <div class="grid">
-
-            <div class="lec-card active-card" onclick="window.location.href='Lectures_1_to_3/index.html'">
-                <div class="floating-icon">1</div>
-                <h3>المحاضرات (1 إلى 3)</h3>
-                <p>محتوى مدمج لأساسيات لغة بايثون.</p>
-                <a href="Lectures_1_to_3/index.html" class="btn-glass">دخول للمحاضرة</a>
-            </div>
-            
-            <div class="lec-card active-card" onclick="window.location.href='Lectures4/index.html'">
-                <div class="floating-icon">4</div>
-                <h3>المحاضرة الرابعة</h3>
-                <p>شرح وتفريغ المحاضرة الرابعة: البرمجة الكائنية (OOP).<br>
-                    <span style="color: #ff9a9e; font-weight: bold; font-size: 0.9rem;"></span>
-                </p> 
-                <a href="Lectures4/index.html" class="btn-glass">دخول للمحاضرة</a>
-            </div>
-
-            <div class="lec-card locked-card">
-                <div class="floating-icon">5</div>
-                <h3>المحاضرة الخامسة</h3>
-                <div class="spinner-container">
-                    <div class="spinner"><div class="spinnerin"></div></div>
-                    <span style="font-weight:bold;" class="locked-status">جاري التجهيز...</span>
-                </div>
-            </div>
-
-        </div>
+        <div class="grid" id="lectures-grid"></div>
     </main>
 
     <script>
@@ -193,29 +152,66 @@
             document.documentElement.dir = globalLang === 'ar' ? 'rtl' : 'ltr';
             
             if (globalLang === 'en') {
-                // ترجمة العناصر الأساسية
                 document.querySelector('.page-title').innerText = '🤖 AI Programming';
                 document.querySelector('.span').innerText = 'Home';
                 document.querySelector('.title').innerText = 'Lectures List 📚';
+            }
 
-                // ترجمة محتوى الكروت حتى يكتمل تجاوب الصفحة مع اللغة
-                const cardsH3 = document.querySelectorAll('.lec-card h3');
-                const cardsP = document.querySelectorAll('.lec-card p');
-                const cardsBtn = document.querySelectorAll('.lec-card .btn-glass');
-                const lockedStatus = document.querySelector('.locked-status');
+            // تمت إضافة المحاضرات حتى 14 هنا
+            const activeLectures = [
+                { id: 1, titleAr: 'المحاضرة الأولى', titleEn: 'Lecture 1', descAr: 'مقدمة في لغة بايثون والبيئة التطويرية.', descEn: 'Introduction to Python and Environment.', link: 'Lectures1/index.html' },
+                { id: 2, titleAr: 'المحاضرة الثانية', titleEn: 'Lecture 2', descAr: 'المتغيرات وأنواع البيانات الأساسية.', descEn: 'Variables and Basic Data Types.', link: 'Lectures2/index.html' },
+                { id: 3, titleAr: 'المحاضرة الثالثة', titleEn: 'Lecture 3', descAr: 'الجمل الشرطية وحلقات التكرار.', descEn: 'Conditionals and Loops.', link: 'Lectures3/index.html' },
+                { id: 4, titleAr: 'المحاضرة الرابعة', titleEn: 'Lecture 4', descAr: 'البرمجة الكائنية (OOP).', descEn: 'Object-Oriented Programming (OOP).', link: 'Lectures4/index.html' },
+                { id: 5, titleAr: 'المحاضرة الخامسة', titleEn: 'Lecture 5', descAr: 'التعامل مع الملفات (File Handling).', descEn: 'File Handling in Python.', link: 'Lectures5/index.html' },
+                { id: 6, titleAr: 'المحاضرة السادسة', titleEn: 'Lecture 6', descAr: 'التعامل مع المصفوفات باستخدام (NumPy).', descEn: 'Handling arrays using NumPy.', link: 'Lectures6/index.html' },
+                { id: 7, titleAr: 'المحاضرة السابعة', titleEn: 'Lecture 7', descAr: 'الرسم البياني وتصور البيانات (Matplotlib).', descEn: 'Data visualization and plotting (Matplotlib).', link: 'Lectures7/index.html' },
+                { id: 8, titleAr: 'المحاضرة الثامنة', titleEn: 'Lecture 8', descAr: 'تحليل ومعالجة البيانات باستخدام (Pandas).', descEn: 'Data analysis and manipulation (Pandas).', link: 'Lectures8/index.html' },
+                { id: 9, titleAr: 'المحاضرة التاسعة', titleEn: 'Lecture 9', descAr: 'مقدمة في تعلم الآلة (Machine Learning).', descEn: 'Introduction to Machine Learning.', link: 'Lectures9/index.html' },
+                { id: 10, titleAr: 'المحاضرة العاشرة', titleEn: 'Lecture 10', descAr: 'التصنيف باستخدام (Scikit-Learn).', descEn: 'Classification using Scikit-Learn.', link: 'Lectures10/index.html' },
+                { id: 11, titleAr: 'المحاضرة الحادية عشرة', titleEn: 'Lecture 11', descAr: 'الانحدار وتوقع الأرقام (Regression).', descEn: 'Regression algorithms.', link: 'Lectures11/index.html' },
+                { id: 12, titleAr: 'المحاضرة الثانية عشرة', titleEn: 'Lecture 12', descAr: 'التجميع غير الخاضع للإشراف (Clustering).', descEn: 'Unsupervised Clustering.', link: 'Lectures12/index.html' },
+                { id: 13, titleAr: 'المحاضرة الثالثة عشرة', titleEn: 'Lecture 13', descAr: 'معالجة وتجهيز البيانات (Data Preprocessing).', descEn: 'Data Preprocessing in Scikit-Learn.', link: 'Lectures13/index.html' },
+                { id: 14, titleAr: 'المحاضرة الرابعة عشرة', titleEn: 'Lecture 14', descAr: 'التعلم العميق باستخدام (TensorFlow & Keras).', descEn: 'Deep Learning with TensorFlow & Keras.', link: 'Lectures14/index.html' }
+            ];
 
-                if (cardsH3.length >= 3) {
-                    cardsH3[0].innerText = 'Lectures (1 to 3)';
-                    cardsP[0].innerText = 'Combined content for Python basics.';
-                    cardsBtn[0].innerText = 'Enter Lecture';
+            const grid = document.getElementById('lectures-grid');
+            grid.innerHTML = ''; 
 
-                    cardsH3[1].innerText = 'Lecture 4';
-                    cardsP[1].innerHTML = 'Explanation & transcript of Lecture 4: Object-Oriented Programming (OOP).';
-                    cardsBtn[1].innerText = 'Enter Lecture';
+            for (let i = 1; i <= 15; i++) {
+                const card = document.createElement('div');
+                
+                // يفتح الكروت بناءً على طول مصفوفة المحاضرات النشطة
+                if (i <= activeLectures.length) {
+                    const data = activeLectures[i - 1]; 
+                    const title = globalLang === 'ar' ? data.titleAr : data.titleEn;
+                    const desc = globalLang === 'ar' ? data.descAr : data.descEn;
+                    const btnText = globalLang === 'ar' ? 'دخول للمحاضرة' : 'Enter Lecture';
 
-                    cardsH3[2].innerText = 'Lecture 5';
-                    if (lockedStatus) lockedStatus.innerText = 'Preparing...';
+                    card.className = 'lec-card active-card';
+                    card.onclick = () => window.location.href = data.link;
+                    card.innerHTML = `
+                        <div class="floating-icon">${i}</div>
+                        <h3>${title}</h3>
+                        <p>${desc}</p>
+                        <a href="${data.link}" class="btn-glass" onclick="event.stopPropagation();">${btnText}</a>
+                    `;
+                } else {
+                    const title = globalLang === 'ar' ? 'المحاضرة ' + i : 'Lecture ' + i;
+                    const statusText = globalLang === 'ar' ? 'جاري التجهيز...' : 'Preparing...';
+
+                    card.className = 'lec-card locked-card';
+                    card.innerHTML = `
+                        <div class="floating-icon">${i}</div>
+                        <h3>${title}</h3>
+                        <div class="spinner-container">
+                            <div class="spinner"><div class="spinnerin"></div></div>
+                            <span style="font-weight:bold;" class="locked-status">${statusText}</span>
+                        </div>
+                    `;
                 }
+                
+                grid.appendChild(card);
             }
         }
 

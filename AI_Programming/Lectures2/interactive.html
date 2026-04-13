@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python | L2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <style>
+        :root {
+            --bg-gradient-light: #f0f4f8;
+            --glass-bg-light: rgba(255, 255, 255, 0.85);
+            --glass-border-light: rgba(255, 255, 255, 0.6);
+            --text-main-light: #1e293b;
+            --primary-light: #db2777;
+            --accent-light: #6225e6;
+            --header-bg-light: #ffffff;
+
+            --bg-gradient-dark: #05071b;
+            --glass-bg-dark: rgba(15, 23, 42, 0.85);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+            --text-main-dark: #f8fafc;
+            --primary-dark: #db2777;
+            --accent-dark: #fbc638;
+            --header-bg-dark: #05071b;
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        input, textarea, code, pre { -webkit-user-select: text !important; user-select: text !important; }
+
+        body {
+            font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text);
+            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+        header {
+            height: 80px; background: var(--header-bg); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 25px; z-index: 1000; box-shadow: var(--shadow);
+            flex-shrink: 0; 
+        }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        
+        .cta-back { 
+            display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; 
+            font-weight: bold; color: white; background: var(--primary); transition: 1s; 
+            box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; 
+            margin-right: 10px;
+        }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: white;}
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 20px; align-items: center; }
+        .lang-button {
+            height: 50px; width: 150px; border: none; border-radius: 10px; cursor: pointer;
+            position: relative; overflow: hidden; transition: all 0.5s ease-in-out;
+            background: transparent; font-family: 'Cairo', sans-serif;
+        }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after {
+            content: attr(data-hover); height: 50px; width: 150px; background-color: var(--primary);
+            color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+        .type1::before {
+            content: attr(data-main); height: 50px; width: 150px; background-color: var(--glass);
+            color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px;
+        }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .info-btn {
+            background: rgba(236, 72, 153, 0.1); color: var(--accent); border: 1px solid var(--accent);
+            padding: 5px 12px; font-size: 1.2rem; border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .info-btn:hover { background: var(--accent); color: white; transform: rotate(15deg); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; 
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--header-bg); padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 500px; width: 90%;
+            border: 2px solid var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text);
+        }
+        .modal-content h2 { margin-bottom: 15px; color: var(--primary); }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .btn-icon { background: var(--primary); color: white; padding: 10px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-family: 'Cairo'; font-size: 1.1rem; }
+        .btn-icon:hover { background: var(--accent); }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        
+        aside {
+            width: 340px; max-width: 100%; background: var(--glass); border-inline-end: 1px solid var(--border);
+            display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900;
+            transition: all 0.4s;
+        }
+        .search-area { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; height: 100px; flex-shrink: 0; }
+        .grid { height: 100%; width: 100%; background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px), linear-gradient(to bottom, #0f0f10 1px, transparent 1px); background-size: 1rem 1rem; position: absolute; z-index: -1; filter: blur(1px); opacity: 0.2; }
+        #poda { display: flex; align-items: center; justify-content: center; position: relative; transform: scale(0.9); transform-origin: center; width: 100%; max-width: 280px; }
+        .search-input-styled { background-color: #010201; border: none; width: 100%; height: 56px; border-radius: 10px; color: white; padding-inline: 59px; font-size: 14px; font-family: 'Cairo'; }
+        .search-input-styled:focus { outline: none; }
+        .white, .border, .darkBorderBg, .glow { max-height: 70px; max-width: 100%; height: 100%; width: 100%; position: absolute; overflow: hidden; z-index: -1; border-radius: 12px; filter: blur(3px); }
+        .white { max-height: 63px; width: 98%; border-radius: 10px; filter: blur(2px); }
+        .white::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(83deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.4); background-image: conic-gradient(rgba(0,0,0,0) 0%, #a099d8, rgba(0,0,0,0) 8%, rgba(0,0,0,0) 50%, #dfa2da, rgba(0,0,0,0) 58%); transition: all 2s; }
+        .border { max-height: 59px; width: 96%; border-radius: 11px; filter: blur(0.5px); }
+        .border::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(70deg); position: absolute; width: 600px; height: 600px; filter: brightness(1.3); background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#1c191c, var(--primary) 5%, #1c191c 14%, #1c191c 50%, var(--accent) 60%, #1c191c 64%); transition: all 2s; }
+        .darkBorderBg { max-height: 65px; width: 99%; }
+        .darkBorderBg::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(82deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(rgba(0,0,0,0), var(--primary), rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, var(--accent), rgba(0,0,0,0) 60%); transition: all 2s; }
+        #poda:hover > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(262deg); }
+        #poda:hover > .glow::before { transform: translate(-50%, -50%) rotate(240deg); }
+        #poda:hover > .white::before { transform: translate(-50%, -50%) rotate(263deg); }
+        #poda:hover > .border::before { transform: translate(-50%, -50%) rotate(250deg); }
+        #poda:focus-within > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(442deg); transition: all 4s; }
+        #poda:focus-within > .glow::before { transform: translate(-50%, -50%) rotate(420deg); transition: all 4s; }
+        #poda:focus-within > .white::before { transform: translate(-50%, -50%) rotate(443deg); transition: all 4s; }
+        #poda:focus-within > .border::before { transform: translate(-50%, -50%) rotate(430deg); transition: all 4s; }
+        .glow { overflow: hidden; filter: blur(30px); opacity: 0.4; max-height: 130px; width: 110%; }
+        .glow:before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg); position: absolute; width: 999px; height: 999px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#000, var(--primary) 5%, #000 38%, #000 50%, var(--accent) 60%, #000 87%); transition: all 2s; }
+        #filter-icon { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; justify-content: center; z-index: 2; max-height: 40px; max-width: 38px; height: 100%; width: 100%; isolation: isolate; overflow: hidden; border-radius: 10px; background: linear-gradient(180deg, #161329, black, #1d1b4b); border: 1px solid transparent; }
+        html[dir="ltr"] #filter-icon { right: auto; left: 8px; }
+        .filterBorder { height: 42px; width: 40px; position: absolute; overflow: hidden; top: 7px; right: 7px; border-radius: 10px; }
+        html[dir="ltr"] .filterBorder { right: auto; left: 7px; }
+        .filterBorder::before { content: ""; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.35); background-image: conic-gradient(rgba(0,0,0,0), #3d3a4f, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 50%, #3d3a4f, rgba(0,0,0,0) 100%); animation: rotate 4s linear infinite; }
+        #main-search { position: relative; width: 100%; }
+        #search-icon { position: absolute; left: 20px; top: 15px; }
+        html[dir="ltr"] #search-icon { left: auto; right: 20px; }
+        @keyframes rotate { 100% { transform: translate(-50%, -50%) rotate(450deg); } }
+        .slide-list { 
+            list-style: none; overflow-y: auto; flex: 1; padding: 10px; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .list-item { 
+            padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+        
+        .slide-check {
+            width: 18px; height: 18px; margin-inline-end: 10px; cursor: pointer; accent-color: var(--accent);
+            z-index: 2; flex-shrink: 0;
+        }
+
+        main { 
+            flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; 
+            scroll-behavior: smooth; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card { background: var(--glass); width: 100%; max-width: 850px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 40px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(236, 72, 153, 0.1); color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; margin-bottom: 25px; line-height: 1.5; color: var(--primary); }
+        .content { font-size: 1.2rem; line-height: 1.9; margin-bottom: 30px; color: var(--text); }
+        
+        /* Code Box */
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 12px; overflow-x: auto; direction: ltr; text-align: left; font-family: 'Fira Code', monospace; border: 1px solid var(--border); margin: 20px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); max-width: 100%; white-space: pre-wrap; word-break: break-word;}
+        code { background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code'; color: var(--accent); font-weight: bold; }
+
+        .info-box-general {
+            background: rgba(139, 92, 246, 0.08); border-inline-start: 4px solid var(--primary);
+            padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 1rem;
+            color: var(--text); display: flex; gap: 10px; align-items: start;
+        }
+        .info-box-icon { font-size: 1.5rem; }
+
+        .section-box { margin-top: 20px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
+        .section-header { background: rgba(255,255,255,0.03); padding: 18px 25px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-content { display: none; padding: 25px; border-top: 1px solid var(--border); }
+        .section-box.open .section-content { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Compiler --- */
+        .compiler-container { display: none; margin-top: 20px; direction: ltr; width: 100%; }
+        .compiler-box { background: #1e1e1e; border-radius: 16px; padding: 20px; border: 2px solid var(--primary); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; overflow-x: hidden; }
+        .compiler-header { color: var(--accent); font-family: 'Fira Code'; margin-bottom: 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        .syntax-hints {
+            background: #2d2d2d; color: #aaa; padding: 10px; margin-bottom: 10px; border-radius: 8px;
+            font-size: 0.85rem; font-family: 'Cairo'; border-left: 3px solid #f1c40f;
+            line-height: 1.6;
+        }
+        textarea#code-input { width: 100%; height: 300px; background: #2d2d2d; color: #f8f8f2; border: 1px solid #444; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 16px; resize: vertical; max-width: 100%; box-sizing: border-box; }
+        .run-btn { background: var(--accent); color: #fff; border: none; padding: 12px 30px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; font-family: 'Fira Code'; font-size: 1rem; width: 100%; transition: 0.3s; }
+        .run-btn:hover { background: var(--primary); transform: translateY(-2px); }
+        #output-area { background: #000; color: #0f0; padding: 15px; margin-top: 15px; border-radius: 8px; min-height: 100px; font-family: 'Fira Code'; white-space: pre-wrap; word-break: break-all; border-left: 5px solid var(--accent); max-width: 100%; overflow-x: auto; }
+        .error-output { color: #ff5555 !important; }
+        
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .styled-btn { position: relative; width: 11em; max-width: 45%; height: 4em; outline: none; transition: 0.1s; background-color: transparent; border: none; font-size: 13px; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(39, 97, 195, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; }
+        .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { animation: 0.2s ease-in-out 0.55s both greenLight8; --color: var(--accent); }
+        @keyframes greenLight8 { from { } to { box-shadow: inset 0px 0px 32px var(--accent); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        .bb8-toggle { --toggle-size: 6px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; flex-shrink: 0; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); color: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; padding: 5px; }
+        
+        /* التجاوب (Media Queries) */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; } 
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; text-align: center; flex: 1; margin: 0 10px; justify-content: center;}
+            .controls { gap: 10px; } 
+            .lang-button { width: 100px; height: 40px; }
+            .type1::after, .type1::before { width: 100px; height: 40px; font-size: 0.9rem; }
+            .bb8-toggle { --toggle-size: 4px; display: inline-block !important; }
+            
+            /* تعديل الـ Sidebar ليتجاوب مع LTR و RTL */
+            aside { position: fixed; height: calc(100vh - 80px); top: 80px; width: 280px; max-width: 85%; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+            html[dir="rtl"] aside { right: -320px; left: auto; border-left: 1px solid var(--border); }
+            html[dir="rtl"] aside.open { right: 0; }
+            html[dir="ltr"] aside { left: -320px; right: auto; border-right: 1px solid var(--border); }
+            html[dir="ltr"] aside.open { left: 0; }
+            
+            .menu-btn { display: block; }
+            #poda { transform: scale(0.85); }
+            main { padding: 15px; } 
+            .card { padding: 25px; margin-bottom: 20px; }
+            h1 { font-size: 1.4rem; } 
+            .content { font-size: 1rem; line-height: 1.7; }
+            .nav-actions { gap: 15px; flex-wrap: nowrap; } 
+            .styled-btn { font-size: 12px; max-width: 48%; }
+            .cta-back { display: none; }
+        }
+        @media (max-width: 480px) {
+            .header-title { display: none; } 
+            .header-title-container { justify-content: flex-start; }
+            .controls { flex: 1; justify-content: flex-end; } 
+            .styled-btn { width: 100%; max-width: 140px; font-size: 11px; }
+            .info-box-general { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="modal-overlay" id="infoModal" onclick="toggleInfo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">معلومات المادة</h2>
+            <p id="modalDesc">أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج.</p>
+            <button class="btn-icon" onclick="toggleInfo()" id="modalCloseBtn">إغلاق</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+
+            <button class="info-btn" onclick="toggleInfo()" title="معلومات عن المادة">ℹ</button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-brands fa-python" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">Python Master | L2</div>
+                <div class="header-subtitle">المحاضرة الثانية</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="الوضع الليلي">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                </div>
+                <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                </div>
+                <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div class="grid"></div>
+                <div id="poda">
+                    <div class="glow"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
+                    <div class="white"></div><div class="border"></div>
+                    <div id="main-search">
+                        <input placeholder="Search..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                        <div class="filterBorder"></div>
+                        <div id="filter-icon">🔍</div>
+                        <div id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" height="24" fill="none"><circle stroke="#b6a9b7" r="8" cy="11" cx="11"></circle><line stroke="#b6a9b7" y2="16.65" y1="22" x2="16.65" x1="22"></line></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">Intro</span>
+                <h1 id="slideHeader">...</h1>
+                
+                <div id="normalSlideContent">
+                    <div class="info-box-general">
+                        <span class="info-box-icon">🧩</span>
+                        <div id="generalInfoText">...</div>
+                    </div>
+
+                    <div class="content" id="slideHtml">...</div>
+                    <div class="section-box" onclick="toggleSection(this)">
+                        <div class="section-header">
+                            <span id="labelExpl">💡 الشرح المبسط</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="section-content" id="explText">...</div>
+                    </div>
+                </div>
+
+                <div class="compiler-container" id="compilerContainer">
+                    <div class="section-box open" style="margin-bottom: 20px;">
+                        <div class="section-header" style="background: rgba(255, 255, 255, 0.1);">
+                            👨‍💻 Python Code Lab
+                        </div>
+                        <div class="section-content" style="display: block;">
+                            <div class="compiler-box">
+                                <div class="compiler-header"><span>>_ Terminal</span><span>v3.x</span></div>
+                                <div class="syntax-hints" id="syntaxHints">
+                                    ⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                                    1. <strong>الحروف:</strong> بايثون حساسة للحروف (Print تختلف عن print).<br>
+                                    2. <strong>المسافات:</strong> المسافة في بداية السطر (Indentation) تحدد بداية ونهاية الكود.<br>
+                                    3. <strong>التنصيص:</strong> تأكد من إغلاق الأقواس وعلامات التنصيص " " بشكل صحيح.<br>
+                                    4. <strong>الأسماء:</strong> لا تبدأ اسم متغير برقم.
+                                </div>
+                                <textarea id="code-input" placeholder="# Write your python code here..."></textarea>
+                                <button class="run-btn" onclick="runPython()">▶ RUN CODE</button>
+                                <div id="output-area">Output will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span id="txtPrev">السابق</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span id="txtNext">التالي</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // تم تصميم هذه الشرائح بناءً على تفريغ المحاضرة الثانية بالكامل
+    const slides = [
+        {
+            title: "1. الإدخال (Python Input)",
+            title_en: "1. Python Input",
+            expl: "عشان تاخد بيانات من المستخدم، بنستخدم دالة input، والنتيجة دايماً بتطلع كنص.",
+            expl_en: "To read data from the user, use the input function. The result is always a string.",
+            content: `<p>للقراءة من لوحة المفاتيح (الإدخال القياسي)، استخدم دالة <code>input</code>[cite: 687]:</p>
+<pre>name = input("What's your name?")
+print(name) [cite: 688]</pre>`,
+            content_en: `<p>To read from the keyboard (standard input), use the method <code>input</code>[cite: 687]:</p>
+<pre>name = input("What's your name?")
+print(name) [cite: 688]</pre>`,
+            general_info: "دالة input في الإصدار القديم Python 2 كان اسمها raw_input()[cite: 692].",
+            general_info_en: "Note in Python 2 the method is called raw_input()[cite: 692]."
+        },
+        {
+            title: "2. المقارنات (Comparisons)",
+            title_en: "2. Comparisons",
+            expl: "المقارنة بين قيمتين بتطلع دايماً نتيجتها يا صح (True) يا غلط (False).",
+            expl_en: "Comparing two values always results in either True or False.",
+            content: `<p>يقوم معامل المقارنة بمقارنة قيمتين وتكون النتيجة قيمة منطقية (Boolean)[cite: 700, 717].</p>
+<ul>
+    <li><code>&gt;</code> أكبر من [cite: 706]</li>
+    <li><code>&lt;</code> أصغر من [cite: 711]</li>
+    <li><code>&gt;=</code> أكبر من أو يساوي [cite: 707]</li>
+    <li><code>&lt;=</code> أصغر من أو يساوي [cite: 714]</li>
+    <li><code>==</code> يساوي [cite: 715]</li>
+    <li><code>!=</code> لا يساوي [cite: 716]</li>
+</ul>`,
+            content_en: `<p>A comparison operator compares two values resulting in a Boolean[cite: 700, 717].</p>
+<ul>
+    <li><code>&gt;</code> Greater than [cite: 706]</li>
+    <li><code>&lt;</code> Less than [cite: 711]</li>
+    <li><code>&gt;=</code> Greater than or equal [cite: 707]</li>
+    <li><code>&lt;=</code> Less than or equal [cite: 714]</li>
+    <li><code>==</code> Equal [cite: 715]</li>
+    <li><code>!=</code> Not equal [cite: 716]</li>
+</ul>`,
+            general_info: "علامة التساوي المزدوجة == تُستخدم للمقارنة، لكن = الواحدة تُستخدم لإعطاء قيمة (Assignment)[cite: 715].",
+            general_info_en: "Note: Not '=' which is used for assignment! Double '==' is for comparison[cite: 715]."
+        },
+        {
+            title: "3. المعاملات المنطقية (Logic)",
+            title_en: "3. Logical Operators",
+            expl: "عشان نربط أكتر من شرط مع بعض، بنستخدم and (لازم الكل صح)، or (واحد بس يكفي)، و not (بتعكس النتيجة).",
+            expl_en: "To combine conditions, we use and (both must be true), or (one is enough), and not (reverses the result).",
+            content: `<p>يمكن دمج الشروط باستخدام المعاملات التالية[cite: 719, 721]:</p>
+<ul>
+    <li><code>and</code>: يعطي True إذا كان كلا الشرطين صحيحين[cite: 723].</li>
+    <li><code>or</code>: يعطي True إذا كان أحد الشرطين صحيحاً[cite: 723].</li>
+    <li><code>not</code>: يعكس النتيجة (يحول True إلى False)[cite: 723].</li>
+</ul>`,
+            content_en: `<p>Conditions may be combined using the following operators[cite: 719, 721]:</p>
+<ul>
+    <li><code>and</code>: True if both are True[cite: 723].</li>
+    <li><code>or</code>: True if either or both are True[cite: 723].</li>
+    <li><code>not</code>: Reverses (e.g. True becomes False)[cite: 723].</li>
+</ul>`,
+            general_info: "ترتيب التقييم هو: not أولاً، ثم and، وأخيراً or. ويمكن تغييره بالأقواس[cite: 722].",
+            general_info_en: "Order of evaluation: not, and, or. May change order with parentheses[cite: 722]."
+        },
+        {
+            title: "4. أمثلة على الشروط (Examples)",
+            title_en: "4. Condition Examples",
+            expl: "دي أمثلة عملية توضح إزاي بايثون بتفهم دمج الشروط وتطلع النتيجة.",
+            expl_en: "These practical examples show how Python evaluates combined conditions.",
+            content: `<pre>n = 5
+v = 8
+print(n > 5) # False [cite: 727, 731]
+print(n != v) # True [cite: 730, 733]
+
+# دمج الشروط
+print(n == v and n+4 > v) # False [cite: 734, 735]
+print(n == v or n+4 > v)  # True [cite: 736, 738]
+</pre>`,
+            content_en: `<pre>n = 5
+v = 8
+print(n > 5) # False [cite: 727, 731]
+print(n != v) # True [cite: 730, 733]
+
+# Combined conditions
+print(n == v and n+4 > v) # False [cite: 734, 735]
+print(n == v or n+4 > v)  # True [cite: 736, 738]
+</pre>`,
+            general_info: "يجب التركيز في قراءة الشروط خطوة بخطوة للوصول إلى النتيجة الصحيحة كما يفعل الكمبيوتر.",
+            general_info_en: "Read conditions step-by-step to evaluate them correctly, just like the computer does."
+        },
+        {
+            title: "5. الجمل الشرطية (If / Else)",
+            title_en: "5. Decisions (If / Else)",
+            expl: "القرارات بتخلي الكود ذكي؛ لو الشرط اتحقق، نفذ الكود اللي جوه if، ولو لأ، نفذ كود else.",
+            expl_en: "Decisions make code smart; if condition is met, run 'if' block, otherwise run 'else' block.",
+            content: `<p>القرارات تسمح للبرنامج بأداء إجراءات مختلفة بناءً على الشروط[cite: 758]:</p>
+<pre>if condition:
+    statement # يُنفذ إذا كان صحيحاً [cite: 760, 762]
+else:
+    statement # يُنفذ إذا كان خاطئاً [cite: 764, 766]
+</pre>`,
+            content_en: `<p>Decisions allow the program to perform different actions based on conditions[cite: 758]:</p>
+<pre>if condition:
+    statement # Done if condition is True [cite: 760, 762]
+else:
+    statement # Done if condition is False [cite: 764, 766]
+</pre>`,
+            general_info: "لا تنس النقطتين الرأسيتين (:) بعد جملة الشرط، فهي من أساسيات بايثون[cite: 769].",
+            general_info_en: "Remember the colon (:) after the condition, it is a Python fundamental[cite: 769]."
+        },
+        {
+            title: "6. الشروط المتعددة (If / Elif)",
+            title_en: "6. Decisions (If / Elif)",
+            expl: "لو عندك اختيارات كتير مش بس حالتين، بنستخدم elif (اختصار لـ else if) عشان نجرب شرط ورا التاني.",
+            expl_en: "If you have more than two choices, use elif (else if) to test conditions sequentially.",
+            content: `<p>إذا كان هناك أكثر من خيارين، استخدم صيغة <code>if/elif/else</code>[cite: 772]:</p>
+<pre>if n == 1:
+    print("one") [cite: 782, 783]
+elif n == 2:
+    print("two") [cite: 784, 785]
+else:
+    print("Too big!") [cite: 788, 789]
+</pre>`,
+            content_en: `<p>If there are more than two choices, use the <code>if/elif/else</code> syntax[cite: 772]:</p>
+<pre>if n == 1:
+    print("one") [cite: 782, 783]
+elif n == 2:
+    print("two") [cite: 784, 785]
+else:
+    print("Too big!") [cite: 788, 789]
+</pre>`,
+            general_info: "يمكنك استخدام أي عدد تريده من عبارات elif للتحقق من احتمالات كثيرة متتالية.",
+            general_info_en: "You can use as many elif statements as needed to check multiple possibilities in sequence."
+        },
+        {
+            title: "7. المسافات البادئة (Indentation)",
+            title_en: "7. Indentation",
+            expl: "بايثون مبتستخدمش أقواس عشان تحدد الكود اللي جوه if، هي بتعتمد على المسافة اللي في بداية السطر.",
+            expl_en: "Python does not use curly brackets; it relies entirely on the indentation at the start of lines.",
+            content: `<p>الجمل التي يتم تنفيذها داخل الـ if يجب أن تكون مزاحة بمسافة بادئة (Indented)[cite: 793].</p>
+<p>هذه المسافة هي الطريقة التي تعرف بها بايثون أي الجمل تنتمي إلى نفس المجموعة (Block)[cite: 794].</p>
+<ul><li>يجب أن تكون المسافات ثابتة (إما Tabs أو مسافات)، ولا تخلط بينهما أبداً[cite: 796]!</li></ul>`,
+            content_en: `<p>Statements executed after a decision must be indented[cite: 793].</p>
+<p>This indentation is how Python knows which statements are part of the block[cite: 794].</p>
+<ul><li>Be consistent with either using tabs or spaces. Do not mix them[cite: 796]!</li></ul>`,
+            general_info: "المعيار المتبع في مجتمع بايثون هو استخدام 4 مسافات (Spaces) لتحديد البلوكات.",
+            general_info_en: "The standard convention in the Python community is to use 4 spaces for indentation blocks."
+        },
+        {
+            title: "8. التكرار (Loops & Iteration)",
+            title_en: "8. Loops & Iteration",
+            expl: "حلقة التكرار بتخليك تنفذ كود كتير بدون ما تكتبه كذا مرة، وكل لفة بتتسمى Iteration.",
+            expl_en: "Loops allow you to execute code multiple times without re-writing it. Each cycle is called an Iteration.",
+            content: `<p>تكرر الحلقة مجموعة من العبارات عدة مرات حتى يتحقق شرط معين[cite: 879].</p>
+<ul>
+    <li>كل مرة يتم فيها تنفيذ الحلقة تسمى تكراراً (Iteration)[cite: 880].</li>
+    <li>حلقة <code>for</code>: تكرر العبارات عدداً محدداً من المرات[cite: 881].</li>
+    <li>حلقة <code>while</code>: تكرر العبارات طالما أن الشرط صحيح (True)[cite: 882].</li>
+</ul>`,
+            content_en: `<p>A loop repeats a set of statements multiple times until some condition is satisfied[cite: 879].</p>
+<ul>
+    <li>Each time a loop is executed is called an iteration[cite: 880].</li>
+    <li>A <code>for</code> loop repeats a number of times[cite: 881].</li>
+    <li>A <code>while</code> loop repeats while a condition is True[cite: 882].</li>
+</ul>`,
+            general_info: "التكرار هو أساس بناء البرامج الذكية التي تعالج آلاف البيانات في ثوانٍ معدودة.",
+            general_info_en: "Loops are the foundation of smart programs that process thousands of data points in seconds."
+        },
+        {
+            title: "9. حلقة (While Loop)",
+            title_en: "9. The while Loop",
+            expl: "أبسط شكل للتكرار، الكود بيفضل يشتغل طالما الشرط اللي جنبه لسه صح (True).",
+            expl_en: "The simplest loop structure, code keeps running as long as the condition remains True.",
+            content: `<p>بنية الحلقة الأساسية هي <code>while</code> التي تستمر بالعمل طالما الشرط True[cite: 885, 886].</p>
+<pre>n = 1 [cite: 889]
+while n <= 5: [cite: 890]
+    print(n) [cite: 891]
+    n = n + 1 # طريقة أسرع: n += 1 [cite: 893]
+</pre>`,
+            content_en: `<p>The most basic loop is the <code>while</code> loop, running while a condition is true[cite: 885, 886].</p>
+<pre>n = 1 [cite: 889]
+while n <= 5: [cite: 890]
+    print(n) [cite: 891]
+    n = n + 1 # Shorthand: n += 1 [cite: 893]
+</pre>`,
+            general_info: "إذا لم تقم بتغيير قيمة n داخل الحلقة، ستستمر في العمل إلى الأبد (حلقة لا نهائية).",
+            general_info_en: "If you don't update n inside the loop, it will run forever (infinite loop)."
+        },
+        {
+            title: "10. حلقة (For Loop)",
+            title_en: "10. The for Loop",
+            expl: "لما تكون عارف إنت عايز تلف الكود كام مرة بالظبط، بنستخدم حلقة for مع range.",
+            expl_en: "When you know exactly how many times you want to loop, use the 'for' loop with 'range'.",
+            content: `<p>حلقة <code>for</code> تكرر العبارات عدداً محدداً من المرات، وتعتبر اختصاراً لحلقة <code>while</code>[cite: 916, 932].</p>
+<pre>for i in range(1, 6): [cite: 919]
+    print(i) [cite: 920]
+</pre>
+<p>الرقم الأول (1) هو رقم البداية، والرقم الثاني (6) هو النهاية، ولكنه <strong>غير مشمول</strong> في التكرار[cite: 918, 921].</p>`,
+            content_en: `<p>A <code>for</code> loop repeats a given number of times, like a short-hand for a <code>while</code> loop[cite: 916, 932].</p>
+<pre>for i in range(1, 6): [cite: 919]
+    print(i) [cite: 920]
+</pre>
+<p>The first number (1) is the start, the second (6) is the end, which is <strong>not included</strong>[cite: 918, 921].</p>`,
+            general_info: "في المثال أعلاه، سيقوم البرنامج بطباعة الأرقام من 1 إلى 5 فقط.",
+            general_info_en: "In the example above, the program will print numbers from 1 to 5 only."
+        },
+        {
+            title: "11. دالة المدى (Range Function)",
+            title_en: "11. Using range",
+            expl: "دالة range بتولد أرقام. بتديها من كام لكام وبتزيد كام، بس خد بالك الرقم الأخير مبيطلعش.",
+            expl_en: "The range function generates numbers. You give it start, end, and step. Note: end is excluded.",
+            content: `<p>الصيغة الأساسية: <code>range(start, end)</code>[cite: 923, 924].</p>
+<ul>
+    <li>رقم البداية مشمول (inclusive)، لكن النهاية غير مشمولة (not inclusive)[cite: 925].</li>
+    <li>الزيادة الافتراضية هي 1[cite: 925].</li>
+    <li>يمكنك تحديد مقدار الزيادة: <code>range(start, end, increment)</code>[cite: 926, 927].</li>
+</ul>`,
+            content_en: `<p>Basic form: <code>range(start, end)</code>[cite: 923, 924].</p>
+<ul>
+    <li>start is inclusive, end is not inclusive[cite: 925].</li>
+    <li>default increment is 1[cite: 925].</li>
+    <li>May specify increment: <code>range(start, end, increment)</code>[cite: 926, 927].</li>
+</ul>`,
+            general_info: "إذا أردت حلقة تعمل تنازلياً، استخدم زيادة بالسالب مثل: range(10, 0, -1).",
+            general_info_en: "If you want to loop backwards, use a negative increment like: range(10, 0, -1)."
+        },
+        {
+            title: "12. مشاكل شائعة (Common Loop Problems)",
+            title_en: "12. Common Problems",
+            expl: "أشهر المشاكل: إنك تنسى تكبر الرقم فالمتصفح يعلق (Infinite Loop)، أو توقف اللوب بدري برقم (Off-by-one).",
+            expl_en: "Most common problems: Forgetting to increment causing a freeze (Infinite Loop), or stopping one step early (Off-by-one).",
+            content: `<p><strong>التكرار اللانهائي (Infinite Loops):</strong> يحدث بسبب خطأ في الشرط أو نسيان تحديث المتغير، فلا يصبح الشرط False أبداً[cite: 941, 942].</p>
+<p><strong>خطأ الرقم الواحد (Off-by-one):</strong> يحدث عندما يتوقف التكرار مبكراً بمرة واحدة أو متأخراً بمرة واحدة، وهو الخطأ الأكثر شيوعاً[cite: 948, 950].</p>`,
+            content_en: `<p><strong>Infinite Loops:</strong> Caused by incorrect condition or not updating values, so the condition never becomes false[cite: 941, 942].</p>
+<p><strong>Off-by-one Error:</strong> Occurs when you stop the loop one iteration too early or too late. It is the most common error[cite: 948, 950].</p>`,
+            general_info: "دائماً تتبع الكود يدوياً (Trace) للتأكد من أن حلقة for ستمر بعدد اللفات الصحيح.",
+            general_info_en: "Always trace your code manually to ensure your for-loop iterates the correct number of times."
+        },
+        {
+            title: "13. الخلاصة ومعمل الكود",
+            title_en: "13. Summary & Lab",
+            expl: "ممتاز جداً! المحاضرة الثانية خلصت واتعلمت فيها الشروط والتكرار، يلا جرب الأكواد بنفسك.",
+            expl_en: "Excellent job! Lecture 2 is complete. You learned conditions and loops, now test the code yourself.",
+            content: `<p>🎉 <strong>تهانينا!</strong> لقد أنهيت المحاضرة الثانية بنجاح.</p><p>استخدم الـ Terminal بالأسفل لكتابة شروط <code>if</code> وحلقات <code>for</code> و <code>while</code> وتجربة طباعة الأرقام.</p>`,
+            content_en: `<p>🎉 <strong>Congratulations!</strong> You have successfully finished Lecture 2.</p><p>Use the Terminal below to write <code>if</code> statements, <code>for</code> and <code>while</code> loops, and print numbers.</p>`,
+            general_info: "يمكنك تجربة طباعة الأرقام من 1 إلى 100 التي تقبل القسمة على 3 و 5 كما ورد في تمارين المحاضرة[cite: 974].",
+            general_info_en: "You can try printing numbers from 1 to 100 divisible by 3 and 5, as mentioned in the lecture exercises[cite: 974].",
+            isTerminalSlide: true
+        }
+    ];
+
+    let idx = 0;
+    let uiLang = 'ar'; 
+    
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        normalContainer: document.getElementById('normalSlideContent'),
+        compilerContainer: document.getElementById('compilerContainer'),
+        expl: document.getElementById('explText'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn'),
+        lblExpl: document.getElementById('labelExpl'),
+        pageTitle: document.getElementById('pageTitle'),
+        sidebar: document.getElementById('sidebar'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn'),
+        txtPrev: document.getElementById('txtPrev'),
+        txtNext: document.getElementById('txtNext'),
+        generalInfo: document.getElementById('generalInfoText'),
+        syntaxHints: document.getElementById('syntaxHints')
+    };
+
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+        
+        document.ondragstart = null; 
+    }
+
+    function toggleSlideCheck(index, event) {
+        event.stopPropagation(); 
+        const checkbox = event.target;
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress_L2') || '{}');
+        savedProgress[index] = checkbox.checked;
+        localStorage.setItem('pythonCourseProgress_L2', JSON.stringify(savedProgress));
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const savedProgress = JSON.parse(localStorage.getItem('pythonCourseProgress_L2') || '{}');
+
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            
+            let chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'slide-check';
+            chk.checked = savedProgress[i] || false;
+            chk.onclick = (e) => toggleSlideCheck(i, e);
+
+            let num = i === slides.length - 1 ? '💻' : i + 1;
+            let displayTitle = uiLang === 'ar' ? s.title : s.title_en;
+            let cleanTitle = displayTitle.includes('.') ? displayTitle.split('.')[1] : displayTitle;
+            
+            let textSpan = document.createElement('span');
+            textSpan.innerHTML = `${cleanTitle} <span style="font-size:0.8rem; opacity:0.7;">${num}</span>`;
+            textSpan.style.flex = "1";
+
+            li.appendChild(chk);
+            li.appendChild(textSpan);
+            
+            li.onclick = () => loadSlide(i);
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? `درس ${index + 1}` : `Lesson ${index + 1}`;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.expl.innerHTML = isAr ? s.expl : s.expl_en;
+        
+        dom.generalInfo.innerText = isAr ? (s.general_info || "...") : (s.general_info_en || "...");
+
+        if (s.isTerminalSlide) {
+            dom.compilerContainer.style.display = 'block';
+            setTimeout(() => {
+                dom.compilerContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            dom.compilerContainer.style.display = 'none';
+        }
+
+        dom.prev.disabled = index === 0;
+        dom.next.disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        document.querySelectorAll('.section-box').forEach(b => b.classList.remove('open'));
+        if(window.innerWidth <= 768) dom.sidebar.classList.remove('open');
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function move(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    function toggleSection(el) { el.classList.toggle('open'); }
+    function toggleSidebar() { dom.sidebar.classList.toggle('open'); }
+    function toggleInfo() { 
+        const modal = document.getElementById('infoModal'); 
+        if(modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        slides.forEach((s, i) => {
+            const t = uiLang === 'ar' ? s.title : s.title_en;
+            if(t.toLowerCase().includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    function toggleLang() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        dom.pageTitle.innerText = isAr ? "Python Master | L2" : "Python Master | L2";
+        dom.txtPrev.innerText = isAr ? "السابق" : "Prev";
+        dom.txtNext.innerText = isAr ? "التالي" : "Next";
+        dom.lblExpl.innerText = isAr ? "💡 الشرح المبسط" : "💡 Simple Explanation";
+        dom.search.placeholder = isAr ? "بحث..." : "Search...";
+        
+        const arHint = `⚠️ <strong>تنبيهات هامة للمبرمج:</strong><br>
+                        1. <strong>الحروف:</strong> بايثون حساسة للحروف (Print تختلف عن print).<br>
+                        2. <strong>المسافات:</strong> المسافة في بداية السطر (Indentation) تحدد بداية ونهاية الكود.<br>
+                        3. <strong>التنصيص:</strong> تأكد من إغلاق الأقواس وعلامات التنصيص " " بشكل صحيح.<br>
+                        4. <strong>الأسماء:</strong> لا تبدأ اسم متغير برقم.`;
+        const enHint = `⚠️ <strong>Coder Hints:</strong><br>
+                        1. <strong>Case Sensitive:</strong> Python distinguishes between Print and print.<br>
+                        2. <strong>Indentation:</strong> Space at start of line determines code blocks.<br>
+                        3. <strong>Quotes:</strong> Ensure brackets and quotes " " are closed.<br>
+                        4. <strong>Naming:</strong> Variable names cannot start with a number.`;
+        dom.syntaxHints.innerHTML = isAr ? arHint : enHint;
+        
+        document.getElementById('modalTitle').innerText = isAr ? "معلومات المادة" : "Course Info";
+        document.getElementById('modalDesc').innerText = isAr ? "أهلاً بك في كورس بايثون التفاعلي. من خلال هذه المنصة يمكنك تصفح الشرائح، قراءة الشرح المبسط، وتجربة الأكواد البرمجية مباشرة من خلال الـ Terminal المدمج." : "Welcome to the interactive Python course. Browse slides, read simplified explanations, and test your code directly via the built-in Terminal.";
+        document.getElementById('modalCloseBtn').innerText = isAr ? "إغلاق" : "Close";
+
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        
+        localStorage.setItem('globalTheme', newTheme);
+        
+        const chk = document.getElementById('themeCheckbox');
+        if(chk) chk.checked = !isLight;
+    }
+
+    function outf(text) { 
+        const output = document.getElementById("output-area");
+        if (output.innerText === "Output will appear here...") output.innerText = "";
+        output.innerText += text; 
+    } 
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+    function runPython() {
+        const prog = document.getElementById("code-input").value; 
+        const mypre = document.getElementById("output-area"); 
+        mypre.innerHTML = ''; 
+        mypre.classList.remove('error-output');
+
+        Sk.pre = "output-area";
+        Sk.configure({output:outf, read:builtinRead}); 
+
+        const myPromise = Sk.misceval.asyncToPromise(function() {
+            return Sk.importMainWithBody("<stdin>", false, prog);
+        });
+        myPromise.then(function(mod) { console.log('success'); }, function(err) {
+            mypre.classList.add('error-output');
+            mypre.innerHTML = err.toString();
+        });
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
