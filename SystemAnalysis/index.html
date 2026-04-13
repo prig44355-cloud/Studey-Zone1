@@ -195,9 +195,23 @@
                 <a href="Lecture3/index.html" class="btn-glass">دخول للمحاضرة</a>
             </div>
 
-            <div class="lec-card locked-card">
+            <div class="lec-card active-card">
                 <div class="floating-icon">4</div>
                 <h3 class="lec-title">المحاضرة الرابعة</h3>
+                <p class="lec-desc">مخططات حالة الاستخدام (Use Case Diagrams).</p>
+                <a href="Lecture4/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card active-card">
+                <div class="floating-icon">5</div>
+                <h3 class="lec-title">المحاضرة الخامسة</h3>
+                <p class="lec-desc">مخططات الفئات والنشاط (Class & Activity Diagrams).</p>
+                <a href="Lecture5/index.html" class="btn-glass">دخول للمحاضرة</a>
+            </div>
+
+            <div class="lec-card locked-card">
+                <div class="floating-icon">6</div>
+                <h3 class="lec-title">المحاضرة السادسة</h3>
                 <div class="spinner-container">
                     <div class="spinner"><div class="spinnerin"></div></div>
                     <span style="font-weight:bold;" class="loading-text">جاري التجهيز...</span>
@@ -226,11 +240,15 @@
                 if(titles[1]) titles[1].innerText = 'Lecture 2';
                 if(titles[2]) titles[2].innerText = 'Lecture 3';
                 if(titles[3]) titles[3].innerText = 'Lecture 4';
+                if(titles[4]) titles[4].innerText = 'Lecture 5';
+                if(titles[5]) titles[5].innerText = 'Lecture 6';
 
                 const descs = document.querySelectorAll('.lec-desc');
                 if(descs[0]) descs[0].innerText = 'Introduction to SDLC.';
                 if(descs[1]) descs[1].innerText = 'SDLC Models & Project Management.';
                 if(descs[2]) descs[2].innerText = 'System Analysis using UML.';
+                if(descs[3]) descs[3].innerText = 'Use Case Diagrams.';
+                if(descs[4]) descs[4].innerText = 'Class & Activity Diagrams.';
 
                 const btns = document.querySelectorAll('.btn-glass');
                 btns.forEach(btn => btn.innerText = 'Enter Lecture');
@@ -250,5 +268,5 @@
 
         window.onload = initSubPage;
     </script>
-</body>
+</body> 
 </html>

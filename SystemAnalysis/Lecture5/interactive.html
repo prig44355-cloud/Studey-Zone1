@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Analysis | L5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <style>
+        /* ألوان مخصصة للمحاضرة الخامسة (System Analysis Theme - Navy & Cyan) */
+        :root {
+            --bg-gradient-light: #fdfbfb;
+            --glass-bg-light: rgba(255, 255, 255, 0.9);
+            --glass-border-light: rgba(255, 255, 255, 0.7);
+            --text-main-light: #1a365d;
+            --primary-light: #1a365d; /* أزرق داكن */
+            --accent-light: #00b4d8;  /* سماوي */
+            --header-bg-light: #ffffff;
+
+            --bg-gradient-dark: #0f172a;
+            --glass-bg-dark: rgba(15, 23, 42, 0.5);
+            --glass-border-dark: rgba(76, 201, 240, 0.2);
+            --text-main-dark: #f1f5f9;
+            --primary-dark: #4cc9f0;
+            --accent-dark: #fca311;
+            --header-bg-dark: #0f172a;
+
+            --bg-body: var(--bg-gradient-light);
+            --glass: var(--glass-bg-light);
+            --border: var(--glass-border-light);
+            --text: var(--text-main-light);
+            --primary: var(--primary-light);
+            --accent: var(--accent-light);
+            --header-bg: var(--header-bg-light);
+            --shadow: 0 8px 32px 0 rgba(26, 54, 93, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: var(--bg-gradient-dark);
+            --glass: var(--glass-bg-dark);
+            --border: var(--glass-border-dark);
+            --text: var(--text-main-dark);
+            --primary: var(--primary-dark);
+            --accent: var(--accent-dark);
+            --header-bg: var(--header-bg-dark);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        input, textarea, code, pre { -webkit-user-select: text !important; user-select: text !important; }
+
+        body {
+            font-family: 'Cairo', sans-serif; background: var(--bg-body); color: var(--text);
+            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+        header {
+            height: 80px; background: var(--header-bg); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 25px; z-index: 1000; box-shadow: var(--shadow);
+            flex-shrink: 0; 
+        }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        
+        .cta-back { 
+            display: flex; align-items: center; padding: 6px 15px; text-decoration: none; font-size: 16px; 
+            font-weight: bold; color: white; background: var(--primary); transition: 1s; 
+            box-shadow: -4px 4px 0 var(--text); transform: skewX(15deg); border: none; cursor: pointer; 
+            margin-right: 10px;
+        }
+        [data-theme="dark"] .cta-back { box-shadow: -4px 4px 0 #ffffff; color: #000; }
+        .cta-back:focus { outline: none; }
+        .cta-back:hover { transition: 0.5s; box-shadow: -6px 6px 0 var(--accent); }
+        .cta-back .span { transform: skewX(-15deg); font-family: 'Cairo'; }
+        .cta-back .second { transition: 0.5s; margin-left: 0; margin-right: 10px; width: 20px; transform: rotate(180deg); display: flex; align-items: center;}
+        .cta-back:hover .second { transition: 0.5s; margin-right: 20px; }
+        .cta-back .one { transition: 0.4s; transform: translateX(-60%); }
+        .cta-back .two { transition: 0.5s; transform: translateX(-30%); }
+        .cta-back:hover .three { animation: color_anim 1s infinite 0.2s; }
+        .cta-back:hover .one { transform: translateX(0%); animation: color_anim 1s infinite 0.6s; }
+        .cta-back:hover .two { transform: translateX(0%); animation: color_anim 1s infinite 0.4s; }
+        .header-title-container { display: flex; align-items: center; gap: 10px; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .header-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+        .header-subtitle { font-size: 0.85rem; color: var(--accent); font-weight: bold; }
+        .controls { display: flex; gap: 20px; align-items: center; }
+        .lang-button {
+            height: 50px; width: 150px; border: none; border-radius: 10px; cursor: pointer;
+            position: relative; overflow: hidden; transition: all 0.5s ease-in-out;
+            background: transparent; font-family: 'Cairo', sans-serif;
+        }
+        .lang-button:hover { box-shadow: .5px .5px 150px var(--primary); }
+        .type1::after {
+            content: attr(data-hover); height: 50px; width: 150px; background-color: var(--primary);
+            color: #fff; position: absolute; top: 0%; left: 0%; transform: translateY(50px);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+        .type1::before {
+            content: attr(data-main); height: 50px; width: 150px; background-color: var(--glass);
+            color: var(--primary); position: absolute; top: 0%; left: 0%; transform: translateY(0px) scale(1.2);
+            font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center;
+            transition: all 0.5s ease-in-out; border: 1px solid var(--border); border-radius: 10px;
+        }
+        .type1:hover::after { transform: translateY(0) scale(1.2); }
+        .type1:hover::before { transform: translateY(-50px) scale(0) rotate(120deg); }
+
+        .info-btn {
+            background: rgba(26, 54, 93, 0.1); color: var(--accent); border: 1px solid var(--accent);
+            padding: 5px 12px; font-size: 1.2rem; border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .info-btn:hover { background: var(--accent); color: white; transform: rotate(15deg); }
+        [data-theme="dark"] .info-btn { background: rgba(76, 201, 240, 0.1); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; 
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--header-bg); padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 500px; width: 90%;
+            border: 2px solid var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text);
+        }
+        .modal-content h2 { margin-bottom: 15px; color: var(--primary); }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .btn-icon { background: var(--primary); color: white; padding: 10px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-family: 'Cairo'; font-size: 1.1rem; }
+        .btn-icon:hover { background: var(--accent); }
+        [data-theme="dark"] .btn-icon { color: #000; }
+
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        
+        aside {
+            width: 340px; max-width: 100%; background: var(--glass); border-inline-end: 1px solid var(--border);
+            display: flex; flex-direction: column; backdrop-filter: blur(15px); z-index: 900;
+            transition: all 0.4s;
+        }
+        .search-area { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; position: relative; height: 100px; flex-shrink: 0; }
+        .grid { height: 100%; width: 100%; background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px), linear-gradient(to bottom, #0f0f10 1px, transparent 1px); background-size: 1rem 1rem; position: absolute; z-index: -1; filter: blur(1px); opacity: 0.1; }
+        #poda { display: flex; align-items: center; justify-content: center; position: relative; transform: scale(0.9); transform-origin: center; width: 100%; max-width: 280px; }
+        .search-input-styled { background-color: #010201; border: none; width: 100%; height: 56px; border-radius: 10px; color: white; padding-inline: 59px; font-size: 14px; font-family: 'Cairo'; }
+        .search-input-styled:focus { outline: none; }
+        .white, .border, .darkBorderBg, .glow { max-height: 70px; max-width: 100%; height: 100%; width: 100%; position: absolute; overflow: hidden; z-index: -1; border-radius: 12px; filter: blur(3px); }
+        .white { max-height: 63px; width: 98%; border-radius: 10px; filter: blur(2px); }
+        .white::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(83deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.4); background-image: conic-gradient(rgba(0,0,0,0) 0%, var(--primary) 8%, rgba(0,0,0,0) 50%, var(--accent) 58%); transition: all 2s; }
+        .border { max-height: 59px; width: 96%; border-radius: 11px; filter: blur(0.5px); }
+        .border::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(70deg); position: absolute; width: 600px; height: 600px; filter: brightness(1.3); background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#1c191c, var(--primary) 5%, #1c191c 14%, #1c191c 50%, var(--accent) 60%, #1c191c 64%); transition: all 2s; }
+        .darkBorderBg { max-height: 65px; width: 99%; }
+        .darkBorderBg::before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(82deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(rgba(0,0,0,0), var(--primary), rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, var(--accent), rgba(0,0,0,0) 60%); transition: all 2s; }
+        #poda:hover > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(262deg); }
+        #poda:hover > .glow::before { transform: translate(-50%, -50%) rotate(240deg); }
+        #poda:hover > .white::before { transform: translate(-50%, -50%) rotate(263deg); }
+        #poda:hover > .border::before { transform: translate(-50%, -50%) rotate(250deg); }
+        #poda:focus-within > .darkBorderBg::before { transform: translate(-50%, -50%) rotate(442deg); transition: all 4s; }
+        #poda:focus-within > .glow::before { transform: translate(-50%, -50%) rotate(420deg); transition: all 4s; }
+        #poda:focus-within > .white::before { transform: translate(-50%, -50%) rotate(443deg); transition: all 4s; }
+        #poda:focus-within > .border::before { transform: translate(-50%, -50%) rotate(430deg); transition: all 4s; }
+        .glow { overflow: hidden; filter: blur(30px); opacity: 0.4; max-height: 130px; width: 110%; }
+        .glow:before { content: ""; z-index: -2; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg); position: absolute; width: 999px; height: 999px; background-repeat: no-repeat; background-position: 0 0; background-image: conic-gradient(#000, var(--primary) 5%, #000 38%, #000 50%, var(--accent) 60%, #000 87%); transition: all 2s; }
+        #filter-icon { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; justify-content: center; z-index: 2; max-height: 40px; max-width: 38px; height: 100%; width: 100%; isolation: isolate; overflow: hidden; border-radius: 10px; background: linear-gradient(180deg, #161329, black, #1d1b4b); border: 1px solid transparent; }
+        html[dir="ltr"] #filter-icon { right: auto; left: 8px; }
+        .filterBorder { height: 42px; width: 40px; position: absolute; overflow: hidden; top: 7px; right: 7px; border-radius: 10px; }
+        html[dir="ltr"] .filterBorder { right: auto; left: 7px; }
+        .filterBorder::before { content: ""; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); position: absolute; width: 600px; height: 600px; background-repeat: no-repeat; background-position: 0 0; filter: brightness(1.35); background-image: conic-gradient(rgba(0,0,0,0), #3d3a4f, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 50%, #3d3a4f, rgba(0,0,0,0) 100%); animation: rotate 4s linear infinite; }
+        #main-search { position: relative; width: 100%; }
+        #search-icon { position: absolute; left: 20px; top: 15px; }
+        html[dir="ltr"] #search-icon { left: auto; right: 20px; }
+        @keyframes rotate { 100% { transform: translate(-50%, -50%) rotate(450deg); } }
+        
+        .slide-list { 
+            list-style: none; overflow-y: auto; flex: 1; padding: 10px; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .list-item { 
+            padding: 12px 15px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .list-item:hover { background: rgba(0,0,0,0.05); color: var(--primary); }
+        [data-theme="dark"] .list-item:hover { background: rgba(255,255,255,0.05); }
+        .list-item.active { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; font-weight: bold; }
+        [data-theme="dark"] .list-item.active { color: #000; }
+        
+        .slide-check {
+            width: 18px; height: 18px; margin-inline-end: 10px; cursor: pointer; accent-color: var(--accent);
+            z-index: 2; flex-shrink: 0;
+        }
+
+        main { 
+            flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; 
+            scroll-behavior: smooth; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card { background: var(--glass); width: 100%; max-width: 850px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 40px; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(26, 54, 93, 0.1); color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-bottom: 20px; }
+        [data-theme="dark"] .badge { background: rgba(76, 201, 240, 0.1); }
+        
+        h1 { font-size: 1.8rem; margin-bottom: 25px; line-height: 1.5; color: var(--primary); }
+        .content { font-size: 1.2rem; line-height: 1.9; margin-bottom: 30px; color: var(--text); }
+        
+        /* Code Box */
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 12px; overflow-x: auto; direction: ltr; text-align: left; font-family: 'Fira Code', monospace; border: 1px solid var(--border); margin: 20px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); max-width: 100%; white-space: pre-wrap; word-break: break-word;}
+        code { background: rgba(0, 180, 216, 0.1); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code'; color: var(--accent); font-weight: bold; }
+
+        .info-box-general {
+            background: rgba(26, 54, 93, 0.08); border-inline-start: 4px solid var(--primary);
+            padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 1rem;
+            color: var(--text); display: flex; gap: 10px; align-items: start;
+        }
+        [data-theme="dark"] .info-box-general { background: rgba(76, 201, 240, 0.08); }
+        
+        .info-box-icon { font-size: 1.5rem; }
+
+        .section-box { margin-top: 20px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
+        .section-header { background: rgba(128,128,128,0.05); padding: 18px 25px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-content { display: none; padding: 25px; border-top: 1px solid var(--border); }
+        .section-box.open .section-content { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Compiler --- */
+        .compiler-container { display: none; margin-top: 20px; direction: ltr; width: 100%; }
+        .compiler-box { background: #1e1e1e; border-radius: 16px; padding: 20px; border: 2px solid var(--primary); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; overflow-x: hidden; }
+        .compiler-header { color: var(--accent); font-family: 'Fira Code'; margin-bottom: 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        .syntax-hints {
+            background: #2d2d2d; color: #aaa; padding: 10px; margin-bottom: 10px; border-radius: 8px;
+            font-size: 0.85rem; font-family: 'Cairo'; border-left: 3px solid var(--accent);
+            line-height: 1.6;
+        }
+        textarea#code-input { width: 100%; height: 300px; background: #2d2d2d; color: #f8f8f2; border: 1px solid #444; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 16px; resize: vertical; max-width: 100%; box-sizing: border-box; }
+        .run-btn { background: var(--accent); color: #000; border: none; padding: 12px 30px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; font-family: 'Fira Code'; font-size: 1rem; width: 100%; transition: 0.3s; }
+        .run-btn:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+        #output-area { background: #000; color: #0f0; padding: 15px; margin-top: 15px; border-radius: 8px; min-height: 100px; font-family: 'Fira Code'; white-space: pre-wrap; word-break: break-all; border-left: 5px solid var(--accent); max-width: 100%; overflow-x: auto; }
+        .error-output { color: #ff5555 !important; }
+        
+        .nav-actions { display: flex; gap: 30px; margin-top: 30px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .styled-btn { position: relative; width: 11em; max-width: 45%; height: 4em; outline: none; transition: 0.1s; background-color: transparent; border: none; font-size: 13px; font-weight: bold; color: var(--text); cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .clip-box { --color: var(--primary); position: absolute; top: 0; left: 0; overflow: hidden; width: 100%; height: 100%; border: 5px double var(--color); box-shadow: inset 0px 0px 15px rgba(26, 54, 93, 0.3); -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        [data-theme="dark"] .clip-box { box-shadow: inset 0px 0px 15px rgba(76, 201, 240, 0.3); }
+        .arrow { position: absolute; transition: 0.2s; background-color: var(--primary); top: 35%; width: 11%; height: 30%; }
+        .leftArrow { left: -13.5%; -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+        .rightArrow { -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%); clip-path: polygon(100% 49%, 0 0, 0 100%); left: 102%; }
+        .styled-btn:hover .rightArrow { background-color: var(--accent); left: -15%; animation: 0.6s ease-in-out both infinite alternate rightArrow8; }
+        .styled-btn:hover .leftArrow { background-color: var(--accent); left: 103%; animation: 0.6s ease-in-out both infinite alternate leftArrow8; }
+        .corner { position: absolute; width: 4em; height: 4em; background-color: var(--primary); box-shadow: inset 1px 1px 8px var(--primary); transform: scale(1) rotate(45deg); transition: 0.2s; }
+        .rightTop { top: -1.98em; left: 91%; } .leftTop { top: -1.96em; left: -3.0em; }
+        .leftBottom { top: 2.10em; left: -2.15em; } .rightBottom { top: 45%; left: 88%; }
+        .styled-btn:hover .corner { transform: scale(1.25) rotate(45deg); background-color: var(--accent); box-shadow: inset 1px 1px 8px var(--accent); }
+        .styled-btn:hover .clip-box { animation: 0.2s ease-in-out 0.55s both greenLight8; --color: var(--accent); }
+        @keyframes greenLight8 { from { } to { box-shadow: inset 0px 0px 32px var(--accent); } }
+        @keyframes leftArrow8 { from { transform: translate(0px); } to { transform: translateX(10px); } }
+        @keyframes rightArrow8 { from { transform: translate(0px); } to { transform: translateX(-10px); } }
+        .styled-btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        
+        .bb8-toggle { --toggle-size: 6px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - var(--bb8-diameter)) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --bb8-diameter: 4.375em; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; font-size: var(--toggle-size); display: inline-block; flex-shrink: 0; }
+        .bb8-toggle *, .bb8-toggle *::before, .bb8-toggle *::after { box-sizing: border-box; }
+        .bb8-toggle__checkbox { appearance: none; display: none; }
+        .bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
+        .bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.688em + 0.188em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
+        .bb8__head-container { position: relative; transition: var(--transition); z-index: 2; transform-origin: 1.25em 3.75em; }
+        .bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; z-index: 1; filter: drop-shadow(0 0.063em 0.125em gray); }
+        .bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg), 0.563em 0.281em 0 -0.063em; z-index: 1; transition: var(--transition); }
+        .bb8__head::after { content: ""; position: absolute; bottom: 0.375em; left: 0; width: 100%; height: 0.188em; background: linear-gradient(to right, var(--accent) 0.125em, transparent 0.125em 0.188em, var(--accent) 0.188em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.938em, transparent 0.938em 1em, var(--accent) 1em 1.125em, transparent 1.125em 1.875em, var(--accent) 1.875em 2em, transparent 2em 2.063em, var(--accent) 2.063em 2.25em, transparent 2.25em 2.313em, var(--accent) 2.313em 2.375em, transparent 2.375em 2.438em, var(--accent) 2.438em); transition: var(--transition); }
+        .bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
+        .bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
+        .bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
+        .bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); z-index: 1; transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(to right, transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em), linear-gradient(transparent 2.156em, silver 2.156em 2.219em, transparent 2.188em); background-color: var(--bb8-bg); }
+        .bb8__body::after { content: ""; bottom: 1.5em; left: 0.563em; position: absolute; width: 0.188em; height: 0.188em; background: rgb(236, 236, 236); color: rgb(236, 236, 236); border-radius: 50%; box-shadow: 0.875em 0.938em, 0 -1.25em, 0.875em -2.125em, 2.125em -2.125em, 3.063em -1.25em, 3.063em 0, 2.125em 0.938em; }
+        .bb8__body::before { content: ""; width: 2.625em; height: 2.625em; position: absolute; border-radius: 50%; z-index: 0.1; overflow: hidden; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 0.313em solid var(--accent); background: radial-gradient(1em circle at center, rgb(236, 236, 236) 50%, transparent 51%), radial-gradient(1.25em circle at center, var(--bb8-bg) 50%, transparent 51%), linear-gradient(-90deg, transparent 42%, var(--accent) 42% 58%, transparent 58%), linear-gradient(var(--bb8-bg) 42%, var(--accent) 42% 58%, var(--bb8-bg) 58%); }
+        .artificial__hidden { position: absolute; border-radius: inherit; inset: 0; pointer-events: none; overflow: hidden; }
+        .bb8__shadow { content: ""; width: var(--bb8-diameter); height: 20%; border-radius: 50%; background: #3a271c; box-shadow: 0.313em 0 3.125em #3a271c; opacity: 0.25; position: absolute; bottom: 0; left: calc(var(--toggle-offset) - 0.938em); transition: var(--transition); transform: skew(-70deg); z-index: 1; }
+        .bb8-toggle__scenery { width: 100%; height: 100%; pointer-events: none; overflow: hidden; position: relative; border-radius: inherit; }
+        .bb8-toggle__scenery::before { content: ""; position: absolute; width: 100%; height: 30%; bottom: 0; background: #b18d71; z-index: 1; }
+        .bb8-toggle__cloud { z-index: 1; position: absolute; border-radius: 50%; }
+        .bb8-toggle__cloud:nth-last-child(1) { width: 0.875em; height: 0.625em; filter: blur(0.125em) drop-shadow(0.313em 0.313em #ffffffae) drop-shadow(-0.625em 0 #fff) drop-shadow(-0.938em -0.125em #fff); right: 1.875em; top: 2.813em; background: linear-gradient(to top right, #ffffffae, #ffffffae); transition: var(--transition); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8-toggle__star:nth-child(1) { top: 0.625em; }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset)); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__shadow { left: calc(100% - var(--bb8-diameter) - var(--toggle-offset) + 0.938em); transform: skew(70deg); }
+        .bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
+        .bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
+        .bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; z-index: 10; padding: 5px; }
+        
+        /* التجاوب (Media Queries) */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; } 
+            .header-subtitle { display: none; }
+            .header-title-container { position: static; transform: none; text-align: center; flex: 1; margin: 0 10px; justify-content: center;}
+            .controls { gap: 10px; } 
+            .lang-button { width: 100px; height: 40px; }
+            .type1::after, .type1::before { width: 100px; height: 40px; font-size: 0.9rem; }
+            .bb8-toggle { --toggle-size: 4px; display: inline-block !important; }
+            
+            aside { position: fixed; height: calc(100vh - 80px); top: 80px; width: 280px; max-width: 85%; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+            html[dir="rtl"] aside { right: -320px; left: auto; border-left: 1px solid var(--border); }
+            html[dir="rtl"] aside.open { right: 0; }
+            html[dir="ltr"] aside { left: -320px; right: auto; border-right: 1px solid var(--border); }
+            html[dir="ltr"] aside.open { left: 0; }
+            
+            .menu-btn { display: block; }
+            #poda { transform: scale(0.85); }
+            main { padding: 15px; } 
+            .card { padding: 25px; margin-bottom: 20px; }
+            h1 { font-size: 1.4rem; } 
+            .content { font-size: 1rem; line-height: 1.7; }
+            .nav-actions { gap: 15px; flex-wrap: nowrap; } 
+            .styled-btn { font-size: 12px; max-width: 48%; }
+            .cta-back { display: none; }
+        }
+        @media (max-width: 480px) {
+            .header-title { display: none; } 
+            .header-title-container { justify-content: flex-start; }
+            .controls { flex: 1; justify-content: flex-end; } 
+            .styled-btn { width: 100%; max-width: 140px; font-size: 11px; }
+            .info-box-general { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="modal-overlay" id="infoModal" onclick="toggleInfo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">معلومات المادة</h2>
+            <p id="modalDesc">أهلاً بك في كورس تحليل وتصميم الأنظمة. من خلال هذه المنصة يمكنك تصفح شرائح إدارة المشاريع، وقراءة الشرح المبسط.</p>
+            <button class="btn-icon" onclick="toggleInfo()" id="modalCloseBtn">إغلاق</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            
+            <button class="cta-back" onclick="window.location.href='index.html'">
+                <span class="second"><svg viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="one" d="M40.15,3.89 L43.97,0.13 L65.69,20.78 L44.67,42.86 L40.15,39.10 L56.99,21.85 Z" fill="#FFFFFF"></path><path class="two" d="M20.15,3.89 L23.97,0.13 L45.69,20.78 L24.67,42.86 L20.15,39.10 L36.99,21.85 Z" fill="#FFFFFF"></path><path class="three" d="M0.15,3.89 L3.97,0.13 L25.69,20.78 L4.67,42.86 L0.15,39.10 L16.99,21.85 Z" fill="#FFFFFF"></path></g></svg></span>
+                <span class="span">الرجوع</span>
+            </button>
+
+            <button class="info-btn" onclick="toggleInfo()" title="معلومات عن المادة">ℹ</button>
+        </div>
+        
+        <div class="header-title-container">
+            <i class="fa-solid fa-tasks" style="font-size: 2rem; color: var(--primary);"></i>
+            <div>
+                <div class="header-title" id="pageTitle">System Analysis | L5</div>
+                <div class="header-subtitle">إدارة المشاريع (Project Management)</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="bb8-toggle" title="الوضع الليلي">
+                <input class="bb8-toggle__checkbox" type="checkbox" onchange="toggleTheme()" id="themeCheckbox">
+                <div class="bb8-toggle__container">
+                <div class="bb8-toggle__scenery">
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+                    <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+                </div>
+                <div class="bb8">
+                    <div class="bb8__head-container"><div class="bb8__antenna"></div><div class="bb8__antenna"></div><div class="bb8__head"></div></div>
+                    <div class="bb8__body"></div>
+                </div>
+                <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+                </div>
+            </label>
+
+            <button class="lang-button type1" onclick="toggleLang()" id="langBtn" data-main="🇺🇸 English" data-hover="Switch ⇆"></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="search-area">
+                <div class="grid"></div>
+                <div id="poda">
+                    <div class="glow"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
+                    <div class="white"></div><div class="border"></div>
+                    <div id="main-search">
+                        <input placeholder="Search..." type="text" id="searchInp" class="search-input-styled" onkeyup="filterSlides()" />
+                        <div class="filterBorder"></div>
+                        <div id="filter-icon">🔍</div>
+                        <div id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" height="24" fill="none"><circle stroke="#b6a9b7" r="8" cy="11" cx="11"></circle><line stroke="#b6a9b7" y2="16.65" y1="22" x2="16.65" x1="22"></line></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="slide-list" id="list"></ul>
+        </aside>
+
+        <main>
+            <div class="card" id="contentCard">
+                <span class="badge" id="slideBadge">Intro</span>
+                <h1 id="slideHeader">...</h1>
+                
+                <div id="normalSlideContent">
+                    <div class="info-box-general">
+                        <span class="info-box-icon">💡</span>
+                        <div id="generalInfoText">...</div>
+                    </div>
+
+                    <div class="content" id="slideHtml">...</div>
+                    <div class="section-box" onclick="toggleSection(this)">
+                        <div class="section-header">
+                            <span id="labelExpl">💬 الشرح المبسط</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="section-content" id="explText">...</div>
+                    </div>
+                </div>
+
+                <div class="compiler-container" id="compilerContainer">
+                    <div class="section-box open" style="margin-bottom: 20px;">
+                        <div class="section-header" style="background: rgba(26, 54, 93, 0.1);">
+                            👨‍💻 Project Logic Lab
+                        </div>
+                        <div class="section-content" style="display: block;">
+                            <div class="compiler-box">
+                                <div class="compiler-header"><span>>_ Terminal</span><span>Python</span></div>
+                                <div class="syntax-hints" id="syntaxHints">
+                                    ⚠️ <strong>تنبيهات هامة لمحلل النظم:</strong><br>
+                                    1. <strong>نمذجة المشاريع:</strong> في هذا الكورس، نركز على المفاهيم والتحليل والتصميم بدلاً من البرمجة المباشرة.<br>
+                                    2. <strong>الأدوات:</strong> يمكنك استخدام بايثون هنا لكتابة منطق رياضي يحاكي الميزانية والمدة الزمنية للمشروع لتوقع المخاطر.
+                                </div>
+                                <textarea id="code-input" placeholder="# Write some dummy logic to calculate project cost and risks here..."></textarea>
+                                <button class="run-btn" onclick="runPython()">▶ TEST LOGIC</button>
+                                <div id="output-area">Output will appear here...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="styled-btn" id="prevBtn" onclick="move(-1)">
+                        <span id="txtPrev">السابق</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+
+                    <button class="styled-btn" id="nextBtn" onclick="move(1)">
+                        <span id="txtNext">التالي</span>
+                        <div class="clip-box"><div class="leftTop corner"></div><div class="rightBottom corner"></div><div class="rightTop corner"></div><div class="leftBottom corner"></div></div>
+                        <span class="rightArrow arrow"></span><span class="leftArrow arrow"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // الشرائح بناءً على محتوى ملف: SAD_lec7.pdf
+    const slides = [
+        {
+            title: "1. مقدمة في إدارة المشاريع",
+            title_en: "1. Intro to Project Management",
+            expl: "إدارة المشاريع مش مجرد تنظيم وقت، دي علم وفن بيساعدك تحول أي فكرة لواقع بأقل خساير وبأعلى جودة، خصوصاً في مجال التكنولوجيا اللي مليان تحديات.",
+            expl_en: "Project management isn't just about organizing time; it's the science and art of turning an idea into reality with minimal losses and top quality, especially in IT.",
+            content: `<p><strong>إدارة المشاريع (Project Management):</strong> هي تطبيق المعرفة، والمهارات، والأدوات، والتقنيات على أنشطة المشروع لتلبية متطلباته.</p>
+<ul>
+    <li>تعتبر إدارة المشاريع ضرورية جداً في مجال تكنولوجيا المعلومات (IT) لتجنب فشل الأنظمة وتجاوز الميزانيات.</li>
+    <li>تشمل مجالات رئيسية مثل: إدارة النطاق (Scope)، الوقت (Time)، التكلفة (Cost)، والجودة (Quality).</li>
+</ul>`,
+            content_en: `<p><strong>Project Management:</strong> is the application of knowledge, skills, tools, and techniques to project activities to meet project requirements.</p>
+<ul>
+    <li>It is absolutely essential in Information Technology (IT) to avoid system failures and budget overruns.</li>
+    <li>It encompasses key areas like Scope, Time, Cost, and Quality management.</li>
+</ul>`,
+            general_info: "الشركات التي تطبق مفاهيم إدارة المشاريع تمتلك فرصاً أعلى بكثير لإطلاق منتجاتها في الوقت المحدد.",
+            general_info_en: "Companies that apply formal project management concepts have significantly higher chances of launching products on time."
+        },
+        {
+            title: "2. لماذا ندرس إدارة المشاريع؟",
+            title_en: "2. Why study Project Management?",
+            expl: "زمان في التسعينات، لقوا إن مشاريع البرمجة بتفشل بنسبة مرعبة! يا إما بتخلص الفلوس، أو بتاخد وقت أطول، أو بتتلغي. عشان كده كان لازم يكون فيه نظام قوي يظبط الدنيا دي.",
+            expl_en: "In the 90s, IT projects failed at a terrifying rate! They either ran out of money, took too long, or were canceled. Thus, a robust management system was born.",
+            content: `<p>سجلت مشاريع تكنولوجيا المعلومات (IT) تاريخاً سيئاً في نسب النجاح.</p>
+<p><strong>دراسة CHAOS (1995):</strong> التي أجرتها مجموعة Standish Group، أثبتت أن <strong>16.2% فقط</strong> من مشاريع الـ IT نجحت في تحقيق أهدافها من حيث (النطاق، الوقت، والتكلفة).</p>
+<ul>
+    <li>أكثر من 31% من المشاريع تم إلغاؤها قبل اكتمالها، مما كلف أكثر من 81 مليار دولار في أمريكا وحدها!</li>
+    <li>هذا يثبت الحاجة الماسة لاستخدام منهجيات "إدارة مشاريع" رسمية وقوية.</li>
+</ul>`,
+            content_en: `<p>Information Technology (IT) projects have had a terrible track record of success.</p>
+<p><strong>The CHAOS Study (1995):</strong> conducted by the Standish Group, found that only <strong>16.2%</strong> of IT projects were successful in meeting scope, time, and cost goals.</p>
+<ul>
+    <li>Over 31% of IT projects were canceled before completion, costing over $81 billion in the U.S. alone!</li>
+    <li>This strongly proves the urgent need for formal and robust project management methodologies.</li>
+</ul>`,
+            general_info: "الأسباب الرئيسية للفشل كانت: ضعف التخطيط، تغيير المتطلبات باستمرار، وعدم إشراك العميل بشكل كافٍ.",
+            general_info_en: "The main reasons for failure were: poor planning, constantly changing requirements, and lack of customer involvement."
+        },
+        {
+            title: "3. ما هو المشروع؟",
+            title_en: "3. What is a Project?",
+            expl: "المشروع مش حاجة مستمرة زي شغل الحسابات اليومي. المشروع هو مهمة ليها بداية ونهاية واضحة، وبتطلع نتيجة فريدة من نوعها (زي تطبيق جديد أو نظام مستشفى).",
+            expl_en: "A project isn't ongoing like daily accounting. It's a temporary endeavor with a clear start and end, producing a unique result (like a new app or hospital system).",
+            content: `<p><strong>المشروع (Project):</strong> هو مسعى مؤقت يُتخذ لإنشاء منتج، أو خدمة، أو نتيجة فريدة.</p>
+<ul>
+    <li><strong>مؤقت (Temporary):</strong> له بداية ونهاية محددة بوضوح.</li>
+    <li><strong>فريد (Unique):</strong> المنتج أو الخدمة الناتجة تختلف عن العمليات اليومية الروتينية.</li>
+    <li>يتم تطويره بشكل تدريجي ومستمر (Progressive Elaboration).</li>
+</ul>`,
+            content_en: `<p><strong>Project:</strong> is a temporary endeavor undertaken to create a unique product, service, or result.</p>
+<ul>
+    <li><strong>Temporary:</strong> It has a clearly defined beginning and end.</li>
+    <li><strong>Unique:</strong> The resulting product or service differs from routine, everyday operations.</li>
+    <li>It is developed using Progressive Elaboration (evolving in steps).</li>
+</ul>`,
+            general_info: "عملية صيانة السيرفرات اليومية تسمى (Operation)، بينما بناء سيرفر جديد يسمى (Project).",
+            general_info_en: "Daily server maintenance is an (Operation), whereas building a new server is a (Project)."
+        },
+        {
+            title: "4. القيود الثلاثة للمشروع",
+            title_en: "4. The Triple Constraint",
+            expl: "أي مشروع محكوم بمثلث رعب: الوقت (هنخلص إمتى)، التكلفة (هندفع كام)، والنطاق (المميزات المطلوبة). لو زودت مميزات، لازم الوقت والفلوس يزيدوا، وهكذا!",
+            expl_en: "Every project is bound by a triangle of terror: Time, Cost, and Scope. If you add more features, Time and Cost must increase, and so on!",
+            content: `<p>أي مشروع في العالم محكوم بثلاثة قيود رئيسية تُعرف بـ (Triple Constraint):</p>
+<ol>
+    <li><strong>النطاق (Scope):</strong> ما هي المهام والمميزات المطلوبة من النظام بالتحديد؟</li>
+    <li><strong>الوقت (Time):</strong> كم سيستغرق إنجاز هذا المشروع؟</li>
+    <li><strong>التكلفة (Cost):</strong> ما هي الميزانية المحددة والموارد المطلوبة؟</li>
+</ol>
+<p>مدير المشروع الناجح هو من يوازن بين هذه القيود الثلاثة لتحقيق <strong>الجودة (Quality)</strong> المطلوبة.</p>`,
+            content_en: `<p>Every project in the world is constrained by three main factors known as the Triple Constraint:</p>
+<ol>
+    <li><strong>Scope:</strong> What specific tasks and features are required?</li>
+    <li><strong>Time:</strong> How long will it take to complete the project?</li>
+    <li><strong>Cost:</strong> What is the defined budget and required resources?</li>
+</ol>
+<p>A successful project manager balances these constraints to achieve the targeted <strong>Quality</strong>.</p>`,
+            general_info: "إذا طلب العميل إضافة ميزة جديدة للنظام (زيادة النطاق)، فيجب بالضرورة زيادة الميزانية أو تمديد وقت التسليم.",
+            general_info_en: "If a client requests a new feature (increasing Scope), either the budget must increase or the deadline must be extended."
+        },
+        {
+            title: "5. مجالات المعرفة (Knowledge Areas)",
+            title_en: "5. PM Knowledge Areas",
+            expl: "مدير المشروع مش بس بيبص على الكود. ده بيدير التواصل بين الناس، الموارد البشرية، المخاطر اللي ممكن تحصل، والمشتريات. زي المايسترو اللي بيشغل كل الآلات بتناغم.",
+            expl_en: "A PM doesn't just look at code. They manage communication, HR, risks, and procurement. Like a maestro ensuring all instruments play in harmony.",
+            content: `<p>تتكون إدارة المشاريع من عدة مجالات معرفية أساسية (Knowledge Areas) يجب إدارتها معاً:</p>
+<ul>
+    <li><strong>إدارة التكامل (Integration):</strong> ربط جميع أجزاء وخطط المشروع ببعضها.</li>
+    <li><strong>إدارة الموارد البشرية (HR):</strong> إدارة فريق العمل وتوزيع المهام.</li>
+    <li><strong>إدارة المخاطر (Risk):</strong> توقع المشاكل المحتملة ووضع خطط بديلة لحلها.</li>
+    <li><strong>إدارة التواصل (Communications):</strong> ضمان وصول المعلومات الصحيحة في الوقت المناسب لأصحاب المصلحة (Stakeholders).</li>
+</ul>`,
+            content_en: `<p>Project management consists of several core Knowledge Areas that must be managed together:</p>
+<ul>
+    <li><strong>Integration Management:</strong> Tying all pieces and plans of the project together.</li>
+    <li><strong>HR Management:</strong> Managing the team and delegating tasks.</li>
+    <li><strong>Risk Management:</strong> Anticipating potential problems and having backup plans.</li>
+    <li><strong>Communications Management:</strong> Ensuring the right info reaches stakeholders at the right time.</li>
+</ul>`,
+            general_info: "يعتبر الفشل في التواصل الفعال السبب رقم واحد في تأخير أو فشل المشاريع البرمجية الضخمة.",
+            general_info_en: "Failure in effective communication is the number one cause for delays or failures in massive software projects."
+        },
+        {
+            title: "6. شهادة إدارة المشاريع (PMP)",
+            title_en: "6. PMP Certification",
+            expl: "عشان تبقى مدير مشروع معتمد عالمياً، فيه شهادة اسمها PMP من معهد PMI. دي بتثبت إنك فاهم كل أصول اللعبة، وعدد الحاصلين عليها بيزيد جداً بسبب أهميتها في السوق.",
+            expl_en: "To be a globally recognized PM, there's the PMP certification from PMI. It proves you know the rules of the game, and its demand is skyrocketing in the market.",
+            content: `<p>يوفر معهد إدارة المشاريع (PMI) شهادة معتمدة تسمى <strong>(PMP) Project Management Professional</strong>.</p>
+<ul>
+    <li>تتطلب هذه الشهادة خبرة عملية موثقة في إدارة المشاريع، واجتياز امتحان صارم.</li>
+    <li>الالتزام بميثاق الأخلاقيات المهنية (Code of Ethics).</li>
+    <li>عدد الحاصلين على الشهادة في تزايد هائل ومستمر (كما يُظهر المخطط البياني للنمو من 1993 وما بعده)، مما يعكس قيمتها العالية في سوق العمل.</li>
+</ul>`,
+            content_en: `<p>The Project Management Institute (PMI) provides a certified credential called <strong>PMP (Project Management Professional)</strong>.</p>
+<ul>
+    <li>This certification requires documented practical experience and passing a rigorous exam.</li>
+    <li>Adherence to a strict Code of Ethics.</li>
+    <li>The number of certified PMPs is growing rapidly (as shown in the growth charts from 1993 onwards), reflecting its immense value in the job market.</li>
+</ul>`,
+            general_info: "شهادة PMP لا تقتصر على مهندسي البرمجيات فقط، بل هي مطلوبة في المقاولات والطب وكافة الصناعات الأخرى.",
+            general_info_en: "The PMP certification is not limited to software engineers; it is highly demanded in construction, healthcare, and all other industries."
+        },
+        {
+            title: "7. دور مدير المشروع",
+            title_en: "7. Project Manager Role",
+            expl: "مدير المشروع هو الكابتن بتاع السفينة. مش شرط يكون أحسن مبرمج، بس لازم يكون أحسن واحد بيحل المشاكل، بيوزع المهام، وبيطمن إن الشغل ماشي على الخطة.",
+            expl_en: "The PM is the captain of the ship. They don't have to be the best coder, but they must be the best at solving problems, delegating tasks, and keeping the plan on track.",
+            content: `<p><strong>مدير المشروع (Project Manager):</strong> هو الشخص المسؤول عن تحقيق أهداف المشروع ضمن القيود المحددة.</p>
+<ul>
+    <li>الربط والتنسيق بين جميع التخصصات المختلفة (المطورين، المصممين، والعملاء).</li>
+    <li>استخدام أدوات وأنظمة معلومات إدارة المشاريع (PMIS) لمتابعة التقدم.</li>
+    <li>التركيز المستمر على إرضاء العميل (Customer Satisfaction) وتسليم القيمة المتفق عليها في الوقت المناسب.</li>
+</ul>`,
+            content_en: `<p><strong>Project Manager (PM):</strong> is the person responsible for achieving the project's objectives within the specified constraints.</p>
+<ul>
+    <li>Connecting and coordinating between various disciplines (developers, designers, and clients).</li>
+    <li>Utilizing Project Management Information Systems (PMIS) to track progress.</li>
+    <li>Continuously focusing on Customer Satisfaction and delivering agreed-upon value on time.</li>
+</ul>`,
+            general_info: "أهم مهارة لمدير المشروع هي (القيادة والذكاء العاطفي) لحل النزاعات التي تنشأ بين أفراد الفريق.",
+            general_info_en: "The most important skill for a PM is (Leadership and Emotional Intelligence) to resolve conflicts that arise among team members."
+        },
+        {
+            title: "8. معمل إدارة المشاريع",
+            title_en: "8. Project Management Lab",
+            expl: "كمدير مشروع أو محلل نظم، منطق البرمجة بيساعدك تحسب المخاطر والميزانية. جرب تكتب كود صغير يحسب لو المشروع هيتأخر عن ميعاده أو يتجاوز الميزانية بناءً على المعطيات.",
+            expl_en: "As a PM or Systems Analyst, coding logic helps you calculate risks and budget. Try writing a small code to calculate if the project will be delayed or over budget based on inputs.",
+            content: `<p>🎉 <strong>عمل رائع!</strong> لقد أتممت المحاضرة الخامسة وتعرفت على أساسيات <strong>إدارة المشاريع (Project Management)</strong> وتأثيرها على نجاح الأنظمة.</p>
+<p>في عالم الـ IT، يتم استخدام أدوات ذكية وأحياناً سكريبتات بايثون لتحليل بيانات المشروع (معدل إنجاز المهام، حساب التكاليف، والتنبؤ بالمخاطر). استخدم المعمل أدناه للتدرب على كتابة منطق برمجي بسيط يحاكي حساب ميزانية ومدة المشروع.</p>`,
+            content_en: `<p>🎉 <strong>Great Job!</strong> You have finished Lecture 5 and learned the fundamentals of <strong>Project Management</strong> and its impact on system success.</p>
+<p>In the IT world, smart tools and Python scripts are used to analyze project data (task completion rates, cost calculations, and risk forecasting). Use the lab below to practice writing simple logic that simulates budget and timeline tracking.</p>`,
+            general_info: "اكتب دالة بايثون بسيطة تستقبل الميزانية المحددة وتكاليف التطوير الفعلية، لتخبرك إذا كان المشروع تحت السيطرة أو يتجه نحو الفشل.",
+            general_info_en: "Write a simple Python function that takes the estimated budget and actual dev costs, and prints whether the project is under control or heading towards failure.",
+            isTerminalSlide: true
+        }
+    ];
+
+    let idx = 0;
+    let uiLang = 'ar'; 
+    
+    const dom = {
+        title: document.getElementById('slideHeader'),
+        content: document.getElementById('slideHtml'),
+        normalContainer: document.getElementById('normalSlideContent'),
+        compilerContainer: document.getElementById('compilerContainer'),
+        expl: document.getElementById('explText'),
+        badge: document.getElementById('slideBadge'),
+        list: document.getElementById('list'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn'),
+        lblExpl: document.getElementById('labelExpl'),
+        pageTitle: document.getElementById('pageTitle'),
+        sidebar: document.getElementById('sidebar'),
+        search: document.getElementById('searchInp'),
+        langBtn: document.getElementById('langBtn'),
+        txtPrev: document.getElementById('txtPrev'),
+        txtNext: document.getElementById('txtNext'),
+        generalInfo: document.getElementById('generalInfoText'),
+        syntaxHints: document.getElementById('syntaxHints')
+    };
+
+    function init() {
+        let globalTheme = localStorage.getItem('globalTheme') || 'light';
+        let globalLang = localStorage.getItem('globalLang') || 'ar';
+        
+        if (globalTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            const chk = document.getElementById('themeCheckbox');
+            if(chk) chk.checked = true;
+        }
+
+        if (globalLang === 'en') {
+            uiLang = 'ar'; 
+            toggleLang();
+        }
+
+        renderList();
+        loadSlide(0);
+        
+        document.ondragstart = null; 
+    }
+
+    function toggleSlideCheck(index, event) {
+        event.stopPropagation(); 
+        const checkbox = event.target;
+        const savedProgress = JSON.parse(localStorage.getItem('systemAnalysisProgress_L5') || '{}');
+        savedProgress[index] = checkbox.checked;
+        localStorage.setItem('systemAnalysisProgress_L5', JSON.stringify(savedProgress));
+    }
+
+    function renderList() {
+        dom.list.innerHTML = '';
+        const savedProgress = JSON.parse(localStorage.getItem('systemAnalysisProgress_L5') || '{}');
+
+        slides.forEach((s, i) => {
+            let li = document.createElement('li');
+            li.className = 'list-item';
+            
+            let chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'slide-check';
+            chk.checked = savedProgress[i] || false;
+            chk.onclick = (e) => toggleSlideCheck(i, e);
+
+            let num = i === slides.length - 1 ? '💻' : i + 1;
+            let displayTitle = uiLang === 'ar' ? s.title : s.title_en;
+            let cleanTitle = displayTitle.includes('.') ? displayTitle.split('.')[1] : displayTitle;
+            
+            let textSpan = document.createElement('span');
+            textSpan.innerHTML = `${cleanTitle} <span style="font-size:0.8rem; opacity:0.7;">${num}</span>`;
+            textSpan.style.flex = "1";
+
+            li.appendChild(chk);
+            li.appendChild(textSpan);
+            
+            li.onclick = () => loadSlide(i);
+            dom.list.appendChild(li);
+        });
+        updateActiveItem(idx);
+    }
+
+    function loadSlide(index) {
+        idx = index;
+        const s = slides[index];
+        const isAr = uiLang === 'ar';
+
+        dom.title.innerHTML = isAr ? s.title : s.title_en;
+        dom.badge.innerText = isAr ? `درس ${index + 1}` : `Lesson ${index + 1}`;
+        dom.content.innerHTML = isAr ? s.content : s.content_en;
+        dom.expl.innerHTML = isAr ? s.expl : s.expl_en;
+        
+        dom.generalInfo.innerText = isAr ? (s.general_info || "...") : (s.general_info_en || "...");
+
+        if (s.isTerminalSlide) {
+            dom.compilerContainer.style.display = 'block';
+            setTimeout(() => {
+                dom.compilerContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            dom.compilerContainer.style.display = 'none';
+        }
+
+        dom.prev.disabled = index === 0;
+        dom.next.disabled = index === slides.length - 1;
+
+        updateActiveItem(index);
+        document.querySelectorAll('.section-box').forEach(b => b.classList.remove('open'));
+        if(window.innerWidth <= 768) dom.sidebar.classList.remove('open');
+    }
+
+    function updateActiveItem(index) {
+        const items = document.querySelectorAll('.list-item');
+        items.forEach((item, i) => {
+            if(i === index) item.classList.add('active');
+            else item.classList.remove('active');
+        });
+    }
+
+    function move(step) {
+        const newIdx = idx + step;
+        if(newIdx >= 0 && newIdx < slides.length) loadSlide(newIdx);
+    }
+
+    function toggleSection(el) { el.classList.toggle('open'); }
+    function toggleSidebar() { dom.sidebar.classList.toggle('open'); }
+    function toggleInfo() { 
+        const modal = document.getElementById('infoModal'); 
+        if(modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function filterSlides() {
+        const q = dom.search.value.toLowerCase();
+        const items = document.querySelectorAll('.list-item');
+        slides.forEach((s, i) => {
+            const t = uiLang === 'ar' ? s.title : s.title_en;
+            if(t.toLowerCase().includes(q)) items[i].style.display = 'flex';
+            else items[i].style.display = 'none';
+        });
+    }
+
+    function toggleLang() {
+        uiLang = uiLang === 'ar' ? 'en' : 'ar';
+        const isAr = uiLang === 'ar';
+        
+        localStorage.setItem('globalLang', uiLang);
+
+        dom.langBtn.setAttribute('data-main', isAr ? "🇺🇸 English" : "🇪🇬 العربية");
+        dom.langBtn.setAttribute('data-hover', isAr ? "Switch ⇆" : "تغيير ⇆");
+
+        dom.pageTitle.innerText = isAr ? "System Analysis | L5" : "System Analysis | L5";
+        dom.txtPrev.innerText = isAr ? "السابق" : "Prev";
+        dom.txtNext.innerText = isAr ? "التالي" : "Next";
+        dom.lblExpl.innerText = isAr ? "💬 الشرح المبسط" : "💬 Simple Explanation";
+        dom.search.placeholder = isAr ? "بحث..." : "Search...";
+        
+        const arHint = `⚠️ <strong>تنبيهات هامة لمحلل النظم:</strong><br>
+                        1. <strong>نمذجة المشاريع:</strong> في هذا الكورس، نركز على المفاهيم والتحليل والتصميم بدلاً من البرمجة المباشرة.<br>
+                        2. <strong>الأدوات:</strong> يمكنك استخدام بايثون هنا لكتابة منطق رياضي يحاكي الميزانية والمدة الزمنية للمشروع لتوقع المخاطر.`;
+        const enHint = `⚠️ <strong>Systems Analyst Hints:</strong><br>
+                        1. <strong>Project Modeling:</strong> In this course, we focus on concepts, analysis, and design rather than direct programming.<br>
+                        2. <strong>Tools:</strong> You can use Python here to write mathematical logic that simulates project budgets and timelines to forecast risks.`;
+        dom.syntaxHints.innerHTML = isAr ? arHint : enHint;
+        
+        document.getElementById('modalTitle').innerText = isAr ? "معلومات المادة" : "Course Info";
+        document.getElementById('modalDesc').innerText = isAr ? "أهلاً بك في كورس تحليل وتصميم الأنظمة. من خلال هذه المنصة يمكنك تصفح شرائح إدارة المشاريع، وقراءة الشرح المبسط." : "Welcome to the System Analysis and Design course. Browse Project Management slides, and read simplified explanations.";
+        document.getElementById('modalCloseBtn').innerText = isAr ? "إغلاق" : "Close";
+
+        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+        document.documentElement.lang = isAr ? 'ar' : 'en';
+        
+        renderList();
+        loadSlide(idx);
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const isLight = body.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        body.setAttribute('data-theme', newTheme);
+        
+        localStorage.setItem('globalTheme', newTheme);
+        
+        const chk = document.getElementById('themeCheckbox');
+        if(chk) chk.checked = !isLight;
+    }
+
+    function outf(text) { 
+        const output = document.getElementById("output-area");
+        if (output.innerText === "Output will appear here...") output.innerText = "";
+        output.innerText += text; 
+    } 
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+    function runPython() {
+        const prog = document.getElementById("code-input").value; 
+        const mypre = document.getElementById("output-area"); 
+        mypre.innerHTML = ''; 
+        mypre.classList.remove('error-output');
+
+        Sk.pre = "output-area";
+        Sk.configure({output:outf, read:builtinRead}); 
+
+        const myPromise = Sk.misceval.asyncToPromise(function() {
+            return Sk.importMainWithBody("<stdin>", false, prog);
+        });
+        myPromise.then(function(mod) { console.log('success'); }, function(err) {
+            mypre.classList.add('error-output');
+            mypre.innerHTML = err.toString();
+        });
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
